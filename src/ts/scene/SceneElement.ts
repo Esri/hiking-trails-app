@@ -16,8 +16,9 @@ export default class SceneElement {
 
   view: SceneView;
   trailsLayer: FeatureLayer;
+  state: Object;
 
-  constructor() {
+  constructor(state) {
 
     config.scene.corsServers.forEach((server) => {
       esriConfig.request.corsEnabledServers.push(server);
@@ -31,6 +32,17 @@ export default class SceneElement {
     //adding view to the window only for debugging reasons
     (<any>window).view = this.view;
 
+    // set state on the scene element and listen to changes on the state
+    this.state = state;
+
+    state.watch('selectedTrail', (newValue, oldValue) => {
+      if (newValue) {
+        this.selectFeature(newValue);
+      }
+      else {
+        this.unselectFeature();
+      }
+    });
   }
 
   private initView() {
