@@ -3,7 +3,7 @@ import * as Polyline from 'esri/geometry/Polyline';
 import * as geometryEngine from 'esri/geometry/geometryEngine';
 
 
-export default class Trail{
+export default class Trail {
 
   geometry: Polyline;
   profileData: Array<any>;
@@ -22,6 +22,7 @@ export default class Trail{
   }
 
   private getAltitudeProfileData(geometry:Polyline):Array<any> {
+
     let points = [];
     let totalLength = 0;
     const path = geometry.paths[0];
