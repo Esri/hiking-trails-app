@@ -41,7 +41,7 @@
 
 #showMap {
   padding: 10px 20px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid white;
   border-radius: 0.5em;
   font-size: 1.3em;
@@ -50,8 +50,7 @@
 }
 
 #showMap:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: black;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .cell {
