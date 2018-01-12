@@ -12,13 +12,16 @@ import * as all from 'dojo/promise/all';
 
 import '../../style/scene-panel.scss';
 
+import { State } from '../types';
+
 export default class SceneElement {
 
   view: SceneView;
   trailsLayer: FeatureLayer;
-  state: Object;
+  trails: Array<any>;
+  state: State;
 
-  constructor(state) {
+  constructor(state: State) {
 
     config.scene.corsServers.forEach((server) => {
       esriConfig.request.corsEnabledServers.push(server);
@@ -35,9 +38,9 @@ export default class SceneElement {
     // set state on the scene element and listen to changes on the state
     this.state = state;
 
-    state.watch('selectedTrail', (newValue, oldValue) => {
-      if (newValue) {
-        this.selectFeature(newValue);
+    state.watch('selectedTrailId', (value) => {
+      if (value) {
+        this.selectFeature(value);
       }
       else {
         this.unselectFeature();
@@ -47,7 +50,7 @@ export default class SceneElement {
 
   private initView() {
 
-    let webscene = new WebScene({
+    const webscene = new WebScene({
       portalItem: {
         id: config.scene.websceneItemId
       }
@@ -88,7 +91,7 @@ export default class SceneElement {
       outFields: ["*"],
       renderer: getTrailRenderer(),
       labelsVisible: true,
-      labelingInfo: getLabelingInfo({})
+      labelingInfo: getLabelingInfo({ selection: null })
 
     });
   }
@@ -101,14 +104,23 @@ export default class SceneElement {
     this.trailsLayer.renderer = renderer;
 
     // change labeling for the selected feature
-    this.trailsLayer.labelingInfo = getLabelingInfo({selection: featureId});
+    this.trailsLayer.labelingInfo = getLabelingInfo({ selection: featureId });
+
+    // get trail geometry to zoom to it
+    const selectedTrail = this.trails.filter((trail) => {
+      return (trail.attributes[config.data.trailAttributes.id] === featureId);
+    })[0];
+    this.view.goTo(
+      {target: selectedTrail.geometry, tilt: 60},
+      {speedFactor: 0.5}
+    );
   }
 
   private unselectFeature():void {
     let renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
-    this.trailsLayer.labelingInfo = getLabelingInfo({selection: null});
+    this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
   }
 
   public queryTrails():IPromise {
@@ -132,6 +144,8 @@ export default class SceneElement {
 
     return this.queryTrails().then((result) => {
 
+      this.trails = result.features;
+
       // for each feature query the z values of the geometry
       let promises = result.features.map((feat) => {
         return view.map.ground.queryElevation(feat.geometry)
@@ -139,10 +153,10 @@ export default class SceneElement {
             feat.geometry = response.geometry;
             return feat;
           });
-        });
+      });
 
       return all(promises);
-    })
+    });
   }
 
 }

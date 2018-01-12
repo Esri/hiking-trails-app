@@ -2,11 +2,12 @@ import * as dom from 'dojo/dom';
 import * as on from 'dojo/on';
 
 import '../../style/loading-page.scss';
+import { State } from '../types';
 
 export default class LoadingPage {
 
   container;
-  state;
+  state: State;
 
   constructor(state) {
     this.container = dom.byId('starterPage');

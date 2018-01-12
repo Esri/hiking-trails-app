@@ -8,7 +8,7 @@ export default class State extends declared(Accessor) {
   displayLoading: boolean = true;
 
   @property()
-  selectedTrail: number = null;
+  selectedTrailId: number = null;
 
 
 }

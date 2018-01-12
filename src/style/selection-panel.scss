@@ -41,7 +41,7 @@
       pointer-events: none;
     }
 
-    .selected {
+    &.selected {
       background-color: $orange;
       border: 1px solid $orange;
     }

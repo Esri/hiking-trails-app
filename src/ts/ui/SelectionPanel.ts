@@ -4,17 +4,27 @@ import * as domConstruct from 'dojo/dom-construct';
 import * as domClass from 'dojo/dom-class';
 
 import '../../style/selection-panel.scss';
+import { State } from '../types';
 
 export default class SelectionPanel {
 
   trailsPanel;
-  state;
+  state: State;
 
-  constructor(trails, state) {
+  constructor(trails, state: State) {
 
     this.state = state;
     this.trailsPanel = dom.byId('trailsPanel');
     this.generateTrailsPanel(trails);
+
+    state.watch('selectedTrailId', (id) => {
+      if (document.querySelector(".selected")) {
+        document.querySelector(".selected").classList.remove("selected");
+      }
+      if (id) {
+        document.querySelector("[data-id ='" + id + "']").classList.add("selected");
+      }
+    });
 
   }
 
@@ -35,7 +45,7 @@ export default class SelectionPanel {
       }, this.trailsPanel);
 
       on(trailElement, 'click', (evt) => {
-        state.selectedTrail = evt.target.dataset.id;
+        state.selectedTrailId = parseInt(evt.target.dataset.id);
       });
     });
   }

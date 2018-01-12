@@ -13,6 +13,7 @@
   ],
   "author": "Raluca Nicola",
   "license": "MIT",
+  "typings": "src/ts/types.d.ts",
   "devDependencies": {
     "@types/arcgis-js-api": "4.5",
     "@types/dojo": "^1.9.40",
