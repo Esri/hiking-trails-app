@@ -4,12 +4,15 @@ import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from './utils'
 import * as WebScene from 'esri/WebScene';
 import * as SceneView from 'esri/views/SceneView';
 import * as FeatureLayer from 'esri/layers/FeatureLayer';
+import * as Query from 'esri/tasks/support/Query';
 import * as UniqueValueRenderer from 'esri/renderers/UniqueValueRenderer';
 import * as esriConfig from 'esri/config';
 
+import * as all from 'dojo/promise/all';
+
 import '../../style/scene-panel.scss';
 
-export default class SceneComponent {
+export default class SceneElement {
 
   view: SceneView;
   trailsLayer: FeatureLayer;
@@ -94,6 +97,40 @@ export default class SceneComponent {
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
     this.trailsLayer.labelingInfo = getLabelingInfo({selection: null});
+  }
+
+  public queryTrails():IPromise {
+    const layer:FeatureLayer = this.trailsLayer;
+    const query = new Query({
+      outFields: ["*"],
+      where: "1=1",
+      returnGeometry: true,
+      outSpatialReference: {
+        wkid: 4326
+      }
+    });
+    return layer.then(() => {
+      return layer.queryFeatures(query);
+    });
+  }
+
+  public getZEnrichedTrails():IPromise {
+
+    const view = this.view;
+
+    return this.queryTrails().then((result) => {
+
+      // for each feature query the z values of the geometry
+      let promises = result.features.map((feat) => {
+        return view.map.ground.queryElevation(feat.geometry)
+          .then((response) => {
+            feat.geometry = response.geometry;
+            return feat;
+          });
+        });
+
+      return all(promises);
+    })
   }
 
 }

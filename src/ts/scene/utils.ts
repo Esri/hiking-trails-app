@@ -76,7 +76,7 @@ export function createLabelClass(options) {
       })],
       verticalOffset: {
         screenLength: 80,
-        maxWorldLength: 5000,
+        maxWorldLength: 3000,
         minWorldLength: 200
       },
       callout: {
@@ -93,7 +93,6 @@ export function createLabelClass(options) {
       expression: `$feature.${config.data.trailAttributes.name}`
     }
   });
-  console.log(color);
   if (options.selection) {
     labelClass.where = `${config.data.trailAttributes.id} = ${options.selection}`
   }
