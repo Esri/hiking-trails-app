@@ -46,6 +46,7 @@ export default class SelectionPanel {
 
       on(trailElement, 'click', (evt) => {
         state.selectedTrailId = parseInt(evt.target.dataset.id);
+        console.log(state.selectedTrailId);
       });
     });
   }

@@ -32,5 +32,8 @@
     "url-loader": "^0.6.2",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.7"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0"
   }
 }

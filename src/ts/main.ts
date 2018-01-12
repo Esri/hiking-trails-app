@@ -8,14 +8,17 @@ import SceneElement from './scene/SceneElement';
 import LoadingPage from './ui/LoadingPage';
 import DataStore from './data/DataStore';
 import SelectionPanel from './ui/SelectionPanel';
+import DetailPanel from './ui/DetailPanel';
 
 let state = new State();
 let loadingPage = new LoadingPage(state);
-let sceneEl = new SceneElement(state);
-sceneEl.getZEnrichedTrails()
+let sceneElement = new SceneElement(state);
+sceneElement.getZEnrichedTrails()
   .then((features) => {
     let dataStore = new DataStore(features);
-    let selectionPanel = new SelectionPanel(dataStore.trailFeatures, state);
+    const trails = dataStore.trailFeatures;
+    let selectionPanel = new SelectionPanel(trails, state);
+    let detailPanel = new DetailPanel(trails, state);
   });
 
 

@@ -15,7 +15,11 @@ module.exports = {
     {
       test: /\.json$/,
       loader: 'json-loader'
-    }],
+    },
+    { test: /\.(woff|woff2|eot|ttf)$/,
+      loader: 'url-loader?limit=100000'
+    }
+    ],
     rules: [
       {
         test: /\.(ts|tsx)$/,
@@ -23,6 +27,13 @@ module.exports = {
         use: {
           loader: 'awesome-typescript-loader'
         }
+      },
+      {
+        // Capture eot, ttf, woff, and woff2
+        test: /\.(eot|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+        use: {
+          loader: "file-loader"
+        },
       },
       {
         test: /\.scss$/,
