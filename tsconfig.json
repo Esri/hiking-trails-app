@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "module": "commonjs",
+        "target": "es5",
+        "types": ["arcgis-js-api", "dojo"],
+        "typeRoots": ["./node_modules/@types"],
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "reactNamespace": "jsxFactory"
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
