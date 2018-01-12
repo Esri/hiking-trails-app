@@ -26,17 +26,21 @@ export default class Trail {
     let points = [];
     let totalLength = 0;
     const path = geometry.paths[0];
-    let i = 0;
+    let i = 0, j;
 
     points.push({point: path[0], length: totalLength, value: Math.round(path[0][2])});
+
     while (i < path.length) {
-      for (var j = i+1; j < path.length; j++) {
-        var tempLine = new Polyline({
+      for (j = i+1; j < path.length; j++) {
+
+        let tempLine = new Polyline({
           paths: [path.slice(i, j + 1)],
           hasZ: true,
           spatialReference: { wkid: 4326 }
         });
-        var length = geometryEngine.geodesicLength(tempLine, "meters");
+
+        const length = geometryEngine.geodesicLength(tempLine, "meters");
+
         if (length > 10) {
           totalLength += length;
           points.push({point: path[j], length: Math.round(totalLength/100) / 10, value: Math.round(path[i][2])});
