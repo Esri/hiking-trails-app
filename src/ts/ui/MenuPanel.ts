@@ -1,10 +1,13 @@
-import * as dom from 'dojo/dom';
-import * as on from 'dojo/on';
-import * as domConstruct from 'dojo/dom-construct';
-import * as domClass from 'dojo/dom-class';
+
+import DetailPanel from './DetailPanel';
+import SelectionPanel from './SelectionPanel';
+import { State } from '../types';
 
 import '../../style/menu-panel.scss';
 
-export default {
-  something: 1
+export default class MenuPanel {
+  constructor(trails, state: State) {
+    let selectionPanel = new SelectionPanel(trails, state);
+    let detailPanel = new DetailPanel(trails, state);
+  }
 }

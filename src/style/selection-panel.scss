@@ -16,11 +16,10 @@
   .trail {
     background-color: $green;
     border: 1px solid $green;
-    padding-right: 6px;
     margin: 5px 5px 5px 0;
     cursor: pointer;
     pointer-events: auto;
-    padding: 2px 5px;
+    padding: 4px 8px;
     font-size: $small-font;
 
     .disabled {
@@ -42,4 +41,58 @@
     border: 1px solid $orange;
   }
 }
+
+
+#filterPanel {
+
+  .filter-category {
+    font-size: $small-font;
+    font-weight: bold;
+    padding: 20px 0;
+    pointer-events: none;
+  }
+
+  input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+  }
+
+  label {
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 10px;
+    &:hover {
+      background: $green;
+    }
+  }
+
+  input[type=radio]:checked + label{
+    background: $green;
+  }
+
+  label + input[type=radio] + label {
+    border-left: solid 1px $green;
+  }
+
+  .radio-group {
+    border: solid 1px $green;
+    display: inline-block;
+  }
+
+  .range-slider {
+    display: inline-block;
+    width: 200px;
+    margin: 0 15px;
+  }
+
+  .noUi-tooltip {
+    display: none;
+  }
+
+  .noUi-active .noUi-tooltip {
+      display: block;
+  }
+}
+
 

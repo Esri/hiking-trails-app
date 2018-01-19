@@ -16,6 +16,10 @@ export default {
       ascent: 'Ascent',
       description: 'Description'
     },
+    filterOptions: {
+      singleChoice: ['difficulty', 'category'],
+      range: ['walktime', 'ascent']
+    }
   },
   colors: {
     defaultTrail: '#db5353',

@@ -11,6 +11,14 @@ html, body {
   overflow: hidden;
 }
 
+h1 {
+  font-size: $big-font;
+  font-weight: bold;
+  padding: 20px;
+  text-align: center;
+  margin: 0;
+}
+
 .title {
   position: relative;
   z-index: 1;
