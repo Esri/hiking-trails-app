@@ -13,23 +13,33 @@
 
   <div id="scenePanel"></div>
 
-  <div id="selectionPanel">
-    <h3>Hiking trails</h3>
-    <div id="trailsPanel"></div>
-    <h3>Filter trails</h3>
-    <div id="filterPanel"></div>
-  </div>
+  <div class="menuPanel">
 
-  <div id="detailPanel">
-    <div id="imageCarousel" class="carousel slide" data-interval="false">
+    <h1 class="section title">Hiking trails Swiss National Park</h1>
+
+    <ul class="menuTabs section">
+      <li class="active">Hikes</li>
+      <li>Details</li>
+    </ul>
+
+    <div id="selectionPanel">
+      <div id="trailsPanel"></div>
+      <div>Filter trails by:</div>
+      <div id="filterPanel"></div>
     </div>
-    <h3 class="center" id="detailTitle"></h3>
-    <div id="detailInfograph"></div>
-    <div id="detailDescription"></div>
-    <div id="detailElevationProfile"></div>
+
+    <div id="detailPanel">
+      <div id="imageCarousel" class="carousel slide" data-interval="false">
+      </div>
+      <h3 class="center" id="detailTitle"></h3>
+      <div id="detailInfograph"></div>
+      <div id="detailDescription"></div>
+      <div id="detailElevationProfile"></div>
+    </div>
+
   </div>
 
-   <div id='starterPage' class='starter'>
+  <div id='starterPage' class='starter'>
     <div class='inner'>
       <div class='cell'>
         <h1 class='heading-starter center'>Swiss National Park</h1>
@@ -43,7 +53,11 @@
     </div>
     <div class='foot'>
       <div class='center'>
-        <p>Mapp made by <a href='http://developers.arcgis.com/javascript'><img src='./src/img/esri-10GlobeLogo_1C.png' alt='esri logo'></a></p>
+        <p>Mapp made by
+          <a href='http://developers.arcgis.com/javascript'>
+            <img src='./src/img/esri-10GlobeLogo_1C.png' alt='esri logo'>
+          </a>
+        </p>
       </div>
     </div>
   </div>

@@ -68,10 +68,10 @@ export function createLabelClass(options) {
         material: {
           color: "white"
         },
-        halo: {
+        /* halo: {
           color: color,
           size: 1
-        },
+        }, */
         size: 10
       })],
       verticalOffset: {

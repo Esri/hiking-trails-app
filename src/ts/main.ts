@@ -2,6 +2,7 @@
 
 import '../style/style.scss';
 
+import '../style/menu-panel.scss';
 
 import State from './State';
 import SceneElement from './scene/SceneElement';

@@ -41,7 +41,7 @@ export default class SelectionPanel {
         'data-walktime': trail.walktime,
         'data-status': trail.status,
         'data-ascent': trail.ascent,
-        'class': 'trail semiSquare'
+        'class': 'trail'
       }, this.trailsPanel);
 
       on(trailElement, 'click', (evt) => {
