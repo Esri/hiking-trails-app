@@ -94,7 +94,9 @@ export default class SelectionPanel {
         spanContainer.innerHTML += radioOption;
       }
       on(spanContainer, "click", function(evt){
-        console.log(evt);
+        if (evt.target.localName === 'label' ) {
+          console.log(evt);
+        }
       });
     }
 
@@ -138,7 +140,7 @@ export default class SelectionPanel {
         }
         case 'ascent': {
           unit = 'm';
-          step = 100;
+          step = 50;
           break;
         }
       }

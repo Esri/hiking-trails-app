@@ -49,13 +49,13 @@
     font-size: $small-font;
     font-weight: bold;
     padding: 20px 0;
-    pointer-events: none;
   }
 
   input[type=radio] {
     position: absolute;
     visibility: hidden;
     display: none;
+    pointer-events: none;
   }
 
   label {

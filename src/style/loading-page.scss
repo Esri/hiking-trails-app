@@ -16,63 +16,65 @@
   background-size:  cover;
   background-color: #fff;
   z-index: 1000;
+
+  h1 {
+    font-size: $huge-font;
+  }
+
+  .center {
+    max-width: 600px;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+  .inner {
+    max-width: 600px;
+    padding: 30px;
+    text-align: center;
+    margin-top: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    color: white;
+    display: table-row;
+    height: 95%;
+  }
+
+  .heading-starter {
+    border-bottom: 1px solid white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  }
+
+  #showMap {
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid white;
+    border-radius: 0.5em;
+    font-size: $big-font;
+    color: white;
+    cursor: pointer;
+  }
+
+  #showMap:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .cell {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+  }
+
+  .foot {
+    display: table-row;
+    bottom: 0;
+    height: 5%;
+    color: white;
+  }
+
+  .foot img {
+    height: 80px;
+    vertical-align: middle;
+  }
+
 }
 
-h1 {
-  font-size: $huge-font;
-}
-
-.center {
-  max-width: 600px;
-  margin: 10px auto;
-  text-align: center;
-}
-
-.inner {
-  max-width: 600px;
-  padding: 30px;
-  text-align: center;
-  margin-top: 200px;
-  margin-right: auto;
-  margin-left: auto;
-  color: white;
-  display: table-row;
-  height: 95%;
-}
-
-.heading-starter {
-  border-bottom: 1px solid white;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-
-#showMap {
-  padding: 10px 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid white;
-  border-radius: 0.5em;
-  font-size: $big-font;
-  color: white;
-  cursor: pointer;
-}
-
-#showMap:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.cell {
-  display: table-cell;
-  vertical-align: middle;
-  height: 100%;
-}
-
-.foot {
-  display: table-row;
-  bottom: 0;
-  height: 5%;
-  color: white;
-}
-
-.foot img {
-  height: 80px;
-  vertical-align: middle;
-}
