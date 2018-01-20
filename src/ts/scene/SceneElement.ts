@@ -46,6 +46,10 @@ export default class SceneElement {
         this.unselectFeature();
       }
     });
+
+    state.watch('filteredTrailIds', (value) => {
+      // filter trails on the map
+    });
   }
 
   private initView() {

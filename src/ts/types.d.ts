@@ -4,6 +4,10 @@ import Polyline = require("esri/geometry/Polyline");
 export interface State extends Accessor{
   displayLoading: boolean;
   selectedTrailId: number;
+  filteredTrailIds: Array<number>;
+  setFilteredTrailIds: any;
+  filters: Filters;
+  setFilter: any;
 }
 
 export interface Trail {
@@ -17,4 +21,11 @@ export interface Trail {
   ascent: number,
   description: number,
   profileData: Array<Object>
+}
+
+export interface Filters {
+  walktime: Array<number>,
+  ascent: Array<number>,
+  category: string,
+  difficulty: string
 }

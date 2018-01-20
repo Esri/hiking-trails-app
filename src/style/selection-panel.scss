@@ -22,12 +22,18 @@
     padding: 4px 8px;
     font-size: $small-font;
 
-    .disabled {
+    &.disabled {
       cursor: default;
       background-color: white;
       border: 1px solid $disabled-gray;
       color: $disabled-gray;
       pointer-events: none;
+    }
+
+    &.disabled:hover {
+      cursor: default;
+      border: 1px solid $disabled-gray;
+      color: $disabled-gray;
     }
 
     &.selected {

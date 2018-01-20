@@ -5,7 +5,7 @@ import config from '../config';
 import noUiSlider = require('noUiSlider');
 import '../../style/selection-panel.scss';
 import '../../style/nouislider.scss';
-import { State, Trail } from '../types';
+import { State, Trail, Filters } from '../types';
 
 export default class SelectionPanel {
 
@@ -34,6 +34,59 @@ export default class SelectionPanel {
       }
     });
 
+    state.watch('filters', (filters: Filters) => {
+
+      let filteredTrailIds = this.getFilteredTrails(filters)
+                                .map((trail) => trail.id);
+      this.state.setFilteredTrailIds(filteredTrailIds);
+    });
+
+    state.watch('filteredTrailIds', (ids) => {
+      this.updateVisibleTrails(ids);
+    });
+
+  }
+
+  private getFilteredTrails(filters: Filters): Array<Trail> {
+    let filteredTrails = this.trails.filter((trail) => {
+
+      // we assume the trail will not be filtered out
+      let keepTrail = true;
+
+      // go through each filter criteria and verify if the trail should be filtered out
+      for (let filter in filters) {
+        if (Array.isArray(filters[filter])) {
+          if (trail[filter] < filters[filter][0] || trail[filter] > filters[filter][1]) {
+            keepTrail = false;
+            break;
+          }
+        }
+        else {
+          if (filters[filter] !== 'All') {
+            if (trail[filter] !== filters[filter]) {
+              keepTrail = false;
+              break;
+            }
+          }
+        }
+      }
+
+      return keepTrail;
+    });
+
+    return filteredTrails;
+  }
+
+  private updateVisibleTrails(ids) {
+    let trailElements = document.querySelectorAll(".trail");
+    [].forEach.call(trailElements, function(elem){
+      if (ids.indexOf(parseInt(elem.dataset.id)) === -1) {
+        elem.classList.add("disabled");
+      }
+      else {
+        elem.classList.remove("disabled");
+      }
+    });
   }
 
   private generateTrailsPanel():void {
@@ -54,7 +107,6 @@ export default class SelectionPanel {
 
       on(trailElement, 'click', (evt) => {
         state.selectedTrailId = parseInt(evt.target.dataset.id);
-        console.log(state.selectedTrailId);
       });
     });
   }
@@ -93,9 +145,14 @@ export default class SelectionPanel {
         <label for='${id}' data-group='${filter}' data-option='${uniqueValues[i]}'>${uniqueValues[i]}</label>`;
         spanContainer.innerHTML += radioOption;
       }
-      on(spanContainer, "click", function(evt){
-        if (evt.target.localName === 'label' ) {
-          console.log(evt);
+
+      // initialize state
+      this.state.setFilter(filter, 'All');
+
+      on(spanContainer, "click", (evt) => {
+        let target = evt.target;
+        if (target.localName === 'label' ) {
+          this.state.setFilter(target.dataset.group, target.dataset.option);
         }
       });
     }
@@ -118,7 +175,9 @@ export default class SelectionPanel {
 
   // creates range sliders for interval type filter criteria
   private generateRangeFilters():void {
-    let rangeFilters:Array<string> = config.data.filterOptions.range;
+
+    let rangeFilters: Array<string> = config.data.filterOptions.range;
+    let state: State = this.state;
 
     for (let filter of rangeFilters) {
 
@@ -156,10 +215,10 @@ export default class SelectionPanel {
       }, this.filterPanel);
 
       let format = {
-        to: function ( value ) {
+        to: ( value ) => {
           return `${parseInt(value)} ${unit}`;
         },
-        from: function ( value ) {
+        from: ( value ) => {
           return `${parseInt(value)} ${unit}`;
         }
       }
@@ -173,6 +232,14 @@ export default class SelectionPanel {
         connect: true,
         step: step,
         tooltips: [format, format]
+      });
+
+      //initialize state
+      state.setFilter(filter, [extremes.min, extremes.max]);
+
+      //add event listener on slider to change the state when slider values change
+      rangeSliderContainer.noUiSlider.on('end', function (values) {
+        state.setFilter(this.target.dataset.group, values);
       });
 
       domConstruct.create('span', {
@@ -198,7 +265,6 @@ export default class SelectionPanel {
       max: max
     };
   }
-
 
 }
 
