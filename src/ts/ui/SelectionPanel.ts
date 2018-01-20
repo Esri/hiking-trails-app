@@ -155,15 +155,24 @@ export default class SelectionPanel {
         'data-group': filter
       }, this.filterPanel);
 
+      let format = {
+        to: function ( value ) {
+          return `${parseInt(value)} ${unit}`;
+        },
+        from: function ( value ) {
+          return `${parseInt(value)} ${unit}`;
+        }
+      }
+
       noUiSlider.create(rangeSliderContainer, {
         start: [extremes.min, extremes.max],
         range: {
           min: extremes.min,
           max: extremes.max
         },
+        connect: true,
         step: step,
-        tooltips: true,
-        connect: true
+        tooltips: [format, format]
       });
 
       domConstruct.create('span', {
