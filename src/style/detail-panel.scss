@@ -1,6 +1,12 @@
 
+@import 'variables';
+
 #detailPanel {
   overflow-y: auto;
+
+  h1 {
+    padding-top: 0;
+  }
 
   #detailGraph {
     margin: 20px 0 0 0;
@@ -10,7 +16,7 @@
 
   #detailDescription {
     margin: 20px;
-    margin-bottom: 0;
+    line-height: $big-font;
   }
 
   #detailInfograph {
