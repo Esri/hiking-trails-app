@@ -13,11 +13,14 @@ export default class SelectionPanel {
   filterPanel;
   trails: Array<Trail>;
   state: State;
+  container: any;
 
   constructor(trails, state: State) {
 
     this.state = state;
     this.trails = trails;
+
+    this.container = dom.byId('selectionPanel');
 
     this.trailsPanel = dom.byId('trailsPanel');
     this.generateTrailsPanel();

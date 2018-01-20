@@ -13,10 +13,12 @@ export default class SelectionPanel {
 
   trails: Array<Trail>;
   state: State;
+  container: any;
 
   constructor(trails, state: State) {
     this.state = state;
     this.trails = trails;
+    this.container = dom.byId('detailPanel');
 
     state.watch('selectedTrailId', (id) => {
       if (id) {
@@ -29,7 +31,6 @@ export default class SelectionPanel {
   displayInfo(trail: Trail):void {
 
     // create title
-    console.log(trail);
     dom.byId("detailTitle").innerHTML = trail.name;
 
     // create infograph

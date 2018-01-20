@@ -38,8 +38,10 @@ export default class State extends declared(Accessor) {
       ...this.filters
     };
     this.filters[property] = value;
-
   }
+
+  @property()
+  visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel' = 'selectionPanel';
 
 
 }

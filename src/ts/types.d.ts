@@ -8,6 +8,7 @@ export interface State extends Accessor{
   setFilteredTrailIds: any;
   filters: Filters;
   setFilter: any;
+  visiblePanel: any;
 }
 
 export interface Trail {
