@@ -41,6 +41,11 @@
 
   </div>
 
+  <span class="share">
+    <a class='fa fa-github-square' href="https://github.com/RalucaNicola/hiking-app" target="_blank"></a>
+    <a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
+  </span>
+
   <div id='starterPage' class='starter'>
     <div class='inner'>
       <div class='cell'>
@@ -67,6 +72,26 @@
   <script type='text/javascript' src='https://js.arcgis.com/4.6/'></script>
   <script>
     require(['./dist/main.bundle.js'], function (main) { });
+  </script>
+
+  <script>
+    // script for Twitter sharing link
+    window.twttr = (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function (f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));
   </script>
 </body>
 
