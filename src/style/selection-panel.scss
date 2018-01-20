@@ -2,13 +2,12 @@
 
 #selectionPanel {
   width: 100%;
-  align-items: stretch;
   padding: 20px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 #trailsPanel {
-  width: 100%;
   margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -50,6 +49,9 @@
 
 
 #filterPanel {
+
+  overflow: hidden;
+  padding-bottom: 10px;
 
   .filter-category {
     font-size: $small-font;
