@@ -4,10 +4,11 @@ import Polyline = require("esri/geometry/Polyline");
 export interface State extends Accessor{
   displayLoading: boolean;
   selectedTrailId: number;
+  setSelectedTrailId: (id:number) => void;
   filteredTrailIds: Array<number>;
-  setFilteredTrailIds: any;
+  setFilteredTrailIds: (ids:Array<number>) => void;
   filters: Filters;
-  setFilter: any;
+  setFilter: (property: string, value: string | number[]) => void;
   visiblePanel: any;
 }
 

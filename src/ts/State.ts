@@ -11,6 +11,13 @@ export default class State extends declared(Accessor) {
   @property()
   selectedTrailId: number = null;
 
+  setSelectedTrailId(id: number) {
+    this.selectedTrailId = id;
+    if (this.visiblePanel !== 'detailPanel') {
+      this.visiblePanel = 'detailPanel';
+    }
+  }
+
   @property()
   filteredTrailIds: Array<number> = [];
 
