@@ -14,7 +14,6 @@ export default class LoadingPage {
     this.state = state;
 
     state.watch('displayLoading', (value) => {
-      console.log(value);
       if (!value) {
         this.container.style.display = 'none';
       }

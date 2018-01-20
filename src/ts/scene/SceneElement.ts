@@ -27,16 +27,17 @@ export default class SceneElement {
       esriConfig.request.corsEnabledServers.push(server);
     });
 
+    // set state on the scene element and listen to changes on the state
+    this.state = state;
+
     this.view = this.initView();
+    this.setViewPadding();
 
     this.trailsLayer = this.initTrailsLayer();
     this.view.map.add(this.trailsLayer);
 
     //adding view to the window only for debugging reasons
     (<any>window).view = this.view;
-
-    // set state on the scene element and listen to changes on the state
-    this.state = state;
 
     state.watch('selectedTrailId', (value) => {
       if (value) {
@@ -49,6 +50,10 @@ export default class SceneElement {
 
     state.watch('filteredTrailIds', (value) => {
       // filter trails on the map
+    });
+
+    state.watch('device', () => {
+      this.setViewPadding();
     });
   }
 
@@ -86,6 +91,19 @@ export default class SceneElement {
       }
     });
 
+  }
+
+  private setViewPadding() {
+    if (this.state.device === 'mobilePortrait') {
+      this.view.padding = {
+        bottom: 200
+      }
+    }
+    else {
+      this.view.padding = {
+        left: 350
+      }
+    }
   }
 
   private initTrailsLayer() {

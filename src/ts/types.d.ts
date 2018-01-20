@@ -1,6 +1,8 @@
 import Accessor = require("esri/core/Accessor");
 import Polyline = require("esri/geometry/Polyline");
 
+export type Device = ('mobilePortrait' | 'desktop');
+
 export interface State extends Accessor{
   displayLoading: boolean;
   selectedTrailId: number;
@@ -9,7 +11,8 @@ export interface State extends Accessor{
   setFilteredTrailIds: (ids:Array<number>) => void;
   filters: Filters;
   setFilter: (property: string, value: string | number[]) => void;
-  visiblePanel: any;
+  visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel';
+  device: Device;
 }
 
 export interface Trail {

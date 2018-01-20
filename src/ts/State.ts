@@ -1,5 +1,5 @@
 import Accessor = require("esri/core/Accessor");
-import { Filters } from './types';
+import { Filters, Device } from './types';
 import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 
 @subclass()
@@ -50,5 +50,7 @@ export default class State extends declared(Accessor) {
   @property()
   visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel' = 'selectionPanel';
 
+  @property()
+  device: Device = null;
 
 }
