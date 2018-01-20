@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A 3D trail guide app for the Swiss National Park.",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
+    "build": "webpack --config ./webpack.config.prod.js",
     "start": "webpack-dev-server --hot --open"
   },
   "keywords": [

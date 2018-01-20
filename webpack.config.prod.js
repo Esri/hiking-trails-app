@@ -1,4 +1,10 @@
 var webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+const extractSass = new ExtractTextPlugin({
+    filename: "./dist/[name].css",
+    disable: false
+});
 
 module.exports = {
   entry: {
@@ -29,18 +35,25 @@ module.exports = {
         // Capture eot, ttf, woff, and woff2
         test: /\.(eot|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "file-loader"
+          loader: "file-loader",
+          options: {
+            outputPath: 'dist/fonts/',
+            publicPath: 'dist/',
+            useRelativePath: true
+          }
         },
       },
       {
         test: /\.scss$/,
-        use: [{
-          loader: "style-loader"
-        }, {
-            loader: "css-loader"
-        }, {
-            loader: "sass-loader"
-        }],
+        use: extractSass.extract({
+          use: [{
+              loader: "css-loader"
+          }, {
+              loader: "sass-loader"
+          }],
+          // use style-loader in development
+          fallback: "style-loader"
+      })
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/,
@@ -55,6 +68,7 @@ module.exports = {
   },
   devtool: 'eval-source-map',
   plugins: [
+    extractSass
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity
