@@ -12,7 +12,7 @@
     cursor: pointer;
     pointer-events: auto;
     padding: 4px 8px;
-    font-size: $small-font;
+    font-size: $normal-font;
 
     &.disabled {
       cursor: default;
@@ -37,6 +37,24 @@
   .trail:hover {
     background-color: $orange;
     border: 1px solid $orange;
+  }
+
+}
+
+.removeSelected {
+  background: none;
+  border: none;
+  border-bottom: 1px dashed $font-color;
+  color: $font-color;
+  font-family: 'Open Sans Condensed';
+  font-size: $normal-font;
+  line-height: $normal-font;
+  padding: 0;
+  cursor: pointer;
+
+  &:disabled {
+    border-bottom: 1px dashed $disabled-gray;
+    color: $disabled-gray;
   }
 }
 

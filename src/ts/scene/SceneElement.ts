@@ -67,6 +67,9 @@ export default class SceneElement {
         if (result.graphic) {
           this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
         }
+        else {
+          this.state.setSelectedTrailId(null);
+        }
       });
     });
   }

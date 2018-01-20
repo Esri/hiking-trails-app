@@ -72,7 +72,11 @@ export function createLabelClass(options) {
           color: color,
           size: 1
         },
-        size: 10
+        font: {
+          family: 'Open Sans Condensed',
+          weight: 'bold'
+        },
+        size: 13
       })],
       verticalOffset: {
         screenLength: 80,

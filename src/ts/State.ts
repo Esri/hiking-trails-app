@@ -14,7 +14,7 @@ export default class State extends declared(Accessor) {
 
   setSelectedTrailId(id: number) {
     this.selectedTrailId = id;
-    if (this.visiblePanel !== 'detailPanel') {
+    if (this.selectedTrailId && this.visiblePanel !== 'detailPanel') {
       this.visiblePanel = 'detailPanel';
     }
   }

@@ -25,6 +25,10 @@ export default class SelectionPanel {
     this.trailsPanel = dom.byId('trailsPanel');
     this.generateTrailsPanel();
 
+    on(document.querySelector('.removeSelected'), 'click', (evt) => {
+      this.state.setSelectedTrailId(null);
+    });
+
     this.filterPanel = dom.byId('filterPanel');
     this.generateFilterPanel();
 
@@ -34,6 +38,10 @@ export default class SelectionPanel {
       }
       if (id) {
         document.querySelector("[data-id ='" + id + "']").classList.add("selected");
+        document.querySelector('.removeSelected').removeAttribute('disabled');
+      }
+      else {
+        document.querySelector('.removeSelected').setAttribute('disabled', '');
       }
     });
 
@@ -112,6 +120,7 @@ export default class SelectionPanel {
         state.setSelectedTrailId(parseInt(evt.target.dataset.id));
       });
     });
+
   }
 
   private generateFilterPanel():void {
