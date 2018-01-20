@@ -37,6 +37,8 @@ export default class SceneElement {
     this.trailsLayer = this.initTrailsLayer();
     this.view.map.add(this.trailsLayer);
 
+    this.addEventListeners();
+
     //adding view to the window only for debugging reasons
     (<any>window).view = this.view;
 
@@ -55,6 +57,17 @@ export default class SceneElement {
 
     state.watch('device', () => {
       this.setViewPadding();
+    });
+  }
+
+  private addEventListeners() {
+    this.view.on("click", (event) => {
+      this.view.hitTest(event).then((response) => {
+        var result = response.results[0];
+        if (result.graphic) {
+          this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
+        }
+      });
     });
   }
 
@@ -117,9 +130,12 @@ export default class SceneElement {
       title: "Hiking trails",
       outFields: ["*"],
       renderer: getTrailRenderer(),
+      elevationInfo: {
+        mode: 'relative-to-ground',
+        offset: 50
+      },
       labelsVisible: true,
       labelingInfo: getLabelingInfo({ selection: null })
-
     });
   }
 
