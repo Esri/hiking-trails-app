@@ -5,7 +5,8 @@
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
-  <link rel='stylesheet' href='https://js.arcgis.com/4.6/esri/css/main.css'>
+  <link rel='stylesheet' href='https://js.arcgis.com/4.5/esri/css/main.css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel="stylesheet">
 
 </head>
 
@@ -69,13 +70,20 @@
     </div>
   </div>
 
-  <script type='text/javascript' src='https://js.arcgis.com/4.6/'></script>
+  <!--load ArcGIS API for JavaScript-->
+  <script type='text/javascript' src='https://js.arcgis.com/4.5/'></script>
+
+  <!--load AmCharts for the altitude profile-->
+  <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+
+  <!--load app-->
   <script>
     require(['./dist/main.bundle.js'], function (main) { });
   </script>
 
+  <!--script for Twitter sharing link-->
   <script>
-    // script for Twitter sharing link
     window.twttr = (function (d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0],
         t = window.twttr || {};

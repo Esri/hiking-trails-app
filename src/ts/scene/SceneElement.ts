@@ -31,6 +31,7 @@ export default class SceneElement {
     this.state = state;
 
     this.view = this.initView();
+    this.state.view = this.view;
     this.setViewPadding();
 
     this.trailsLayer = this.initTrailsLayer();
@@ -88,6 +89,10 @@ export default class SceneElement {
       },
       ui: {
         components: ['attribution']
+      },
+      popup: {
+        dockEnabled: false,
+        collapsed: true
       }
     });
 
