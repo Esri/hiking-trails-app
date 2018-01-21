@@ -2569,7 +2569,8 @@ h1 {
   cursor: pointer; }
   .removeSelected:disabled {
     border-bottom: 1px dashed #bbb;
-    color: #bbb; }
+    color: #bbb;
+    cursor: default; }
 
 #filterPanel {
   overflow: hidden;
