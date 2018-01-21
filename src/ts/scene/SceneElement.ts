@@ -5,11 +5,10 @@ import * as WebScene from 'esri/WebScene';
 import * as SceneView from 'esri/views/SceneView';
 import * as FeatureLayer from 'esri/layers/FeatureLayer';
 import * as Query from 'esri/tasks/support/Query';
+import * as GroupLayer from 'esri/layers/GroupLayer';
 import * as UniqueValueRenderer from 'esri/renderers/UniqueValueRenderer';
-import * as esriConfig from 'esri/config';
-
 import * as all from 'dojo/promise/all';
-
+import * as esriConfig from 'esri/config';
 import '../../style/scene-panel.scss';
 
 import { State } from '../types';
@@ -23,10 +22,6 @@ export default class SceneElement {
 
   constructor(state: State) {
 
-    config.scene.corsServers.forEach((server) => {
-      esriConfig.request.corsEnabledServers.push(server);
-    });
-
     // set state on the scene element and listen to changes on the state
     this.state = state;
 
@@ -36,6 +31,10 @@ export default class SceneElement {
 
     this.trailsLayer = this.initTrailsLayer();
     this.view.map.add(this.trailsLayer);
+
+    esriConfig.request.corsEnabledServers.push(
+      'wtb.maptiles.arcgis.com'
+    );
 
     this.addEventListeners();
 
@@ -58,6 +57,26 @@ export default class SceneElement {
     state.watch('device', () => {
       this.setViewPadding();
     });
+
+    state.watch('currentBasemapId', (id) => {
+      this.setCurrentBasemap(id);
+    })
+  }
+
+  private setCurrentBasemap(id) {
+    let basemapGroup = <GroupLayer>this.view.map.layers.filter((layer) => {
+      return (layer.title === 'Basemap');
+    }).getItemAt(0);
+
+    let activeLayer = basemapGroup.layers.filter((layer) => {
+      if (layer.id === id) {
+        return true;
+      }
+      return false;
+    }).getItemAt(0);
+
+    activeLayer.visible = true;
+
   }
 
   private addEventListeners() {

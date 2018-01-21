@@ -55,6 +55,9 @@ export default class State extends declared(Accessor) {
   device: Device = null;
 
   @property()
+  currentBasemapId: string = null;
+
+  @property()
   view: View = null;
 
 }

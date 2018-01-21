@@ -1,8 +1,7 @@
 export default {
   scene: {
     portalUrl: 'http://zrh.mapsdevext.arcgis.com',
-    websceneItemId: '7abaad52a4254f30ab1897079cad504a',
-    corsServers: ['wtb.maptiles.arcgis.com', 'http://wmts.kartetirol.at/']
+    websceneItemId: '7abaad52a4254f30ab1897079cad504a'
   },
   data: {
     trailsServiceUrl: 'https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/SwissNationalParkTrails/FeatureServer',

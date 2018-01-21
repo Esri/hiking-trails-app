@@ -14,6 +14,7 @@ export interface State extends Accessor{
   setFilter: (property: string, value: string | number[]) => void;
   visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel';
   device: Device;
+  currentBasemapId: string;
   view: View;
 }
 
