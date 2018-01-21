@@ -55,6 +55,7 @@
   &:disabled {
     border-bottom: 1px dashed $disabled-gray;
     color: $disabled-gray;
+    cursor: default;
   }
 }
 

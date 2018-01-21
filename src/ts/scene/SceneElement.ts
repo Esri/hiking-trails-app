@@ -1,6 +1,8 @@
 import config from '../config';
 import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from './utils';
 
+import FlickrLayer from './FlickrLayer';
+
 import * as WebScene from 'esri/WebScene';
 import * as SceneView from 'esri/views/SceneView';
 import * as FeatureLayer from 'esri/layers/FeatureLayer';
@@ -13,10 +15,13 @@ import '../../style/scene-panel.scss';
 
 import { State } from '../types';
 
+esriConfig.request.corsEnabledServers.push('wtb.maptiles.arcgis.com');
+
 export default class SceneElement {
 
   view: SceneView;
   trailsLayer: FeatureLayer;
+  flickrLayer: FlickrLayer;
   trails: Array<any>;
   state: State;
 
@@ -32,9 +37,11 @@ export default class SceneElement {
     this.trailsLayer = this.initTrailsLayer();
     this.view.map.add(this.trailsLayer);
 
-    esriConfig.request.corsEnabledServers.push(
-      'wtb.maptiles.arcgis.com'
-    );
+    this.flickrLayer = new FlickrLayer({
+      latitude: 46.649421,
+      longitude: 10.163426
+    });
+    this.view.map.add(this.flickrLayer);
 
     this.addEventListeners();
 
