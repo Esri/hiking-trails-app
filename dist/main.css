@@ -2539,7 +2539,7 @@ h1 {
     cursor: pointer;
     pointer-events: auto;
     padding: 4px 8px;
-    font-size: 0.9em; }
+    font-size: 1em; }
     #trailsPanel .trail.disabled {
       cursor: default;
       background-color: white;
@@ -2556,6 +2556,20 @@ h1 {
   #trailsPanel .trail:hover {
     background-color: #f9a352;
     border: 1px solid #f9a352; }
+
+.removeSelected {
+  background: none;
+  border: none;
+  border-bottom: 1px dashed #4b4b4b;
+  color: #4b4b4b;
+  font-family: 'Open Sans Condensed';
+  font-size: 1em;
+  line-height: 1em;
+  padding: 0;
+  cursor: pointer; }
+  .removeSelected:disabled {
+    border-bottom: 1px dashed #bbb;
+    color: #bbb; }
 
 #filterPanel {
   overflow: hidden;
@@ -2858,6 +2872,25 @@ h1 {
   transform: translate(0, -50%);
   top: 50%;
   right: 120%; }
+.basemaps {
+  display: flex;
+  flex-wrap: wrap; }
+  .basemaps .basemapItem {
+    width: 100px;
+    height: 100px;
+    font-weight: bold;
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5); }
+    .basemaps .basemapItem > div {
+      height: 100%;
+      padding-top: 10px;
+      box-sizing: border-box;
+      background-color: rgba(255, 255, 255, 0.7);
+      pointer-events: none; }
+  .basemaps .basemapItem:hover > div {
+    background-color: rgba(255, 255, 255, 0.3); }
 /*#00827F*/
 .menuPanel {
   position: absolute;
