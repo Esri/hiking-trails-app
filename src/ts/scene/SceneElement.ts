@@ -161,7 +161,7 @@ export default class SceneElement {
       renderer: getTrailRenderer(),
       elevationInfo: {
         mode: 'relative-to-ground',
-        offset: 50
+        offset: 5
       },
       labelsVisible: true,
       labelingInfo: getLabelingInfo({ selection: null })
