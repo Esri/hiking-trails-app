@@ -16,7 +16,7 @@
   "typings": "src/ts/types.d.ts",
   "devDependencies": {
     "@types/amcharts": "^3.21.2",
-    "@types/arcgis-js-api": "4.5",
+    "@types/arcgis-js-api": "4.6",
     "@types/dojo": "^1.9.40",
     "@types/nouislider": "^9.0.3",
     "awesome-typescript-loader": "^3.4.1",
