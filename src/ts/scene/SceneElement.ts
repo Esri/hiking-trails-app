@@ -143,7 +143,7 @@ export default class SceneElement {
   private setViewPadding() {
     if (this.state.device === 'mobilePortrait') {
       this.view.padding = {
-        bottom: 200
+        left: 0
       }
     }
     else {
