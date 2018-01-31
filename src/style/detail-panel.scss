@@ -40,3 +40,27 @@
     }
   }
 }
+
+@media (max-width: $max-width) {
+  #detailPanel {
+    h1 {
+      text-align: left;
+      padding: 10px 0 10px 20px;
+    }
+
+    #detailInfograph {
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    #detailDescription {
+      display: none;
+    }
+
+    #detailElevationProfile {
+      margin: 0;
+      width: 100%;
+      height: 120px;
+    }
+  }
+}

@@ -4,16 +4,20 @@ import DetailPanel from './DetailPanel';
 import SelectionPanel from './SelectionPanel';
 import BasemapPanel from './BasemapPanel';
 import { State } from '../types';
+import * as SceneView from 'esri/views/SceneView';
+import * as WebScene from 'esri/WebScene';
 
 import '../../style/menu-panel.scss';
 
 export default class MenuPanel {
 
   state: State;
+  container: HTMLElement;
 
   constructor(trails, state: State) {
 
     this.state = state;
+    this.container = <HTMLElement>document.querySelector('.menuPanel');
 
     let selectionPanel = new SelectionPanel(trails, state);
     let detailPanel = new DetailPanel(trails, state);
@@ -42,9 +46,57 @@ export default class MenuPanel {
       this.state.visiblePanel = evt.target.dataset.tab;
     });
 
+    // this class also takes care of the mobile menu
+    on(document.querySelector('#home'), 'click', (evt) => {
+      console.log(this.state.view);
+      let view = this.state.view;
+      if (view.map instanceof WebScene) {
+        view.goTo(view.map.initialViewProperties.viewpoint);
+        this.state.selectedTrailId = null;
+      }
+    });
+
+    state.watch('device', () => {
+      if (this.state.device === 'mobilePortrait') {
+        this.state.visiblePanel = 'detailPanel';
+
+        if (!this.state.selectedTrailId) {
+          this.container.style.display = 'none';
+        } else {
+          this.container.style.display = 'flex';
+        }
+
+      } else {
+        this.container.style.display = 'flex';
+      }
+    });
+
+    state.watch('selectedTrailId', () => {
+      if (this.state.device === 'mobilePortrait') {
+        if (this.state.selectedTrailId) {
+          this.container.style.display = 'flex';
+        }
+        else {
+          this.container.style.display = 'none';
+        }
+      }
+    });
+
+    on(document.querySelector('#details'), 'click', (evt) => {
+      let displayValue = this.container.style.display;
+      console.log(displayValue);
+      this.container.style.display = (displayValue === 'none' || displayValue === '') ? 'flex': 'none';
+    });
+
   }
 
   private initVisiblePanel(panels) {
+    if (this.state.device === 'mobilePortrait') {
+      this.state.visiblePanel = 'detailPanel';
+    }
+    else {
+      this.state.visiblePanel = 'selectionPanel';
+    }
     panels[this.state.visiblePanel].container.style.display = 'block';
   }
 }
