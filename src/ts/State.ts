@@ -1,5 +1,5 @@
 import Accessor = require("esri/core/Accessor");
-import View = require('esri/views/View');
+import SceneView = require('esri/views/SceneView');
 import { Filters, Device } from './types';
 import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 
@@ -58,6 +58,6 @@ export default class State extends declared(Accessor) {
   currentBasemapId: string = null;
 
   @property()
-  view: View = null;
+  view: SceneView = null;
 
 }

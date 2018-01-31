@@ -1,6 +1,6 @@
 import Accessor = require("esri/core/Accessor");
 import Polyline = require("esri/geometry/Polyline");
-import View = require('esri/views/View');
+import SceneView = require('esri/views/SceneView');
 
 export type Device = ('mobilePortrait' | 'desktop');
 
@@ -15,7 +15,7 @@ export interface State extends Accessor{
   visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel';
   device: Device;
   currentBasemapId: string;
-  view: View;
+  view: SceneView;
 }
 
 export interface Trail {
