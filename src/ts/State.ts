@@ -49,7 +49,7 @@ export default class State extends declared(Accessor) {
   }
 
   @property()
-  visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel' = 'selectionPanel';
+  visiblePanel: 'selectionPanel' | 'detailPanel' | 'basemapPanel';
 
   @property()
   device: Device = null;
