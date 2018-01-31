@@ -6,49 +6,52 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
   <link rel='stylesheet' href='https://jsdev.arcgis.com/4.7/esri/css/main.css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
   <link rel='stylesheet' href='dist/main.css'>
 </head>
 
 <body>
 
-  <div id="scenePanel"></div>
+  <div id='scenePanel'></div>
 
-  <div class="menuPanel">
+  <div class='menuPanel'>
 
-    <h1 class="section title">Hiking trails Swiss National Park</h1>
+    <h1 class='section title'>Hiking trails Swiss National Park</h1>
 
-    <ul class="menuTabs section">
-      <li class="active" data-tab='selectionPanel'>Hikes</li>
+    <ul class='menuTabs section'>
+      <li class='active' data-tab='selectionPanel'>Hikes</li>
       <li data-tab='detailPanel'>Details</li>
       <li data-tab='basemapPanel'>Basemap</li>
     </ul>
 
-    <div id="selectionPanel" class="panel invisible">
-      <div id="trailsPanel"></div>
+    <div id='selectionPanel' class='panel invisible'>
+      <div id='trailsPanel'></div>
       <button class='removeSelected' disabled>Remove selected trail</button>
-      <div id="filterPanel"></div>
+      <div id='filterPanel'></div>
     </div>
 
-    <div id="detailPanel" class="panel invisible">
-      <h1 class="center" id="detailTitle"></h1>
-      <div id="imageCarousel" class="carousel slide" data-interval="false">
-        </div>
-      <div id="detailInfograph"></div>
-      <div id="detailDescription"></div>
-      <div id="detailElevationProfile"></div>
+    <div id='detailPanel' class='panel invisible'>
+      <h1 class='center' id='detailTitle'></h1>
+      <div id='detailInfograph'></div>
+      <div id='detailDescription'></div>
+      <div id='detailElevationProfile'></div>
     </div>
 
-    <div id="basemapPanel" class="panel invisible">
+    <div id='basemapPanel' class='panel invisible'>
       <div class='basemaps'></div>
       <div class='layers'></div>
     </div>
 
   </div>
 
-  <span class="share">
-    <a class='fa fa-github-square' href="https://github.com/RalucaNicola/hiking-app" target="_blank"></a>
-    <a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
+  <div class='mobileMenu'>
+    <button id='home' class='fa fa-home'></button>
+    <button id='details' class='fa fa-info'></button>
+  </div>
+
+  <span class='share'>
+    <a class='fa fa-github-square' href='https://github.com/RalucaNicola/hiking-app' target='_blank'></a>
+    <a class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
   </span>
 
   <div id='starterPage' class='starter'>
@@ -78,8 +81,8 @@
   <script type='text/javascript' src='https://jsdev.arcgis.com/4.7/'></script>
 
   <!--load AmCharts for the altitude profile-->
-  <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-  <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script src='https://www.amcharts.com/lib/3/amcharts.js'></script>
+  <script src='https://www.amcharts.com/lib/3/serial.js'></script>
 
   <!--load app-->
   <script>
@@ -94,7 +97,7 @@
       if (d.getElementById(id)) return t;
       js = d.createElement(s);
       js.id = id;
-      js.src = "https://platform.twitter.com/widgets.js";
+      js.src = 'https://platform.twitter.com/widgets.js';
       fjs.parentNode.insertBefore(js, fjs);
 
       t._e = [];
@@ -103,7 +106,7 @@
       };
 
       return t;
-    }(document, "script", "twitter-wjs"));
+    }(document, 'script', 'twitter-wjs'));
   </script>
 </body>
 
