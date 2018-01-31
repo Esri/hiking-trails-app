@@ -57,3 +57,25 @@ h1 {
     color: $font-color;
   }
 }
+
+.mobileMenu{
+  display: none;
+
+  button {
+    background: $background-color;
+    border: none;
+    height: 30px;
+    width: 30px;
+    font-size: $big-font;
+  }
+}
+
+
+@media (max-width: $max-width) {
+  .mobileMenu{
+    display: inherit;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+}
