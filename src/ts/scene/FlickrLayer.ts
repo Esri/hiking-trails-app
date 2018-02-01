@@ -66,7 +66,7 @@ export default class FlickrLayer extends GraphicsLayer {
 
   constructor(extent) {
     super({
-      minScale: 100000,
+      minScale: 70000,
       maxScale: 1000,
       elevationInfo: {
         mode: 'relative-to-scene'
