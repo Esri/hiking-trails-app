@@ -1,8 +1,6 @@
 import config from '../config';
 import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from './utils';
 
-import FlickrLayer from './FlickrLayer';
-
 import * as WebScene from 'esri/WebScene';
 import * as SceneView from 'esri/views/SceneView';
 import * as FeatureLayer from 'esri/layers/FeatureLayer';
@@ -21,7 +19,6 @@ export default class SceneElement {
 
   view: SceneView;
   trailsLayer: FeatureLayer;
-  flickrLayer: FlickrLayer;
   trails: Array<any>;
   state: State;
 
@@ -37,23 +34,17 @@ export default class SceneElement {
     this.trailsLayer = this.initTrailsLayer();
     this.view.map.add(this.trailsLayer);
 
-    this.flickrLayer = new FlickrLayer({
-      latitude: 46.649421,
-      longitude: 10.163426
-    });
-    this.view.map.add(this.flickrLayer);
-
     this.addEventListeners();
 
     //adding view to the window only for debugging reasons
     (<any>window).view = this.view;
 
-    state.watch('selectedTrailId', (value) => {
+    state.watch('selectedTrailId', (value, oldValue) => {
       if (value) {
         this.selectFeature(value);
       }
       else {
-        this.unselectFeature();
+        this.unselectFeature(oldValue);
       }
     });
 
@@ -179,20 +170,29 @@ export default class SceneElement {
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: featureId });
 
     // get trail geometry to zoom to it
-    const selectedTrail = this.trails.filter((trail) => {
-      return (trail.attributes[config.data.trailAttributes.id] === featureId);
+    const selectedTrail = this.state.trails.filter((trail) => {
+      return (trail.id === featureId);
     })[0];
+
+    console.log(selectedTrail);
     this.view.goTo(
       {target: selectedTrail.geometry, tilt: 60},
       {speedFactor: 0.5}
     );
+
+    this.view.map.add(selectedTrail.flickrLayer);
   }
 
-  private unselectFeature():void {
+  private unselectFeature(oldId):void {
     let renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
+    const selectedTrail = this.state.trails.filter((trail) => {
+      return (trail.id === oldId);
+    })[0];
+
+    this.view.map.remove(selectedTrail.flickrLayer);
   }
 
   public queryTrails():IPromise {

@@ -2,11 +2,13 @@ import config from '../config';
 import * as Polyline from 'esri/geometry/Polyline';
 import * as geometryEngine from 'esri/geometry/geometryEngine';
 
+import FlickrLayer from '../scene/FlickrLayer';
 
 export default class Trail {
 
   geometry: Polyline;
   profileData: Array<any>;
+  flickrLayer: FlickrLayer;
 
   constructor(feature) {
 
@@ -19,6 +21,11 @@ export default class Trail {
     }
 
     this.profileData = this.getAltitudeProfileData(feature.geometry);
+
+    this.flickrLayer = new FlickrLayer({
+      latitude: 46.649421,
+      longitude: 10.163426
+    });
   }
 
   private getAltitudeProfileData(geometry:Polyline):Array<any> {
