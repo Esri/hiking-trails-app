@@ -64,9 +64,9 @@ function setImage(index, photos, layer) {
 
 export default class FlickrLayer extends GraphicsLayer {
 
-  constructor(position) {
+  constructor(extent) {
     super({
-      minScale: 30000,
+      minScale: 100000,
       maxScale: 1000,
       elevationInfo: {
         mode: 'relative-to-scene'
@@ -86,13 +86,16 @@ esriConfig.request.corsEnabledServers.push('https://farm7.staticflickr.com/');
 esriConfig.request.corsEnabledServers.push('https://farm8.staticflickr.com/');
 esriConfig.request.corsEnabledServers.push('https://farm9.staticflickr.com/');
 
-    this.setFlickrImages(position);
+    this.setFlickrImages(extent);
   }
 
-  private setFlickrImages(position) {
+  private setFlickrImages(extent) {
+
+    console.log(extent);
+
     let url = `https://api.flickr.com/services/rest/?
       method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
-      &has_geo=true&lat=${position.latitude}&lon=${position.longitude}&radius=4&per_page=250`;
+      &has_geo=true&bbox=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}&radius=4&per_page=250&license=1,2,3,4,5,6,7,8,9`;
 
     esriRequest(url, {responseType: 'xml'})
       .then((response) => {
