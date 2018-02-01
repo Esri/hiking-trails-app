@@ -1,6 +1,7 @@
-import Accessor = require("esri/core/Accessor");
-import Polyline = require("esri/geometry/Polyline");
+import Accessor = require('esri/core/Accessor');
+import Polyline = require('esri/geometry/Polyline');
 import SceneView = require('esri/views/SceneView');
+import FlickrLayer from './scene/FlickrLayer';
 
 export type Device = ('mobilePortrait' | 'desktop');
 
@@ -16,6 +17,7 @@ export interface State extends Accessor{
   device: Device;
   currentBasemapId: string;
   view: SceneView;
+  trails: Array<Trail>;
 }
 
 export interface Trail {
@@ -28,7 +30,8 @@ export interface Trail {
   status: number,
   ascent: number,
   description: number,
-  profileData: Array<Object>
+  profileData: Array<Object>,
+  flickrLayer: FlickrLayer
 }
 
 export interface Filters {
