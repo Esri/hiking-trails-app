@@ -1,4 +1,6 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   entry: {
@@ -7,7 +9,8 @@ module.exports = {
     ]
   },
   output: {
-    filename: './dist/[name].bundle.js',
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].bundle.js',
     libraryTarget: 'amd'
   },
   module: {
@@ -55,6 +58,11 @@ module.exports = {
   },
   devtool: 'eval-source-map',
   plugins: [
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, 'src/ts/sw.ts'),
+      filename: '../sw.js',
+      publicPath: '/hiking-app/dist/'
+    }),
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity

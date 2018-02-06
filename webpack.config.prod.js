@@ -1,10 +1,13 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
-    filename: "./dist/[name].css",
+    filename: "[name].css",
     disable: false
 });
+
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   entry: {
@@ -13,7 +16,8 @@ module.exports = {
     ]
   },
   output: {
-    filename: './dist/[name].bundle.js',
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].bundle.js',
     libraryTarget: 'amd'
   },
   module: {
@@ -37,9 +41,8 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            outputPath: 'dist/fonts/',
-            publicPath: 'dist/',
-            useRelativePath: true
+            outputPath: 'fonts/'
+            // useRelativePath: true
           }
         },
       },
@@ -66,9 +69,14 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.json']
   },
-  devtool: 'eval-source-map',
   plugins: [
-    extractSass
+    extractSass,
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, 'src/ts/sw.ts'),
+      filename: '../sw.js',
+      publicPath: '/hiking-app/dist/'
+    }),
+
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity

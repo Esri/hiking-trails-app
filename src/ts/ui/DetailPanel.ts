@@ -6,7 +6,9 @@ import * as domConstruct from 'dojo/dom-construct';
 import * as domClass from 'dojo/dom-class';
 import config from '../config';
 
-declare let AmCharts: any;
+declare const AmCharts: any;
+
+import 'amcharts3';
 
 import '../../style/detail-panel.scss';
 
