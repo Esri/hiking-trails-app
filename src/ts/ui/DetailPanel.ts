@@ -9,6 +9,7 @@ import config from '../config';
 declare const AmCharts: any;
 
 import 'amcharts3';
+import 'amcharts3/amcharts/serial';
 
 import '../../style/detail-panel.scss';
 
