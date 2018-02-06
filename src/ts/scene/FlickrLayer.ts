@@ -25,21 +25,22 @@ function setImage(index, photos, layer) {
 
         let billboard = new PointSymbol3D({
           symbolLayers: [new IconSymbol3DLayer({
-            size: 60,
-            resource: { href: imgUrl }
+            size: 40,
+            resource: { href: imgUrl },
+            outline: {
+              color: 'white',
+              size: '5px'
+            }
           })],
           verticalOffset: {
-            screenLength: 80,
+            screenLength: 50,
             maxWorldLength: 3000,
-            minWorldLength: 50
+            minWorldLength: 20
           },
           callout: {
             type: "line",
-            size: 2,
-            color: "white",
-            border: {
-              color: 'black'
-            }
+            size: 1,
+            color: "white"
           }
         });
 
@@ -64,6 +65,9 @@ function setImage(index, photos, layer) {
 
 export default class FlickrLayer extends GraphicsLayer {
 
+  photoList: any;
+  imagesLoaded: boolean = false;
+
   constructor(extent) {
     super({
       minScale: 70000,
@@ -71,40 +75,36 @@ export default class FlickrLayer extends GraphicsLayer {
       elevationInfo: {
         mode: 'relative-to-scene'
       },
-      screenSizePerspectiveEnabled: false
+      title: 'Flickr'
     });
 
 
-esriConfig.request.corsEnabledServers.push('https://api.flickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm5.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm3.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm1.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm2.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm4.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm6.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm7.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm8.staticflickr.com/');
-esriConfig.request.corsEnabledServers.push('https://farm9.staticflickr.com/');
+    esriConfig.request.corsEnabledServers.push('https://api.flickr.com/');
 
-    this.setFlickrImages(extent);
-  }
-
-  private setFlickrImages(extent) {
-
-    console.log(extent);
+    for (let i = 1; i <= 9; i++) {
+      esriConfig.request.corsEnabledServers.push(`https://farm${i}.staticflickr.com/`);
+    }
 
     let url = `https://api.flickr.com/services/rest/?
       method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
-      &has_geo=true&bbox=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}&radius=4&per_page=250&license=1,2,3,4,5,6,7,8,9`;
+      &has_geo=true
+      &bbox=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}
+      &per_page=50
+      &license=1,2,3,4,5,6,7,8,9`;
 
     esriRequest(url, {responseType: 'xml'})
       .then((response) => {
-        let photos = response.data.getElementsByTagName('photo');
-        setImage(0, photos, this);
+        this.photoList = response.data.getElementsByTagName('photo');
       });
+    }
 
-  }
-
-
-
+    public loadImages() {
+      if (this.imagesLoaded) {
+        return;
+      }
+      else {
+        setImage(0, this.photoList, this);
+      }
+      this.imagesLoaded = true;
+    }
 }

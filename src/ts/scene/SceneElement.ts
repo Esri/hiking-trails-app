@@ -1,6 +1,9 @@
 import config from '../config';
 import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from './utils';
 
+import * as domConstruct from 'dojo/dom-construct';
+import * as dom from 'dojo/dom';
+
 import * as WebScene from 'esri/WebScene';
 import * as SceneView from 'esri/views/SceneView';
 import * as FeatureLayer from 'esri/layers/FeatureLayer';
@@ -9,6 +12,8 @@ import * as GroupLayer from 'esri/layers/GroupLayer';
 import * as UniqueValueRenderer from 'esri/renderers/UniqueValueRenderer';
 import * as all from 'dojo/promise/all';
 import * as esriConfig from 'esri/config';
+import * as watchUtils from 'esri/core/watchUtils';
+
 import '../../style/scene-panel.scss';
 
 import { State } from '../types';
@@ -82,13 +87,60 @@ export default class SceneElement {
       this.view.hitTest(event).then((response) => {
         var result = response.results[0];
         if (result.graphic) {
-          this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
+          if (result.graphic.layer.title === 'Flickr') {
+            this.showImage(result.graphic, event);
+          }
+          else {
+            if (result.graphic.layer.title === 'Hiking trails') {
+              this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
+            }
+          }
         }
         else {
           this.state.setSelectedTrailId(null);
         }
       });
     });
+  }
+
+  private showImage(graphic, event) {
+
+    // remove previous image (if any)
+    this.removeImage();
+
+    // a new container is created for each image
+    const flickrContainer = domConstruct.create('img', {
+      src: graphic.symbol.symbolLayers.getItemAt(0).resource.href,
+      alt: 'flickr image',
+      style: {
+        left: `${event.screenPoint.x - 25}px`,
+        top: `${event.screenPoint.y - 25}px`,
+        maxWidth: '50px'
+      },
+      id: 'flickrImage'
+    }, document.body);
+
+    // transition doesn't work without a timeout
+    window.setTimeout(() => {
+      flickrContainer.style.top = '50%';
+      flickrContainer.style.left = '50%';
+      flickrContainer.style.maxWidth = '90%';
+      flickrContainer.style.transform = 'translate(-50%, -50%)';
+    }, 0);
+
+    // once the user interacts with the view the image should disappear
+    watchUtils.whenTrueOnce(this.view, 'interacting', (value) => {
+      if (value) {
+        this.removeImage();
+      }
+    });
+
+  }
+
+  private removeImage() {
+    if (dom.byId('flickrImage')) {
+      domConstruct.destroy('flickrImage');
+    }
   }
 
   private initView() {
@@ -174,12 +226,12 @@ export default class SceneElement {
       return (trail.id === featureId);
     })[0];
 
-    console.log(selectedTrail);
     this.view.goTo(
       {target: selectedTrail.geometry, tilt: 60},
       {speedFactor: 0.5}
     );
 
+    selectedTrail.flickrLayer.loadImages();
     this.view.map.add(selectedTrail.flickrLayer);
   }
 
@@ -193,6 +245,7 @@ export default class SceneElement {
     })[0];
 
     this.view.map.remove(selectedTrail.flickrLayer);
+    this.removeImage();
   }
 
   public queryTrails():IPromise {

@@ -95,6 +95,17 @@ h1 {
     width: 30px;
     font-size: 1.3em; }
 
+#flickrImage {
+  position: absolute;
+  -webkit-transition: max-width 1s, left 1s, top 1s;
+  -moz-transition: max-width 1s, left 1s, top 1s;
+  -ms-transition: max-width 1s, left 1s, top 1s;
+  -o-transition: max-width 1s, left 1s, top 1s;
+  transition: max-width 1s, left 1s, top 1s;
+  max-width: 0;
+  margin: 0 auto;
+  box-shadow: 0px 0px 2px 1px rgba(100, 100, 100, 0.75); }
+
 @media (max-width: 600px) {
   .mobileMenu {
     display: inherit;
