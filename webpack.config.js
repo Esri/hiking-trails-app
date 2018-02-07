@@ -9,8 +9,9 @@ module.exports = {
     ]
   },
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: '[name].bundle.js',
+    filename: './dist/[name].bundle.js',
+    /* path: path.join(__dirname, 'dist'),
+    filename: '[name].bundle.js', */
     libraryTarget: 'amd'
   },
   module: {

@@ -29,6 +29,12 @@ function createTrailSymbol(options) {
           color: color
         },
         size: size
+      }),
+      new LineSymbol3DLayer({
+        material: {
+          color: [255, 255, 255, 0.01]
+        },
+        size: 20
       })
     ]
   });
