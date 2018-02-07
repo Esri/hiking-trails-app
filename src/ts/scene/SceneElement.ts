@@ -45,12 +45,14 @@ export default class SceneElement {
     (<any>window).view = this.view;
 
     state.watch('selectedTrailId', (value, oldValue) => {
+
+      if (oldValue) {
+        this.unselectFeature(oldValue);
+      }
       if (value) {
         this.selectFeature(value);
       }
-      else {
-        this.unselectFeature(oldValue);
-      }
+
     });
 
     state.watch('filteredTrailIds', (value) => {
@@ -63,7 +65,7 @@ export default class SceneElement {
 
     state.watch('currentBasemapId', (id) => {
       this.setCurrentBasemap(id);
-    })
+    });
   }
 
   private setCurrentBasemap(id) {
@@ -88,6 +90,7 @@ export default class SceneElement {
         var result = response.results[0];
         if (result.graphic) {
           if (result.graphic.layer.title === 'Flickr') {
+            console.log(result.graphic);
             this.showImage(result.graphic, event);
           }
           else {
@@ -110,7 +113,7 @@ export default class SceneElement {
 
     // a new container is created for each image
     const flickrContainer = domConstruct.create('img', {
-      src: graphic.symbol.symbolLayers.getItemAt(0).resource.href,
+      src: graphic.attributes.image,
       alt: 'flickr image',
       style: {
         left: `${event.screenPoint.x - 25}px`,
@@ -231,8 +234,14 @@ export default class SceneElement {
       {speedFactor: 0.5}
     );
 
-    selectedTrail.flickrLayer.loadImages();
-    this.view.map.add(selectedTrail.flickrLayer);
+    selectedTrail.flickrLayer.loadImages().then(() => {
+      this.view.map.add(selectedTrail.flickrLayer);
+    });
+
+
+    this.view.whenLayerView(selectedTrail.flickrLayer).then((lyrView)=> {
+      console.log(lyrView);
+    });
   }
 
   private unselectFeature(oldId):void {
