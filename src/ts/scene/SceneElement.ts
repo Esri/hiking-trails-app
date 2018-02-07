@@ -56,6 +56,9 @@ export default class SceneElement {
     });
 
     state.watch('filteredTrailIds', (trailIds) => {
+      if (this.view.map instanceof WebScene) {
+        this.view.goTo(this.view.map.initialViewProperties.viewpoint);
+      }
 
       var query = trailIds.map(function(id){
         return "RouteId = " + id;
