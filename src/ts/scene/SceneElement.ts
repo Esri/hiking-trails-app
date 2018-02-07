@@ -55,8 +55,18 @@ export default class SceneElement {
 
     });
 
-    state.watch('filteredTrailIds', (value) => {
-      // filter trails on the map
+    state.watch('filteredTrailIds', (trailIds) => {
+
+      var query = trailIds.map(function(id){
+        return "RouteId = " + id;
+      });
+      if (trailIds.length === 0 ) {
+        this.trailsLayer.definitionExpression = "1=0";
+      }
+      else {
+        this.trailsLayer.definitionExpression = query.join(" OR ");
+      }
+
     });
 
     state.watch('device', () => {
@@ -236,11 +246,6 @@ export default class SceneElement {
 
     selectedTrail.flickrLayer.loadImages().then(() => {
       this.view.map.add(selectedTrail.flickrLayer);
-    });
-
-
-    this.view.whenLayerView(selectedTrail.flickrLayer).then((lyrView)=> {
-      console.log(lyrView);
     });
   }
 
