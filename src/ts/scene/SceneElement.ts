@@ -104,7 +104,7 @@ export default class SceneElement {
         var result = response.results[0];
         if (result.graphic) {
           if (result.graphic.layer.title === 'Flickr') {
-            console.log(result.graphic);
+
             this.showImage(result.graphic, event);
           }
           else {
@@ -127,17 +127,21 @@ export default class SceneElement {
 
     const flickrContainer = domConstruct.create('div', {
       innerHTML: `<img id='flickrImage' src='${graphic.attributes.image}'
-        style='left: ${event.screenPoint.x - 25}px; top: ${event.screenPoint.y - 25}px; maxWidth: "50px"'>`,
+        style='left: ${event.screenPoint.x - 25}px; top: ${event.screenPoint.y - 25}px;'>`,
       id: 'flickrContainer'
     }, document.body);
 
+    let flickrImage = dom.byId('flickrImage');
+
     window.setTimeout(() => {
-      let flickrImage = dom.byId('flickrImage');
       flickrImage.style.top = '50%';
       flickrImage.style.left = '50%';
-      flickrImage.style.maxWidth = '90%';
       flickrImage.style.transform = 'translate(-50%, -50%)';
     }, 0);
+
+    window.setTimeout(() => {
+      flickrImage.style.maxWidth = '90%';
+    }, 200);
 
     on(flickrContainer, 'click', () => {
       this.removeImage();
