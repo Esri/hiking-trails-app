@@ -72,14 +72,21 @@ h1 {
 
 #flickrImage {
   position: absolute;
-  -webkit-transition: max-width 1s, left 1s, top 1s;
-  -moz-transition: max-width 1s, left 1s, top 1s;
-  -ms-transition: max-width 1s, left 1s, top 1s;
-  -o-transition: max-width 1s, left 1s, top 1s;
+  -webkit-transition: max-width 2s, left 1s, top 1s, transform 1s;
+  -moz-transition: max-width 2s, left 1s, top 1s, transform 1s;
+  -ms-transition: max-width 2s, left 1s, top 1s, transform 1s;
+  -o-transition: max-width 2s, left 1s, top 1s, transform 1s;
   transition: max-width 2s, left 1s, top 1s, transform 1s;
   max-width: 0;
   box-shadow: 0px 0px 2px 1px $delimiter;
   z-index: 100;
+}
+
+#flickrContainer {
+  position: absolute;
+  z-index: 99;
+  top: 0; right: 0; left: 0; bottom: 0;
+  background-color: rgba(100, 100, 100, 0.4);
 }
 
 

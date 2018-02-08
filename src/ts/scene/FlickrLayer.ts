@@ -31,55 +31,57 @@ function setImages(layer) {
       let result = results[j];
       let photo = photos[j];
       let location = result.data.getElementsByTagName('location')[0];
+      if (location) {
+        let imgUrl = `https://farm${photo.getAttribute('farm')}.staticflickr.com/${photo.getAttribute('server')}/${photo.getAttribute('id')}_${photo.getAttribute('secret')}.jpg`;
 
-      let imgUrl = `https://farm${photo.getAttribute('farm')}.staticflickr.com/${photo.getAttribute('server')}/${photo.getAttribute('id')}_${photo.getAttribute('secret')}.jpg`;
-
-      let billboard = new PointSymbol3D({
-        symbolLayers: [new IconSymbol3DLayer({
-          size: 40,
-          resource: { href: imgUrl },
-          outline: {
-            color: 'white',
-            size: '5px'
+        let billboard = new PointSymbol3D({
+          symbolLayers: [new IconSymbol3DLayer({
+            size: 40,
+            resource: { href: imgUrl },
+            outline: {
+              color: 'white',
+              size: '5px'
+            }
+          })],
+          verticalOffset: {
+            screenLength: 50,
+            maxWorldLength: 3000,
+            minWorldLength: 20
+          },
+          callout: {
+            type: "line",
+            size: 1,
+            color: "white"
           }
-        })],
-        verticalOffset: {
-          screenLength: 50,
-          maxWorldLength: 3000,
-          minWorldLength: 20
-        },
-        callout: {
-          type: "line",
-          size: 1,
-          color: "white"
-        }
-      });
+        });
 
-      layer.renderer.addUniqueValueInfo({
-        value: j,
-        symbol: billboard
-      })
+        layer.renderer.addUniqueValueInfo({
+          value: j,
+          symbol: billboard
+        })
 
-      let point = new Point({
-        latitude: location.getAttribute("latitude"),
-        longitude: location.getAttribute("longitude")
-      });
 
-      let graphic = new Graphic({
-        geometry: point,
-        attributes: {
-          ObjectID: j,
-          image: imgUrl
-        }
-      });
+        let point = new Point({
+          latitude: location.getAttribute("latitude"),
+          longitude: location.getAttribute("longitude")
+        });
 
-      src.push(graphic);
+        let graphic = new Graphic({
+          geometry: point,
+          attributes: {
+            ObjectID: j,
+            image: imgUrl
+          }
+        });
+
+        src.push(graphic);
+      }
     }
 
     layer.source = src;
 
   })
-  .otherwise(err => console.log(err));
+    .otherwise(err => console.log(err));
 }
 
 export default class FlickrLayer extends FeatureLayer {
@@ -107,7 +109,6 @@ export default class FlickrLayer extends FeatureLayer {
       featureReduction: {
         type: 'selection'
       },
-      refreshInterval: 0.1,
       renderer: new UniqueValueRenderer({
         field: 'ObjectID',
         defaultSymbol: new PointSymbol3D({

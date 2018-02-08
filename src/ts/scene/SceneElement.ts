@@ -3,6 +3,7 @@ import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from './utils'
 
 import * as domConstruct from 'dojo/dom-construct';
 import * as dom from 'dojo/dom';
+import * as on from 'dojo/on';
 
 import * as WebScene from 'esri/WebScene';
 import * as SceneView from 'esri/views/SceneView';
@@ -124,38 +125,29 @@ export default class SceneElement {
     // remove previous image (if any)
     this.removeImage();
 
-    // a new container is created for each image
-    const flickrContainer = domConstruct.create('img', {
-      src: graphic.attributes.image,
-      alt: 'flickr image',
-      style: {
-        left: `${event.screenPoint.x - 25}px`,
-        top: `${event.screenPoint.y - 25}px`,
-        maxWidth: '50px'
-      },
-      id: 'flickrImage'
+    const flickrContainer = domConstruct.create('div', {
+      innerHTML: `<img id='flickrImage' src='${graphic.attributes.image}'
+        style='left: ${event.screenPoint.x - 25}px; top: ${event.screenPoint.y - 25}px; maxWidth: "50px"'>`,
+      id: 'flickrContainer'
     }, document.body);
 
-    // transition doesn't work without a timeout
     window.setTimeout(() => {
-      flickrContainer.style.top = '50%';
-      flickrContainer.style.left = '50%';
-      flickrContainer.style.maxWidth = '90%';
-      flickrContainer.style.transform = 'translate(-50%, -50%)';
+      let flickrImage = dom.byId('flickrImage');
+      flickrImage.style.top = '50%';
+      flickrImage.style.left = '50%';
+      flickrImage.style.maxWidth = '90%';
+      flickrImage.style.transform = 'translate(-50%, -50%)';
     }, 0);
 
-    // once the user interacts with the view the image should disappear
-    watchUtils.whenTrueOnce(this.view, 'interacting', (value) => {
-      if (value) {
-        this.removeImage();
-      }
+    on(flickrContainer, 'click', () => {
+      this.removeImage();
     });
 
   }
 
   private removeImage() {
-    if (dom.byId('flickrImage')) {
-      domConstruct.destroy('flickrImage');
+    if (dom.byId('flickrContainer')) {
+      domConstruct.destroy('flickrContainer');
     }
   }
 
