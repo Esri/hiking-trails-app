@@ -189,7 +189,8 @@ export default class SceneElement {
       },
       popup: {
         dockEnabled: false,
-        collapsed: true
+        collapsed: true,
+        visible: true
       }
     });
 
@@ -219,6 +220,7 @@ export default class SceneElement {
         offset: 5
       },
       labelsVisible: true,
+      popupEnabled: false,
       labelingInfo: getLabelingInfo({ selection: null })
     });
   }

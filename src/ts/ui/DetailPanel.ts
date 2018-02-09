@@ -157,13 +157,12 @@ export default class SelectionPanel {
         popup.dockEnabled = false;
         popup.open({
           title: data.value + " m",
-          location: <Point>{
+          location: new Point({
             spatialReference: { wkid: 4326 },
             longitude: data.point[0],
             latitude: data.point[1],
-            z: data.point[2],
-            type: 'point'
-          }
+            z: data.point[2]
+          })
         });
       } else {
         popup.close();
