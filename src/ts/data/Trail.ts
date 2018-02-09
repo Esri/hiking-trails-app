@@ -21,8 +21,7 @@ export default class Trail {
     }
 
     this.profileData = this.getAltitudeProfileData(feature.geometry);
-
-    this.flickrLayer = new FlickrLayer(this.geometry.extent);
+    this.flickrLayer = new FlickrLayer(this.geometry);
   }
 
   private getAltitudeProfileData(geometry: Polyline): Array<any> {
