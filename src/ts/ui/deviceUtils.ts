@@ -1,21 +1,21 @@
-import { State, Device } from '../types';
+import { State, Device } from "../types";
 
-let mqDesktop = window.matchMedia('(min-width: 601px)');
+const mqDesktop = window.matchMedia("(min-width: 601px)");
 
 function getMedia(): Device  {
   if (mqDesktop.matches) {
-    return 'desktop';
+    return "desktop";
   }
-  return 'mobilePortrait';
+  return "mobilePortrait";
 }
 
 export default {
   init(state: State) {
     function changeState(evt) {
-      let media: Device = getMedia();
+      const media: Device = getMedia();
       state.device = media;
     }
     mqDesktop.addListener(changeState);
     changeState(mqDesktop);
   }
-}
+};

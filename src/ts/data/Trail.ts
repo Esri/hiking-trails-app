@@ -1,8 +1,8 @@
-import config from '../config';
-import * as Polyline from 'esri/geometry/Polyline';
-import * as geometryEngine from 'esri/geometry/geometryEngine';
+import config from "../config";
+import * as Polyline from "esri/geometry/Polyline";
+import * as geometryEngine from "esri/geometry/geometryEngine";
 
-import FlickrLayer from '../scene/FlickrLayer';
+import FlickrLayer from "../scene/FlickrLayer";
 
 export default class Trail {
 
@@ -16,7 +16,7 @@ export default class Trail {
 
     // add attribute data based on the mapping in the configuration file
     const attributeMap = config.data.trailAttributes;
-    for (let prop in attributeMap) {
+    for (const prop in attributeMap) {
       this[prop] = feature.attributes[attributeMap[prop]];
     }
 
@@ -25,9 +25,9 @@ export default class Trail {
     this.flickrLayer = new FlickrLayer(this.geometry.extent);
   }
 
-  private getAltitudeProfileData(geometry:Polyline):Array<any> {
+  private getAltitudeProfileData(geometry: Polyline): Array<any> {
 
-    let points = [];
+    const points = [];
     let totalLength = 0;
     const path = geometry.paths[0];
     let i = 0, j;
@@ -35,9 +35,9 @@ export default class Trail {
     points.push({point: path[0], length: totalLength, value: Math.round(path[0][2])});
 
     while (i < path.length) {
-      for (j = i+1; j < path.length; j++) {
+      for (j = i + 1; j < path.length; j++) {
 
-        let tempLine = new Polyline({
+        const tempLine = new Polyline({
           paths: [path.slice(i, j + 1)],
           hasZ: true,
           spatialReference: { wkid: 4326 }
@@ -47,7 +47,7 @@ export default class Trail {
 
         if (length > 10) {
           totalLength += length;
-          points.push({point: path[j], length: Math.round(totalLength/100) / 10, value: Math.round(path[i][2])});
+          points.push({point: path[j], length: Math.round(totalLength / 100) / 10, value: Math.round(path[i][2])});
           break;
         }
       }

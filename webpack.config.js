@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const TSLintPlugin = require('tslint-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -64,6 +65,9 @@ module.exports = {
       filename: '../sw.js',
       publicPath: '/hiking-app/dist/'
     }),
+    new TSLintPlugin({
+      files: ['./src/ts/**/*.ts']
+    })
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity

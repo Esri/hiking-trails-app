@@ -1,25 +1,25 @@
-import config from '../config';
-import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from './utils';
+import config from "../config";
+import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from "./utils";
 
-import * as domConstruct from 'dojo/dom-construct';
-import * as dom from 'dojo/dom';
-import * as on from 'dojo/on';
+import * as domConstruct from "dojo/dom-construct";
+import * as dom from "dojo/dom";
+import * as on from "dojo/on";
 
-import * as WebScene from 'esri/WebScene';
-import * as SceneView from 'esri/views/SceneView';
-import * as FeatureLayer from 'esri/layers/FeatureLayer';
-import * as Query from 'esri/tasks/support/Query';
-import * as GroupLayer from 'esri/layers/GroupLayer';
-import * as UniqueValueRenderer from 'esri/renderers/UniqueValueRenderer';
-import * as all from 'dojo/promise/all';
-import * as esriConfig from 'esri/config';
-import * as watchUtils from 'esri/core/watchUtils';
+import * as WebScene from "esri/WebScene";
+import * as SceneView from "esri/views/SceneView";
+import * as FeatureLayer from "esri/layers/FeatureLayer";
+import * as Query from "esri/tasks/support/Query";
+import * as GroupLayer from "esri/layers/GroupLayer";
+import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
+import * as all from "dojo/promise/all";
+import * as esriConfig from "esri/config";
+import * as watchUtils from "esri/core/watchUtils";
 
-import '../../style/scene-panel.scss';
+import "../../style/scene-panel.scss";
 
-import { State } from '../types';
+import { State } from "../types";
 
-esriConfig.request.corsEnabledServers.push('wtb.maptiles.arcgis.com');
+esriConfig.request.corsEnabledServers.push("wtb.maptiles.arcgis.com");
 
 export default class SceneElement {
 
@@ -46,9 +46,9 @@ export default class SceneElement {
     this.addEventListeners();
 
     //adding view to the window only for debugging reasons
-    (<any>window).view = this.view;
+    (<any> window).view = this.view;
 
-    state.watch('selectedTrailId', (value, oldValue) => {
+    state.watch("selectedTrailId", (value, oldValue) => {
 
       if (oldValue) {
         this.unselectFeature(oldValue);
@@ -59,12 +59,13 @@ export default class SceneElement {
 
     });
 
-    state.watch('filteredTrailIds', (trailIds) => {
+    state.watch("filteredTrailIds", (trailIds) => {
+
       if (this.view.map instanceof WebScene) {
         this.view.goTo(this.view.map.initialViewProperties.viewpoint);
       }
 
-      var query = trailIds.map(function(id){
+      const query = trailIds.map(function(id) {
         return "RouteId = " + id;
       });
       if (trailIds.length === 0 ) {
@@ -76,21 +77,21 @@ export default class SceneElement {
 
     });
 
-    state.watch('device', () => {
+    state.watch("device", () => {
       this.setViewPadding();
     });
 
-    state.watch('currentBasemapId', (id) => {
+    state.watch("currentBasemapId", (id) => {
       this.setCurrentBasemap(id);
     });
   }
 
   private setCurrentBasemap(id) {
-    let basemapGroup = <GroupLayer>this.view.map.layers.filter((layer) => {
-      return (layer.title === 'Basemap');
+    const basemapGroup = <GroupLayer> this.view.map.layers.filter((layer) => {
+      return (layer.title === "Basemap");
     }).getItemAt(0);
 
-    let activeLayer = basemapGroup.layers.filter((layer) => {
+    const activeLayer = basemapGroup.layers.filter((layer) => {
       if (layer.id === id) {
         return true;
       }
@@ -102,12 +103,12 @@ export default class SceneElement {
   }
 
   private showLoadingIcon(event) {
-    domConstruct.create('span', {
-      class: 'fa fa-spinner fa-spin',
-      id: 'loadingIcon',
-      style:{
-        position: 'absolute',
-        fontSize: '30px',
+    domConstruct.create("span", {
+      class: "fa fa-spinner fa-spin",
+      id: "loadingIcon",
+      style: {
+        position: "absolute",
+        fontSize: "30px",
         top: `${event.screenPoint.y - 15}px`,
         left: `${event.screenPoint.x - 15}px`
       }
@@ -115,28 +116,31 @@ export default class SceneElement {
   }
 
   private removeLoadingIcon() {
-    domConstruct.destroy('loadingIcon');
+    domConstruct.destroy("loadingIcon");
   }
 
   private addEventListeners() {
     this.view.on("click", (event) => {
       this.showLoadingIcon(event);
       this.view.hitTest(event).then((response) => {
-        var result = response.results[0];
+
+        const result = response.results[0];
+
+        // if a graphic was picked from the view
         if (result.graphic) {
-          if (result.graphic.layer.title === 'Flickr') {
+          if (result.graphic.layer.title === "Flickr") {
             this.removeLoadingIcon();
             this.showImage(result.graphic, event);
           }
           else {
-            if (result.graphic.layer.title === 'Hiking trails') {
+            if (result.graphic.layer.title === "Hiking trails") {
               this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
             }
           }
         }
+        // otherwise check if server side there is a graphic that was draped
         else {
-          var result = response.results[0];
-          var query = this.trailsLayer.createQuery();
+          const query = this.trailsLayer.createQuery();
           query.geometry = result.mapPoint;
           query.distance = 100;
           query.units = "meters";
@@ -162,33 +166,33 @@ export default class SceneElement {
     // remove previous image (if any)
     this.removeImage();
 
-    const flickrContainer = domConstruct.create('div', {
-      innerHTML: `<img id='flickrImage' src='${graphic.attributes.image}'
-        style='left: ${event.screenPoint.x - 25}px; top: ${event.screenPoint.y - 25}px;'>`,
-      id: 'flickrContainer'
+    const flickrContainer = domConstruct.create("div", {
+      innerHTML: `<img id="flickrImage" src="${graphic.attributes.image}"
+        style="left: ${event.screenPoint.x - 25}px; top: ${event.screenPoint.y - 25}px;">`,
+      id: "flickrContainer"
     }, document.body);
 
-    let flickrImage = dom.byId('flickrImage');
+    const flickrImage = dom.byId("flickrImage");
 
     window.setTimeout(() => {
-      flickrImage.style.top = '50%';
-      flickrImage.style.left = '50%';
-      flickrImage.style.transform = 'translate(-50%, -50%)';
+      flickrImage.style.top = "50%";
+      flickrImage.style.left = "50%";
+      flickrImage.style.transform = "translate(-50%, -50%)";
     }, 0);
 
     window.setTimeout(() => {
-      flickrImage.style.maxWidth = '90%';
+      flickrImage.style.maxWidth = "90%";
     }, 200);
 
-    on(flickrContainer, 'click', () => {
+    on(flickrContainer, "click", () => {
       this.removeImage();
     });
 
   }
 
   private removeImage() {
-    if (dom.byId('flickrContainer')) {
-      domConstruct.destroy('flickrContainer');
+    if (dom.byId("flickrContainer")) {
+      domConstruct.destroy("flickrContainer");
     }
   }
 
@@ -201,7 +205,7 @@ export default class SceneElement {
     });
 
     return new SceneView({
-      container: 'scenePanel',
+      container: "scenePanel",
       map: webscene,
       constraints: {
         tilt: {
@@ -222,7 +226,7 @@ export default class SceneElement {
         starsEnabled: false
       },
       ui: {
-        components: ['attribution']
+        components: ["attribution"]
       },
       popup: {
         dockEnabled: false,
@@ -234,15 +238,15 @@ export default class SceneElement {
   }
 
   private setViewPadding() {
-    if (this.state.device === 'mobilePortrait') {
+    if (this.state.device === "mobilePortrait") {
       this.view.padding = {
         left: 0
-      }
+      };
     }
     else {
       this.view.padding = {
         left: 350
-      }
+      };
     }
   }
 
@@ -253,9 +257,7 @@ export default class SceneElement {
       outFields: ["*"],
       renderer: getTrailRenderer(),
       elevationInfo: {
-        //mode: 'relative-to-ground',
-        mode: 'on-the-ground',
-        offset: 5
+        mode: "on-the-ground"
       },
       labelsVisible: true,
       popupEnabled: false,
@@ -263,10 +265,10 @@ export default class SceneElement {
     });
   }
 
-  private selectFeature(featureId):void {
+  private selectFeature(featureId): void {
 
     // change line symbology for the selected feature
-    let renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
+    const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = getUniqueValueInfos({ selection: featureId });
     this.trailsLayer.renderer = renderer;
 
@@ -288,8 +290,8 @@ export default class SceneElement {
     });
   }
 
-  private unselectFeature(oldId):void {
-    let renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
+  private unselectFeature(oldId): void {
+    const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
@@ -301,8 +303,8 @@ export default class SceneElement {
     this.removeImage();
   }
 
-  public queryTrails():IPromise {
-    const layer:FeatureLayer = this.trailsLayer;
+  public queryTrails(): IPromise {
+    const layer: FeatureLayer = this.trailsLayer;
     const query = new Query({
       outFields: ["*"],
       where: "1=1",
@@ -316,7 +318,7 @@ export default class SceneElement {
     });
   }
 
-  public getZEnrichedTrails():IPromise {
+  public getZEnrichedTrails(): IPromise {
 
     const view = this.view;
 
@@ -325,7 +327,7 @@ export default class SceneElement {
       this.trails = result.features;
 
       // for each feature query the z values of the geometry
-      let promises = result.features.map((feat) => {
+      const promises = result.features.map((feat) => {
         return view.map.ground.queryElevation(feat.geometry)
           .then((response) => {
             feat.geometry = response.geometry;

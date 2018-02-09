@@ -1,11 +1,11 @@
-import * as dom from 'dojo/dom';
-import * as on from 'dojo/on';
-import * as domConstruct from 'dojo/dom-construct';
-import config from '../config';
-import noUiSlider = require('noUiSlider');
-import '../../style/selection-panel.scss';
-import '../../style/nouislider.scss';
-import { State, Trail, Filters } from '../types';
+import * as dom from "dojo/dom";
+import * as on from "dojo/on";
+import * as domConstruct from "dojo/dom-construct";
+import config from "../config";
+import noUiSlider = require("noUiSlider");
+import "../../style/selection-panel.scss";
+import "../../style/nouislider.scss";
+import { State, Trail, Filters } from "../types";
 
 export default class SelectionPanel {
 
@@ -20,52 +20,52 @@ export default class SelectionPanel {
     this.state = state;
     this.trails = trails;
 
-    this.container = dom.byId('selectionPanel');
+    this.container = dom.byId("selectionPanel");
 
-    this.trailsPanel = dom.byId('trailsPanel');
+    this.trailsPanel = dom.byId("trailsPanel");
     this.generateTrailsPanel();
 
-    on(document.querySelector('.removeSelected'), 'click', (evt) => {
+    on(document.querySelector(".removeSelected"), "click", (evt) => {
       this.state.setSelectedTrailId(null);
     });
 
-    this.filterPanel = dom.byId('filterPanel');
+    this.filterPanel = dom.byId("filterPanel");
     this.generateFilterPanel();
 
-    state.watch('selectedTrailId', (id) => {
+    state.watch("selectedTrailId", (id) => {
       if (document.querySelector(".selected")) {
         document.querySelector(".selected").classList.remove("selected");
       }
       if (id) {
-        document.querySelector("[data-id ='" + id + "']").classList.add("selected");
-        document.querySelector('.removeSelected').removeAttribute('disabled');
+        document.querySelector(`[data-id ="${id}"]`).classList.add("selected");
+        document.querySelector(".removeSelected").removeAttribute("disabled");
       }
       else {
-        document.querySelector('.removeSelected').setAttribute('disabled', '');
+        document.querySelector(".removeSelected").setAttribute("disabled", "");
       }
     });
 
-    state.watch('filters', (filters: Filters) => {
+    state.watch("filters", (filters: Filters) => {
 
-      let filteredTrailIds = this.getFilteredTrails(filters)
+      const filteredTrailIds = this.getFilteredTrails(filters)
                                 .map((trail) => trail.id);
       this.state.setFilteredTrailIds(filteredTrailIds);
     });
 
-    state.watch('filteredTrailIds', (ids) => {
+    state.watch("filteredTrailIds", (ids) => {
       this.updateVisibleTrails(ids);
     });
 
   }
 
   private getFilteredTrails(filters: Filters): Array<Trail> {
-    let filteredTrails = this.trails.filter((trail) => {
+    const filteredTrails = this.trails.filter((trail) => {
 
       // we assume the trail will not be filtered out
       let keepTrail = true;
 
       // go through each filter criteria and verify if the trail should be filtered out
-      for (let filter in filters) {
+      for (const filter in filters) {
         if (Array.isArray(filters[filter])) {
           if (trail[filter] < filters[filter][0] || trail[filter] > filters[filter][1]) {
             keepTrail = false;
@@ -73,7 +73,7 @@ export default class SelectionPanel {
           }
         }
         else {
-          if (filters[filter] !== 'All') {
+          if (filters[filter] !== "All") {
             if (trail[filter] !== filters[filter]) {
               keepTrail = false;
               break;
@@ -89,9 +89,9 @@ export default class SelectionPanel {
   }
 
   private updateVisibleTrails(ids) {
-    let trailElements = document.querySelectorAll(".trail");
-    [].forEach.call(trailElements, function(elem){
-      if (ids.indexOf(parseInt(elem.dataset.id)) === -1) {
+    const trailElements = document.querySelectorAll(".trail");
+    [].forEach.call(trailElements, function(elem) {
+      if (ids.indexOf(parseInt(elem.dataset.id, 10)) === -1) {
         elem.classList.add("disabled");
       }
       else {
@@ -100,70 +100,70 @@ export default class SelectionPanel {
     });
   }
 
-  private generateTrailsPanel():void {
+  private generateTrailsPanel(): void {
 
-    let state = this.state;
+    const state = this.state;
 
     this.trails.forEach((trail) => {
-      let trailElement = domConstruct.create('div', {
-        'innerHTML': trail.name,
-        'data-difficulty': trail.difficulty,
-        'data-id': trail.id,
-        'data-category': trail.category,
-        'data-walktime': trail.walktime,
-        'data-status': trail.status,
-        'data-ascent': trail.ascent,
-        'class': 'trail'
+      const trailElement = domConstruct.create("div", {
+        "innerHTML": trail.name,
+        "data-difficulty": trail.difficulty,
+        "data-id": trail.id,
+        "data-category": trail.category,
+        "data-walktime": trail.walktime,
+        "data-status": trail.status,
+        "data-ascent": trail.ascent,
+        "class": "trail"
       }, this.trailsPanel);
 
-      on(trailElement, 'click', (evt) => {
-        state.setSelectedTrailId(parseInt(evt.target.dataset.id));
+      on(trailElement, "click", (evt) => {
+        state.setSelectedTrailId(parseInt(evt.target.dataset.id, 10));
       });
     });
 
   }
 
-  private generateFilterPanel():void {
+  private generateFilterPanel(): void {
     this.generateSingleChoiceFilters();
     this.generateRangeFilters();
   }
 
   // create radio buttons for single choice filter criteria
-  private generateSingleChoiceFilters():void {
+  private generateSingleChoiceFilters(): void {
 
-    let singleChoiceFilters:Array<string> = config.data.filterOptions.singleChoice;
+    const singleChoiceFilters: Array<string> = config.data.filterOptions.singleChoice;
 
-    for (let filter of singleChoiceFilters) {
+    for (const filter of singleChoiceFilters) {
 
       // get unique values for the single choice options
-      let uniqueValues = this.getUniqueValues(filter);
+      const uniqueValues = this.getUniqueValues(filter);
 
       // create a single choice options text so that users know what to select
-      let text = filter.charAt(0).toUpperCase() + filter.slice(1);
+      const text = filter.charAt(0).toUpperCase() + filter.slice(1);
       domConstruct.create("div", {
         innerHTML: text,
-        class: 'filter-category'
+        class: "filter-category"
         }, this.filterPanel);
 
       // add options as radio buttons
-      var spanContainer = domConstruct.create("span", {
+      const spanContainer = domConstruct.create("span", {
         "class": "radio-group"
       }, this.filterPanel);
 
       for (let i = 0; i < uniqueValues.length; i++) {
-        let checked = (i === 0) ? 'checked' : '';
-        let id = `${filter}-${uniqueValues[i]}`;
-        var radioOption = `<input type='radio' id='${id}' name=${filter} ${checked}/>
-        <label for='${id}' data-group='${filter}' data-option='${uniqueValues[i]}'>${uniqueValues[i]}</label>`;
+        const checked = (i === 0) ? "checked" : "";
+        const id = `${filter}-${uniqueValues[i]}`;
+        const radioOption = `<input type="radio" id="${id}" name=${filter} ${checked}/>
+        <label for="${id}" data-group="${filter}" data-option="${uniqueValues[i]}">${uniqueValues[i]}</label>`;
         spanContainer.innerHTML += radioOption;
       }
 
       // initialize state
-      this.state.setFilter(filter, 'All');
+      this.state.setFilter(filter, "All");
 
       on(spanContainer, "click", (evt) => {
-        let target = evt.target;
-        if (target.localName === 'label' ) {
+        const target = evt.target;
+        if (target.localName === "label" ) {
           this.state.setFilter(target.dataset.group, target.dataset.option);
         }
       });
@@ -172,9 +172,9 @@ export default class SelectionPanel {
   }
 
   // function that gets unique values for a trail attribute (filter)
-  private getUniqueValues(filter):Array<string> {
+  private getUniqueValues(filter): Array<string> {
 
-    let uniqueValues = ['All'];
+    const uniqueValues = ["All"];
 
     this.trails.forEach((elem) => {
       if (uniqueValues.indexOf(elem[filter]) === -1)  {
@@ -186,54 +186,54 @@ export default class SelectionPanel {
   }
 
   // creates range sliders for interval type filter criteria
-  private generateRangeFilters():void {
+  private generateRangeFilters(): void {
 
-    let rangeFilters: Array<string> = config.data.filterOptions.range;
-    let state: State = this.state;
+    const rangeFilters: Array<string> = config.data.filterOptions.range;
+    const state: State = this.state;
 
-    for (let filter of rangeFilters) {
+    for (const filter of rangeFilters) {
 
-      let text = filter.charAt(0).toUpperCase() + filter.slice(1);
+      const text = filter.charAt(0).toUpperCase() + filter.slice(1);
       domConstruct.create("div", {
         innerHTML: text,
-        class: 'filter-category'
+        class: "filter-category"
         }, this.filterPanel);
 
       // get minimum and maximum for the filter criteria
-      let extremes:Extremes = this.getExtremes(filter);
-      let unit:string = '', step:number = 1;
+      const extremes: Extremes = this.getExtremes(filter);
+      let unit: string = "", step: number = 1;
 
-      switch(filter) {
-        case 'walktime': {
-          unit = 'hrs';
+      switch (filter) {
+        case "walktime": {
+          unit = "hrs";
           step = 1;
           break;
         }
-        case 'ascent': {
-          unit = 'm';
+        case "ascent": {
+          unit = "m";
           step = 50;
           break;
         }
       }
 
-      domConstruct.create('span', {
-        innerHTML: extremes.min + ' ' + unit
+      domConstruct.create("span", {
+        innerHTML: extremes.min + " " + unit
       }, this.filterPanel);
 
 
-      let rangeSliderContainer = domConstruct.create('div', {
-        'class': 'range-slider',
-        'data-group': filter
+      const rangeSliderContainer = domConstruct.create("div", {
+        "class": "range-slider",
+        "data-group": filter
       }, this.filterPanel);
 
-      let format = {
+      const format = {
         to: ( value ) => {
-          return `${parseInt(value)} ${unit}`;
+          return `${parseInt(value, 10)} ${unit}`;
         },
         from: ( value ) => {
-          return `${parseInt(value)} ${unit}`;
+          return `${parseInt(value, 10)} ${unit}`;
         }
-      }
+      };
 
       noUiSlider.create(rangeSliderContainer, {
         start: [extremes.min, extremes.max],
@@ -250,18 +250,18 @@ export default class SelectionPanel {
       state.setFilter(filter, [extremes.min, extremes.max]);
 
       //add event listener on slider to change the state when slider values change
-      rangeSliderContainer.noUiSlider.on('end', function (values) {
+      rangeSliderContainer.noUiSlider.on("end", function(values) {
         state.setFilter(this.target.dataset.group, values);
       });
 
-      domConstruct.create('span', {
-        innerHTML: extremes.max + ' ' + unit
+      domConstruct.create("span", {
+        innerHTML: extremes.max + " " + unit
       }, this.filterPanel);
     }
   }
 
-  private getExtremes(prop):Extremes {
-    var min = 1000, max = 0;
+  private getExtremes(prop): Extremes {
+    let min = 1000, max = 0;
     this.trails.forEach(function(elem) {
       if (elem[prop] !== null) {
         if (elem[prop] < min) {
@@ -271,7 +271,7 @@ export default class SelectionPanel {
           max = elem[prop];
         }
       }
-    })
+    });
     return {
       min: min,
       max: max
@@ -281,6 +281,6 @@ export default class SelectionPanel {
 }
 
 interface Extremes {
-  min: number,
-  max: number
+  min: number;
+  max: number;
 }

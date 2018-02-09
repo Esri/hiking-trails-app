@@ -1,10 +1,10 @@
-import * as dom from 'dojo/dom';
-import * as on from 'dojo/on';
-import * as domConstruct from 'dojo/dom-construct';
-import { State } from '../types';
-import * as GroupLayer from 'esri/layers/GroupLayer';
+import * as dom from "dojo/dom";
+import * as on from "dojo/on";
+import * as domConstruct from "dojo/dom-construct";
+import { State } from "../types";
+import * as GroupLayer from "esri/layers/GroupLayer";
 
-import '../../style/basemap-panel.scss';
+import "../../style/basemap-panel.scss";
 
 export default class BasemapPanel {
 
@@ -12,25 +12,25 @@ export default class BasemapPanel {
   basemapContainer: any;
 
   constructor(state: State) {
-    this.container = dom.byId('basemapPanel');
-    this.basemapContainer = document.querySelector('.basemaps');
+    this.container = dom.byId("basemapPanel");
+    this.basemapContainer = document.querySelector(".basemaps");
 
-    let basemapGroup = <GroupLayer>state.view.map.layers.filter((layer) => {
-      return (layer.title === 'Basemap');
+    const basemapGroup = <GroupLayer> state.view.map.layers.filter((layer) => {
+      return (layer.title === "Basemap");
     }).getItemAt(0);
 
     basemapGroup.layers.forEach((layer) => {
 
-      // crazy hack to get access to portalItem property
-      let portalLayer = <GroupLayer>layer;
-      let basemapItem = domConstruct.create('div', {
-        class: 'basemapItem',
+      // get access to portalItem property
+      const portalLayer = <GroupLayer> layer;
+      const basemapItem = domConstruct.create("div", {
+        class: "basemapItem",
         style: `background: url(${portalLayer.portalItem.thumbnailUrl}) no-repeat center`,
-        'data-id': layer.id,
+        "data-id": layer.id,
         innerHTML: `<div>${layer.title}</div>`
       }, this.basemapContainer);
 
-      on(basemapItem, 'click', (evt) => {
+      on(basemapItem, "click", (evt) => {
         state.currentBasemapId = evt.target.dataset.id;
       });
     });

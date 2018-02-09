@@ -1,12 +1,12 @@
-import config from '../config';
-import * as UniqueValueRenderer from 'esri/renderers/UniqueValueRenderer';
-import * as LineSymbol3D from 'esri/symbols/LineSymbol3D';
-import * as LineSymbol3DLayer from 'esri/symbols/LineSymbol3DLayer';
-import * as LabelSymbol3D from 'esri/symbols/LabelSymbol3D';
-import * as LabelClass from 'esri/layers/support/LabelClass';
-import * as TextSymbol3DLayer from 'esri/symbols/TextSymbol3DLayer';
+import config from "../config";
+import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
+import * as LineSymbol3D from "esri/symbols/LineSymbol3D";
+import * as LineSymbol3DLayer from "esri/symbols/LineSymbol3DLayer";
+import * as LabelSymbol3D from "esri/symbols/LabelSymbol3D";
+import * as LabelClass from "esri/layers/support/LabelClass";
+import * as TextSymbol3DLayer from "esri/symbols/TextSymbol3DLayer";
 
-export function getTrailRenderer():UniqueValueRenderer {
+export function getTrailRenderer(): UniqueValueRenderer {
   return new UniqueValueRenderer({
     field: config.data.trailAttributes.id,
     defaultSymbol: createTrailSymbol({
@@ -40,7 +40,7 @@ export function getUniqueValueInfos(options) {
     return [{
       value: options.selection,
       symbol: createTrailSymbol(options)
-    }]
+    }];
   }
 }
 
@@ -49,12 +49,12 @@ export function getLabelingInfo(options) {
     return [
       createLabelClass(options),
       createLabelClass({})
-    ]
+    ];
   }
   else {
     return [
       createLabelClass({})
-    ]
+    ];
   }
 }
 
@@ -62,7 +62,7 @@ export function createLabelClass(options) {
 
   const color = (options.selection) ? config.colors.selectedTrail : config.colors.defaultTrail;
 
-  let labelClass = new LabelClass({
+  const labelClass = new LabelClass({
     symbol: new LabelSymbol3D({
       symbolLayers: [new TextSymbol3DLayer({
         material: {
@@ -73,8 +73,8 @@ export function createLabelClass(options) {
           size: 1
         },
         font: {
-          family: 'Open Sans Condensed',
-          weight: 'bold'
+          family: "Open Sans Condensed",
+          weight: "bold"
         },
         size: 13
       })],
@@ -98,7 +98,7 @@ export function createLabelClass(options) {
     }
   });
   if (options.selection) {
-    labelClass.where = `${config.data.trailAttributes.id} = ${options.selection}`
+    labelClass.where = `${config.data.trailAttributes.id} = ${options.selection}`;
   }
 
   return labelClass;
