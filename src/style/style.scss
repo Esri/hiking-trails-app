@@ -58,8 +58,11 @@ h1 {
   }
 }
 
-.mobileMenu{
-  display: none;
+.smallMenu{
+  display: inherit;
+  position: absolute;
+  top: 10px;
+  left: 360px;
 
   button {
     background: $background-color;
@@ -67,8 +70,47 @@ h1 {
     height: 30px;
     width: 30px;
     font-size: $big-font;
+    cursor: pointer;
+  }
+
+  .mobileButton {
+    display: none;
   }
 }
+
+#credentialsPanel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  max-width: 600px;
+  margin: 50px auto 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  z-index: 1000;
+  line-height: $big-font;
+  background-color: $background-color;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  display: none;
+
+  .esri-icon-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+  }
+
+  li {
+    padding: 10px;
+  }
+
+  a, #logo a, #impressumLink a{
+    font-weight: bold;
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
 
 #flickrImage {
   position: absolute;
@@ -91,10 +133,11 @@ h1 {
 
 
 @media (max-width: $max-width) {
-  .mobileMenu{
-    display: inherit;
-    position: absolute;
-    top: 10px;
+  .smallMenu {
     left: 10px;
+    .mobileButton{
+      display: inline-block;
+    }
   }
+
 }

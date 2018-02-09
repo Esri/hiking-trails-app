@@ -1,5 +1,6 @@
 
 import * as on from "dojo/on";
+import * as dom from "dojo/dom";
 import DetailPanel from "./DetailPanel";
 import SelectionPanel from "./SelectionPanel";
 import BasemapPanel from "./BasemapPanel";
@@ -53,6 +54,13 @@ export default class MenuPanel {
         view.goTo(view.map.initialViewProperties.viewpoint);
         this.state.selectedTrailId = null;
       }
+    });
+
+    on(dom.byId("about"), "click", function() {
+      dom.byId("credentialsPanel").style.display = "inline";
+    });
+    on(dom.byId("close"), "click", function() {
+      dom.byId("credentialsPanel").style.display = "none";
     });
 
     state.watch("device", () => {
