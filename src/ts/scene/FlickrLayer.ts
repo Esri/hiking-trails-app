@@ -36,7 +36,7 @@ function setImages(layer) {
 
         let billboard = new PointSymbol3D({
           symbolLayers: [new IconSymbol3DLayer({
-            size: 40,
+            size: 50,
             resource: { href: imgUrl },
             outline: {
               color: 'white',

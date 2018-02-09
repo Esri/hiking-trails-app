@@ -38,7 +38,10 @@ export default class SceneElement {
     this.setViewPadding();
 
     this.trailsLayer = this.initTrailsLayer();
-    this.view.map.add(this.trailsLayer);
+    this.view.when(() => {
+      this.view.map.add(this.trailsLayer);
+    });
+
 
     this.addEventListeners();
 
@@ -98,13 +101,31 @@ export default class SceneElement {
 
   }
 
+  private showLoadingIcon(event) {
+    domConstruct.create('span', {
+      class: 'fa fa-spinner fa-spin',
+      id: 'loadingIcon',
+      style:{
+        position: 'absolute',
+        fontSize: '30px',
+        top: `${event.screenPoint.y - 15}px`,
+        left: `${event.screenPoint.x - 15}px`
+      }
+    }, document.body);
+  }
+
+  private removeLoadingIcon() {
+    domConstruct.destroy('loadingIcon');
+  }
+
   private addEventListeners() {
     this.view.on("click", (event) => {
+      this.showLoadingIcon(event);
       this.view.hitTest(event).then((response) => {
         var result = response.results[0];
         if (result.graphic) {
           if (result.graphic.layer.title === 'Flickr') {
-
+            this.removeLoadingIcon();
             this.showImage(result.graphic, event);
           }
           else {
@@ -114,7 +135,23 @@ export default class SceneElement {
           }
         }
         else {
-          this.state.setSelectedTrailId(null);
+          var result = response.results[0];
+          var query = this.trailsLayer.createQuery();
+          query.geometry = result.mapPoint;
+          query.distance = 100;
+          query.units = "meters";
+          query.spatialRelationship = "intersects";
+          this.trailsLayer.queryFeatures(query).then((results) => {
+            console.log(results);
+            if (results.features.length > 0) {
+              this.state.setSelectedTrailId(results.features[0].attributes.RouteId);
+            } else {
+              this.state.setSelectedTrailId(null);
+            }
+            this.removeLoadingIcon();
+          })
+          .otherwise(err => console.log(err));
+
         }
       });
     });
@@ -216,7 +253,8 @@ export default class SceneElement {
       outFields: ["*"],
       renderer: getTrailRenderer(),
       elevationInfo: {
-        mode: 'relative-to-ground',
+        //mode: 'relative-to-ground',
+        mode: 'on-the-ground',
         offset: 5
       },
       labelsVisible: true,
