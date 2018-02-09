@@ -76,9 +76,13 @@ function setImages(layer) {
 
         src.push(graphic);
       }
+
+      if (j == results.length - 1) {
+        layer.source = src;
+      }
     }
 
-    layer.source = src;
+
 
   })
     .otherwise(err => console.log(err));
