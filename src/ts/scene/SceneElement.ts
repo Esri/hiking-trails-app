@@ -68,7 +68,7 @@ export default class SceneElement {
       const query = trailIds.map(function(id) {
         return "RouteId = " + id;
       });
-      if (trailIds.length === 0 ) {
+      if (trailIds.length === 0) {
         this.trailsLayer.definitionExpression = "1=0";
       }
       else {
@@ -146,7 +146,6 @@ export default class SceneElement {
           query.units = "meters";
           query.spatialRelationship = "intersects";
           this.trailsLayer.queryFeatures(query).then((results) => {
-            console.log(results);
             if (results.features.length > 0) {
               this.state.setSelectedTrailId(results.features[0].attributes.RouteId);
             } else {
@@ -154,7 +153,7 @@ export default class SceneElement {
             }
             this.removeLoadingIcon();
           })
-          .otherwise(err => console.log(err));
+            .otherwise(err => console.log(err));
 
         }
       });
@@ -281,8 +280,8 @@ export default class SceneElement {
     })[0];
 
     this.view.goTo(
-      {target: selectedTrail.geometry, tilt: 60},
-      {speedFactor: 0.5}
+      { target: selectedTrail.geometry, tilt: 60 },
+      { speedFactor: 0.5 }
     );
 
     selectedTrail.flickrLayer.loadImages().then(() => {

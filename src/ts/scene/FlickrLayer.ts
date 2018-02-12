@@ -3,8 +3,6 @@ import * as esriRequest from "esri/request";
 
 import * as FeatureLayer from "esri/layers/FeatureLayer";
 import * as Point from "esri/geometry/Point";
-import * as Polyline from "esri/geometry/Polyline";
-import * as geometryEngine from "esri/geometry/geometryEngine";
 import * as Graphic from "esri/Graphic";
 
 import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
@@ -91,7 +89,7 @@ export default class FlickrLayer extends FeatureLayer {
   photoList: any[] = [];
   imagesLoaded: boolean = false;
 
-  constructor(geometry) {
+  constructor(wayPoints) {
     super({
       elevationInfo: {
         mode: "relative-to-scene"
@@ -133,25 +131,9 @@ export default class FlickrLayer extends FeatureLayer {
     }
 
     const requests = [];
-    const path = geometry.paths[0];
-    const step = path.length / 10;
-    let radius = 0.1;
-    let lastI = 0;
+    const radius = 0.5;
 
-    for (let i = 0; i < path.length; i = Math.round(i + step)) {
-      const point = path[i];
-
-      if (lastI !== 0) {
-        const tempLine = new Polyline({
-          paths: [path.slice(lastI, i + 1)],
-          hasZ: true,
-          spatialReference: { wkid: 4326 }
-        });
-
-        radius = geometryEngine.geodesicLength(tempLine, "meters") * 0.001;
-      }
-      lastI = i;
-
+    wayPoints.forEach((point) => {
       const url = `https://api.flickr.com/services/rest/?
         method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
         &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
@@ -159,7 +141,7 @@ export default class FlickrLayer extends FeatureLayer {
         &content_type=1
         &license=1,2,3,4,5,6,7,8,9`;
       requests.push(esriRequest(url, { responseType: "xml" }));
-    }
+    });
 
     all(requests).then((results) => {
       results.forEach((result) => {
