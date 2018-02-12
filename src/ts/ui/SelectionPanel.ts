@@ -153,8 +153,7 @@ export default class SelectionPanel {
       for (let i = 0; i < uniqueValues.length; i++) {
         const checked = (i === 0) ? "checked" : "";
         const id = `${filter}-${uniqueValues[i]}`;
-        const radioOption = `<input type="radio" id="${id}" name=${filter} ${checked}/>
-        <label for="${id}" data-group="${filter}" data-option="${uniqueValues[i]}">${uniqueValues[i]}</label>`;
+        const radioOption = `<input type="radio" id="${id}" name=${filter} ${checked}/><label for="${id}" data-group="${filter}" data-option="${uniqueValues[i]}">${uniqueValues[i]}</label>`;
         spanContainer.innerHTML += radioOption;
       }
 
