@@ -61,7 +61,7 @@ export default class Trail {
     return [points, segments];
   }
 
-  private computeLength(path: []): number {
+  private computeLength(path: number[][]): number {
     return geometryEngine.geodesicLength(new Polyline({
       paths: [path],
       hasZ: true,
