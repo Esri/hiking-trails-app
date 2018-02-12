@@ -229,8 +229,7 @@ export default class SceneElement {
       },
       popup: {
         dockEnabled: false,
-        collapsed: true,
-        visible: true
+        collapsed: true
       }
     });
 
@@ -312,7 +311,7 @@ export default class SceneElement {
         wkid: 4326
       }
     });
-    return layer.then(() => {
+    return layer.when(() => {
       return layer.queryFeatures(query);
     });
   }
