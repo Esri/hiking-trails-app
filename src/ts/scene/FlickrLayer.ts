@@ -24,7 +24,7 @@ function setImages(layer) {
       { responseType: "xml" }));
   }
   return all(promises).then((results) => {
-    console.log(results);
+    // console.log(results);
     const src = [];
     for (let j = 0; j < results.length; j++) {
 
@@ -60,7 +60,6 @@ function setImages(layer) {
           symbol: billboard
         });
 
-
         const point = new Point({
           latitude: location.getAttribute("latitude"),
           longitude: location.getAttribute("longitude")
@@ -79,18 +78,18 @@ function setImages(layer) {
     }
     return src;
   })
-  .then((src) => {
-    layer.source = src;
-  })
-  .otherwise(err => console.log(err));
+    .then((src) => {
+      layer.source = src;
+    })
+    .otherwise(err => console.log(err));
 }
 
 export default class FlickrLayer extends FeatureLayer {
 
-  photoList: any;
+  photoList: any[] = [];
   imagesLoaded: boolean = false;
 
-  constructor(extent) {
+  constructor(wayPoints) {
     super({
       elevationInfo: {
         mode: "relative-to-scene"
@@ -131,17 +130,27 @@ export default class FlickrLayer extends FeatureLayer {
       esriConfig.request.corsEnabledServers.push(`https://farm${i}.staticflickr.com/`);
     }
 
-    const url = `https://api.flickr.com/services/rest/?
-      method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
-      &has_geo=true
-      &bbox=${extent.xmin},${extent.ymin},${extent.xmax},${extent.ymax}
-      &per_page=50
-      &license=1,2,3,4,5,6,7,8,9`;
+    const requests = [];
+    const radius = 0.5;
 
-    esriRequest(url, { responseType: "xml" })
-      .then((response) => {
-        this.photoList = response.data.getElementsByTagName("photo");
+    wayPoints.forEach((point) => {
+      const url = `https://api.flickr.com/services/rest/?
+        method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
+        &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
+        &per_page=1
+        &content_type=1
+        &license=1,2,3,4,5,6,7,8,9`;
+      requests.push(esriRequest(url, { responseType: "xml" }));
+    });
+
+    all(requests).then((results) => {
+      results.forEach((result) => {
+        const photo = result.data.getElementsByTagName("photo");
+        if (photo.length > 0) {
+          this.photoList.push(photo[0]);
+        }
       });
+    });
   }
 
   public loadImages() {

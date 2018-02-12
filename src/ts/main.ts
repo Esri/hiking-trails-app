@@ -31,7 +31,3 @@ sceneElement.getZEnrichedTrails()
     });
     const menuPanel = new MenuPanel(state.trails, state);
   });
-
-
-
-
