@@ -133,6 +133,7 @@ export default class SceneElement {
             this.showImage(result.graphic, event);
           }
           else {
+            this.removeLoadingIcon();
             if (result.graphic.layer.title === "Hiking trails") {
               this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
             }
