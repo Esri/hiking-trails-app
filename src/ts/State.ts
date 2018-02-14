@@ -63,4 +63,6 @@ export default class State extends declared(Accessor) {
   @property()
   trails: Array<Trail> = null;
 
+  @property()
+  online: boolean = true;
 }

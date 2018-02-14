@@ -9,6 +9,7 @@ esriConfig.request.useIdentity = false;
 
 import State from "./State";
 import deviceUtils from "./ui/deviceUtils";
+import ConnectionManager from "./ui/ConnectionManager";
 import SceneElement from "./scene/SceneElement";
 import LoadingPage from "./ui/LoadingPage";
 import Trail from "./data/Trail";
@@ -22,6 +23,7 @@ if ("serviceWorker" in navigator) {
 
 const state = new State();
 deviceUtils.init(state);
+const connectionManager = new ConnectionManager(state);
 const loadingPage = new LoadingPage(state);
 const sceneElement = new SceneElement(state);
 sceneElement.getZEnrichedTrails()
