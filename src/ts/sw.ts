@@ -11,9 +11,9 @@ function generateAssets(): Asset[] {
 
   generateAppResources(assets);
   generateRootResources(assets);
-  generateAPIResources(assets);
-  generateBasemapResources(assets);
-  generateGroundResources(assets);
+  // generateAPIResources(assets);
+  // generateBasemapResources(assets);
+  // generateGroundResources(assets);
 
   return assets;
 }
@@ -33,7 +33,7 @@ function generateRootResources(assets: Asset[]) {
   assets.push(`${root}/manifest.json`);
   assets.push(`${root}/src/img/esri-10GlobeLogo_1C.png`);
 }
-
+/*
 function generateAPIResources(assets: Asset[]) {
   const resources = [
     "dojo/dojo.js",
@@ -66,11 +66,11 @@ function generateAPIResources(assets: Asset[]) {
   for (const resource of resources) {
     assets.push(`https://jsdev.arcgis.com/4.7/${resource}`);
   }
-}
+} */
 
   const imageryDomain = "services.arcgisonline.com";
 // const imageryDomain = "wtb.maptiles.arcgis.com";
-
+/*
  function generateTileResources(serverUrl: string, numLevels: number, assets: Asset[]) {
    assets.push(`${serverUrl}?f=json`);
 
@@ -85,8 +85,8 @@ function generateAPIResources(assets: Asset[]) {
        }
      }
    }
- }
-
+ } */
+/*
  function generateBasemapResources(assets: Asset[]) {
    const serverUrl = `https://${imageryDomain}/ArcGIS/rest/services/World_Imagery/MapServer`;
    const cachedLevels = 18;
@@ -99,14 +99,14 @@ function generateAPIResources(assets: Asset[]) {
    const cachedLevels = 18;
 
    generateTileResources(serverUrl, cachedLevels, assets);
- }
+ } */
 
- function generatePortalResources(assets: Asset[]) {
+ /* function generatePortalResources(assets: Asset[]) {
    assets.push(
      "https://www.arcgis.com/sharing/rest/portals/self?f=json&culture=en-us"
    );
  }
-
+ */
 self.addEventListener("install", (event: any) => {
   console.log("install");
   event.waitUntil(
