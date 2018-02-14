@@ -289,9 +289,12 @@ export default class SceneElement {
       { speedFactor: 0.5 }
     );
 
-    selectedTrail.flickrLayer.loadImages().then(() => {
-      this.view.map.add(selectedTrail.flickrLayer);
-    });
+    if (this.state.online) {
+      selectedTrail.flickrLayer.loadImages().then(() => {
+        this.view.map.add(selectedTrail.flickrLayer);
+      });
+    }
+
   }
 
   private unselectFeature(oldId): void {

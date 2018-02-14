@@ -68,13 +68,13 @@ function generateAPIResources(assets: Asset[]) {
   }
 }
 
-//const imageryDomain = "services.arcgisonline.com";
-const imageryDomain = "wtb.maptiles.arcgis.com";
+  const imageryDomain = "services.arcgisonline.com";
+// const imageryDomain = "wtb.maptiles.arcgis.com";
 
  function generateTileResources(serverUrl: string, numLevels: number, assets: Asset[]) {
    assets.push(`${serverUrl}?f=json`);
 
-   for (let i = 0; i < numLevels; i++) {
+   for (let i = 12; i < numLevels; i++) {
      const n = 1 << i;
 
      assets.push(`${serverUrl}/tilemap/${i}/0/0/32/32`);
@@ -89,14 +89,14 @@ const imageryDomain = "wtb.maptiles.arcgis.com";
 
  function generateBasemapResources(assets: Asset[]) {
    const serverUrl = `https://${imageryDomain}/ArcGIS/rest/services/World_Imagery/MapServer`;
-   const cachedLevels = 3;
+   const cachedLevels = 18;
 
    generateTileResources(serverUrl, cachedLevels, assets);
  }
 
  function generateGroundResources(assets: Asset[]) {
    const serverUrl = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer";
-   const cachedLevels = 2;
+   const cachedLevels = 18;
 
    generateTileResources(serverUrl, cachedLevels, assets);
  }
