@@ -121,43 +121,48 @@ export default class SceneElement {
 
   private addEventListeners() {
     this.view.on("click", (event) => {
-      this.showLoadingIcon(event);
-      this.view.hitTest(event).then((response) => {
 
-        const result = response.results[0];
+      // check if the user is online
+      if (this.state.online) {
 
-        // if a graphic was picked from the view
-        if (result.graphic) {
-          if (result.graphic.layer.title === "Flickr") {
-            this.removeLoadingIcon();
-            this.showImage(result.graphic, event);
+        this.showLoadingIcon(event);
+        this.view.hitTest(event).then((response) => {
+
+          const result = response.results[0];
+
+          // if a graphic was picked from the view
+          if (result.graphic) {
+            if (result.graphic.layer.title === "Flickr") {
+              this.removeLoadingIcon();
+              this.showImage(result.graphic, event);
+            }
+            else {
+              this.removeLoadingIcon();
+              if (result.graphic.layer.title === "Hiking trails") {
+                this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
+              }
+            }
           }
+          // otherwise check if server side there is a graphic that was draped
           else {
-            this.removeLoadingIcon();
-            if (result.graphic.layer.title === "Hiking trails") {
-              this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
-            }
-          }
-        }
-        // otherwise check if server side there is a graphic that was draped
-        else {
-          const query = this.trailsLayer.createQuery();
-          query.geometry = result.mapPoint;
-          query.distance = 200;
-          query.units = "meters";
-          query.spatialRelationship = "intersects";
-          this.trailsLayer.queryFeatures(query).then((results) => {
-            if (results.features.length > 0) {
-              this.state.setSelectedTrailId(results.features[0].attributes.RouteId);
-            } else {
-              this.state.setSelectedTrailId(null);
-            }
-            this.removeLoadingIcon();
-          })
-            .otherwise(err => console.log(err));
+            const query = this.trailsLayer.createQuery();
+            query.geometry = result.mapPoint;
+            query.distance = 200;
+            query.units = "meters";
+            query.spatialRelationship = "intersects";
+            this.trailsLayer.queryFeatures(query).then((results) => {
+              if (results.features.length > 0) {
+                this.state.setSelectedTrailId(results.features[0].attributes.RouteId);
+              } else {
+                this.state.setSelectedTrailId(null);
+              }
+              this.removeLoadingIcon();
+            })
+              .otherwise(err => console.log(err));
 
-        }
-      });
+          }
+        });
+      }
     });
   }
 
