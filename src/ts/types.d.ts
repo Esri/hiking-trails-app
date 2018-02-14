@@ -18,6 +18,7 @@ export interface State extends Accessor {
   currentBasemapId: string;
   view: SceneView;
   trails: Array<Trail>;
+  online: boolean;
 }
 
 export interface Trail {
