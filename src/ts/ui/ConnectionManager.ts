@@ -2,21 +2,9 @@ import * as dom from "dojo/dom";
 import * as on from "dojo/on";
 import * as domConstruct from "dojo/dom-construct";
 
-function createMessage(message: string, online: boolean): void {
-
-  // display message
-  const messageContainer = domConstruct.create("div", {
-    innerHTML: message,
-    class: online ? "online connectionMessage" : "offline connectionMessage"
-  }, document.body);
-
-  // message disappears after 3 seconds
-  window.setTimeout(function() {
-    domConstruct.destroy(messageContainer);
-  }, 3000);
-}
-
 export default class ConnectionManager {
+
+  private messageContainer;
 
   constructor(state) {
 
@@ -30,6 +18,8 @@ export default class ConnectionManager {
       window.addEventListener("offline", updateOnlineStatus);
     });
 
+    this.messageContainer = domConstruct.create("div", {}, document.body);
+
     state.watch("online", (value) => {
       console.log(value);
       if (!value) {
@@ -42,11 +32,36 @@ export default class ConnectionManager {
   }
 
   createOfflineMessage() {
-    createMessage("You seem to be offline. This application has limited functionality.", false);
+    this.setMessage("You seem to be offline. This application has limited functionality.", false);
   }
 
   createOnlineMessage() {
-    createMessage("You are back online.", true);
+    this.setMessage("You are back online.", true);
+  }
+
+  private setMessage(message: string, online: boolean): void {
+
+    // display message
+    this.messageContainer.innerHTML = message;
+    this.messageContainer.classList.add("connectionMessage");
+
+    if (online) {
+
+    this.messageContainer.classList.add("online");
+    this.messageContainer.classList.remove("offline");
+
+    // message disappears after 3 seconds
+    window.setTimeout(() => {
+      this.messageContainer.innerHTML = "";
+      this.messageContainer.classList.remove("online", "connectionMessage");
+    }, 3000);
+    }
+    else {
+      this.messageContainer.classList.remove("online");
+      this.messageContainer.classList.add("offline");
+    }
+
+
   }
 
 }
