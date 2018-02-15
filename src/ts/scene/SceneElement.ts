@@ -35,7 +35,7 @@ export default class SceneElement {
 
     this.view = this.initView();
     this.state.view = this.view;
-    this.setViewPadding();
+    //this.setViewPadding();
 
     this.trailsLayer = this.initTrailsLayer();
     this.view.when(() => {
@@ -77,9 +77,9 @@ export default class SceneElement {
 
     });
 
-    state.watch("device", () => {
+    /* state.watch("device", () => {
       this.setViewPadding();
-    });
+    }); */
 
     state.watch("currentBasemapId", (id) => {
       this.setCurrentBasemap(id);
