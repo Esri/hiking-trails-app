@@ -35,7 +35,7 @@ export default class SceneElement {
 
     this.view = this.initView();
     this.state.view = this.view;
-    //this.setViewPadding();
+    this.setViewPadding();
 
     this.trailsLayer = this.initTrailsLayer();
     this.view.when(() => {
@@ -61,25 +61,29 @@ export default class SceneElement {
 
     state.watch("filteredTrailIds", (trailIds) => {
 
+      // before filtering go to the initial extent
+      // to see which layers are filtered
       if (this.view.map instanceof WebScene) {
         this.view.goTo(this.view.map.initialViewProperties.viewpoint);
       }
 
-      const query = trailIds.map(function(id) {
-        return "RouteId = " + id;
-      });
+      // remove filters
       if (trailIds.length === 0) {
-        this.trailsLayer.definitionExpression = "1=0";
+        this.trailsLayer.definitionExpression = null;
       }
+      // set definitionExpression to display only filtered buildings
       else {
+        const query = trailIds.map(function(id) {
+          return "RouteId = " + id;
+        });
         this.trailsLayer.definitionExpression = query.join(" OR ");
       }
 
     });
 
-    /* state.watch("device", () => {
+    state.watch("device", () => {
       this.setViewPadding();
-    }); */
+    });
 
     state.watch("currentBasemapId", (id) => {
       this.setCurrentBasemap(id);
