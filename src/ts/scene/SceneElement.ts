@@ -59,7 +59,7 @@ export default class SceneElement {
 
     });
 
-    state.watch("filteredTrailIds", (trailIds) => {
+    state.watch("filteredTrailIds", (trailIds: Array<number>) => {
 
       // before filtering go to the initial extent
       // to see which layers are filtered

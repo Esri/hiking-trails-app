@@ -80,8 +80,8 @@ export function createLabelClass(options) {
       })],
       verticalOffset: {
         screenLength: 80,
-        maxWorldLength: 3000,
-        minWorldLength: 200
+        maxWorldLength: 2000,
+        minWorldLength: 500
       },
       callout: {
         type: "line",
