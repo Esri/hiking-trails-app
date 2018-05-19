@@ -15,8 +15,9 @@ export default class MenuPanel {
   state: State;
   container: HTMLElement;
 
-  constructor(trails, state: State) {
+  constructor(state: State) {
 
+    const trails = state.trails;
     this.state = state;
     this.container = <HTMLElement> document.querySelector(".menuPanel");
 

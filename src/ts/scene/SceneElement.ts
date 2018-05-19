@@ -293,10 +293,16 @@ export default class SceneElement {
       { speedFactor: 0.5 }
     );
 
-    if (this.state.online) {
-      selectedTrail.flickrLayer.loadImages().then(() => {
-        this.view.map.add(selectedTrail.flickrLayer);
-      });
+    if (this.state.online && selectedTrail.hasZ) {
+      this.view.map.add(selectedTrail.flickrLayer);
+    } else {
+      selectedTrail.setZValues(this.view)
+        .then(() => {
+          selectedTrail.createFlickrLayer()
+          .then(() => {
+            this.view.map.add(selectedTrail.flickrLayer);
+          });
+        });
     }
 
   }

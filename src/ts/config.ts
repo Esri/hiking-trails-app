@@ -4,7 +4,7 @@ export default {
     // websceneItemId: "7abaad52a4254f30ab1897079cad504a" // local scene
   },
   data: {
-    trailsServiceUrl: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/SwissNationalParkTrails/FeatureServer",
+    trailsServiceUrl: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/SwissNationalParkTrails/FeatureServer/0",
     trailAttributes: {
       name: "Name",
       id: "RouteId",

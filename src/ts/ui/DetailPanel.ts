@@ -84,7 +84,14 @@ export default class SelectionPanel {
     this.detailDescription.innerHTML = trail.description;
 
     // create the elevation profile
-    this.createChart(trail.profileData);
+    if (trail.hasZ) {
+      this.createChart(trail.profileData);
+    } else {
+      trail.setZValues(this.state.view)
+      .then(()=> {
+        this.createChart(trail.profileData);
+      });
+    }
   }
 
   createInfograph(trail) {

@@ -7,8 +7,10 @@ import FlickrLayer from "../scene/FlickrLayer";
 export default class Trail {
 
   geometry: Polyline;
+  hasZ = false;
   profileData: Array<any>;
   flickrLayer: FlickrLayer;
+  segments: any;
 
   constructor(feature) {
 
@@ -20,17 +22,30 @@ export default class Trail {
       this[prop] = feature.attributes[attributeMap[prop]];
     }
 
-    let segments;
-    [this.profileData, segments] = this.getProperties(feature.geometry);
-    this.flickrLayer = new FlickrLayer(segments);
   }
 
-  private getProperties(geometry: Polyline): Array<any> {
+  setZValues(view) {
+    let segments;
+
+    return view.map.ground.queryElevation(this.geometry)
+      .then((response) => {
+        this.geometry = response.geometry;
+        this.hasZ = true;
+        [this.profileData, this.segments] = this.getProperties();
+      });
+  }
+
+  public createFlickrLayer() {
+    this.flickrLayer = new FlickrLayer();
+    return this.flickrLayer.loadImages(this.segments);
+  }
+
+  private getProperties(): Array<any> {
 
     const points = [];
     let totalLength = 0;
     let segmentLength = 0;
-    const path = geometry.paths[0];
+    const path = this.geometry.paths[0];
     const segments = [path[0]];
     let i = 0, j;
 

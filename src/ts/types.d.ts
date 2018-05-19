@@ -33,6 +33,9 @@ export interface Trail {
   description: number;
   profileData: Array<Object>;
   flickrLayer: FlickrLayer;
+  hasZ: boolean;
+  setZValues: (view: SceneView) => IPromise;
+  createFlickrLayer: () => IPromise;
 }
 
 export interface Filters {
