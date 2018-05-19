@@ -37,11 +37,7 @@ function setImages(layer) {
         const billboard = new PointSymbol3D({
           symbolLayers: [new IconSymbol3DLayer({
             size: 50,
-            resource: { href: imgUrl },
-            outline: {
-              color: "white",
-              size: "5px"
-            }
+            resource: { href: imgUrl }
           })],
           verticalOffset: {
             screenLength: 50,
@@ -111,16 +107,7 @@ export default class FlickrLayer extends FeatureLayer {
       },
       renderer: new UniqueValueRenderer({
         field: "ObjectID",
-        defaultSymbol: new PointSymbol3D({
-          symbolLayers: [new IconSymbol3DLayer({
-            size: 40,
-            resource: { primitive: "circle" },
-            outline: {
-              color: "white",
-              size: "5px"
-            }
-          })]
-        })
+        defaultSymbol: new PointSymbol3D()
       })
     });
 
