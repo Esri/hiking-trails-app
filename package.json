@@ -4,7 +4,8 @@
   "description": "A 3D trail guide app for the Swiss National Park.",
   "scripts": {
     "build": "webpack -p --config ./webpack.config.prod.js",
-    "start": "webpack-dev-server --hot --open"
+    "start": "webpack-dev-server --hot --open",
+    "lint": "tslint src/**/*.ts"
   },
   "keywords": [
     "3D",
@@ -16,7 +17,7 @@
   "typings": "src/ts/types.d.ts",
   "devDependencies": {
     "@types/amcharts": "^3.21.2",
-    "@types/arcgis-js-api": "4.6",
+    "@types/arcgis-js-api": "4.7",
     "@types/dojo": "^1.9.40",
     "@types/nouislider": "^9.0.3",
     "awesome-typescript-loader": "^3.4.1",
