@@ -88,7 +88,7 @@ export default class SelectionPanel {
       this.createChart(trail.profileData);
     } else {
       trail.setZValues(this.state.view)
-      .then(()=> {
+      .then(() => {
         this.createChart(trail.profileData);
       });
     }

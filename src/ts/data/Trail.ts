@@ -25,8 +25,6 @@ export default class Trail {
   }
 
   setZValues(view) {
-    let segments;
-
     return view.map.ground.queryElevation(this.geometry)
       .then((response) => {
         this.geometry = response.geometry;

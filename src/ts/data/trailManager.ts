@@ -15,7 +15,7 @@ function queryTrails() {
   });
 
   const queryTask = new QueryTask({
-    url: config.data.trailsServiceUrl,
+    url: config.data.trailsServiceUrl
   });
 
   return queryTask.execute(query);
@@ -34,6 +34,6 @@ const trailManager = {
         console.log(err);
       });
   }
-}
+};
 
 export default trailManager;
