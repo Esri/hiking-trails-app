@@ -1,6 +1,6 @@
 import Accessor = require("esri/core/Accessor");
 import SceneView = require("esri/views/SceneView");
-import { Filters, Device, Trail } from "./types";
+import { Device, Trail } from "./types";
 import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 
 @subclass()
@@ -32,12 +32,7 @@ export default class State extends declared(Accessor) {
   }
 
   @property()
-  filters: Filters = {
-    walktime: null,
-    ascent: null,
-    category: null,
-    difficulty: null
-  };
+  filters = {};
 
   setFilter(property: string, value: string | Array<number>): void {
 

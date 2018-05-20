@@ -5,7 +5,7 @@ import config from "../config";
 import noUiSlider = require("noUiSlider");
 import "../../style/selection-panel.scss";
 import "../../style/nouislider.scss";
-import { State, Trail, Filters } from "../types";
+import { State, Trail } from "../types";
 
 export default class SelectionPanel {
 
@@ -45,7 +45,7 @@ export default class SelectionPanel {
       }
     });
 
-    state.watch("filters", (filters: Filters) => {
+    state.watch("filters", (filters: any) => {
 
       const filteredTrailIds = this.getFilteredTrails(filters)
                                 .map((trail) => trail.id);
@@ -58,7 +58,7 @@ export default class SelectionPanel {
 
   }
 
-  private getFilteredTrails(filters: Filters): Array<Trail> {
+  private getFilteredTrails(filters: any): Array<Trail> {
     const filteredTrails = this.trails.filter((trail) => {
 
       // we assume the trail will not be filtered out
@@ -74,7 +74,7 @@ export default class SelectionPanel {
         }
         else {
           if (filters[filter] !== "All") {
-            if (trail[filter] !== filters[filter]) {
+            if (trail[filter].toString() !== filters[filter]) {
               keepTrail = false;
               break;
             }

@@ -11,7 +11,7 @@ export interface State extends Accessor {
   setSelectedTrailId: (id: number) => void;
   filteredTrailIds: Array<number>;
   setFilteredTrailIds: (ids: Array<number>) => void;
-  filters: Filters;
+  filters: any;
   setFilter: (property: string, value: string | number[]) => void;
   visiblePanel: "selectionPanel" | "detailPanel" | "basemapPanel";
   device: Device;
@@ -36,11 +36,4 @@ export interface Trail {
   hasZ: boolean;
   setZValues: (view: SceneView) => IPromise;
   createFlickrLayer: () => IPromise;
-}
-
-export interface Filters {
-  walktime: Array<number>;
-  ascent: Array<number>;
-  category: string;
-  difficulty: string;
 }

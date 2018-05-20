@@ -69,12 +69,12 @@ export default class SceneElement {
 
       // remove filters
       if (trailIds.length === 0) {
-        this.trailsLayer.definitionExpression = null;
+        this.trailsLayer.definitionExpression = "1=0";
       }
       // set definitionExpression to display only filtered buildings
       else {
         const query = trailIds.map(function(id) {
-          return "RouteId = " + id;
+          return `${config.data.trailAttributes.id} = ${id}`;
         });
         this.trailsLayer.definitionExpression = query.join(" OR ");
       }
@@ -143,7 +143,7 @@ export default class SceneElement {
             else {
               this.removeLoadingIcon();
               if (result.graphic.layer.title === "Hiking trails") {
-                this.state.setSelectedTrailId(result.graphic.attributes.RouteId);
+                this.state.setSelectedTrailId(result.graphic.attributes[config.data.trailAttributes.id]);
               }
             }
           }
@@ -156,7 +156,7 @@ export default class SceneElement {
             query.spatialRelationship = "intersects";
             this.trailsLayer.queryFeatures(query).then((results) => {
               if (results.features.length > 0) {
-                this.state.setSelectedTrailId(results.features[0].attributes.RouteId);
+                this.state.setSelectedTrailId(results.features[0].attributes[config.data.trailAttributes.id]);
               } else {
                 this.state.setSelectedTrailId(null);
               }
