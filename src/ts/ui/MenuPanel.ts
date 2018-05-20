@@ -75,6 +75,9 @@ export default class MenuPanel {
         }
 
       } else {
+        if (!this.state.selectedTrailId) {
+          this.state.visiblePanel = "selectionPanel";
+        }
         this.container.style.display = "flex";
       }
     });

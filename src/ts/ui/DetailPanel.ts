@@ -39,12 +39,10 @@ export default class SelectionPanel {
     this.emptyDetails();
 
     state.watch("selectedTrailId", (id) => {
+      this.emptyDetails();
       if (id) {
         const selectedTrail = this.trails.filter((trail) => { return trail.id === id; })[0];
         this.displayInfo(selectedTrail);
-      }
-      else {
-        this.emptyDetails();
       }
     });
 
@@ -74,23 +72,20 @@ export default class SelectionPanel {
 
   displayInfo(trail: Trail): void {
 
-    // create title
     this.detailTitle.innerHTML = trail.name;
-
-    // create infograph
     this.createInfograph(trail);
-
-    // create the description container
     this.detailDescription.innerHTML = trail.description;
 
     // create the elevation profile
     if (trail.hasZ) {
       this.createChart(trail.profileData);
     } else {
-      trail.setZValues(this.state.view)
-      .then(() => {
-        this.createChart(trail.profileData);
-      });
+      if (this.state.online) {
+        trail.setZValues(this.state.view)
+          .then(() => {
+            this.createChart(trail.profileData);
+          });
+      }
     }
   }
 

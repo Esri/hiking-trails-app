@@ -11,7 +11,6 @@ export default class State extends declared(Accessor) {
 
   @property()
   selectedTrailId: number = null;
-
   setSelectedTrailId(id: number) {
     this.selectedTrailId = id;
     if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
@@ -21,11 +20,9 @@ export default class State extends declared(Accessor) {
 
   @property()
   filteredTrailIds: Array<number> = [];
-
   setFilteredTrailIds(ids: Array<number>) {
     this.filteredTrailIds = ids;
-
-    // check if the selected trail is in the filtered trails
+    // deselect trail if it is in the filtered out trails
     if (this.filteredTrailIds.indexOf(this.selectedTrailId) === -1) {
       this.selectedTrailId = null;
     }
@@ -33,10 +30,7 @@ export default class State extends declared(Accessor) {
 
   @property()
   filters = {};
-
   setFilter(property: string, value: string | Array<number>): void {
-
-    //create a new filters object so that the watch notifies on every property change
     this.filters = {
       ...this.filters
     };

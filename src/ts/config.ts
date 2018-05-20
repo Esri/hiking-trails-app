@@ -15,7 +15,7 @@ Data:
 
 Colors:
  - change the colors for visualizing the trails
- - for CSS colors check also the variables.scss file
+ - for CSS colors check also the variables.scss file - selectedTrail is $orange
 */
 
 export default {

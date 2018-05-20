@@ -46,9 +46,7 @@ export default class SelectionPanel {
     });
 
     state.watch("filters", (filters: any) => {
-
-      const filteredTrailIds = this.getFilteredTrails(filters)
-                                .map((trail) => trail.id);
+      const filteredTrailIds = this.getFilteredTrails(filters).map((trail) => trail.id);
       this.state.setFilteredTrailIds(filteredTrailIds);
     });
 
