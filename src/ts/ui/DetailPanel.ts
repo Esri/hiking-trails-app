@@ -39,12 +39,10 @@ export default class SelectionPanel {
     this.emptyDetails();
 
     state.watch("selectedTrailId", (id) => {
+      this.emptyDetails();
       if (id) {
         const selectedTrail = this.trails.filter((trail) => { return trail.id === id; })[0];
         this.displayInfo(selectedTrail);
-      }
-      else {
-        this.emptyDetails();
       }
     });
 
@@ -74,17 +72,21 @@ export default class SelectionPanel {
 
   displayInfo(trail: Trail): void {
 
-    // create title
     this.detailTitle.innerHTML = trail.name;
-
-    // create infograph
     this.createInfograph(trail);
-
-    // create the description container
     this.detailDescription.innerHTML = trail.description;
 
     // create the elevation profile
-    this.createChart(trail.profileData);
+    if (trail.hasZ) {
+      this.createChart(trail.profileData);
+    } else {
+      if (this.state.online) {
+        trail.setZValues(this.state.view)
+          .then(() => {
+            this.createChart(trail.profileData);
+          });
+      }
+    }
   }
 
   createInfograph(trail) {
@@ -98,10 +100,10 @@ export default class SelectionPanel {
     }];
 
     this.detailInfograph.innerHTML = `
-      <span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>
-      <span class="infograph"><span class="fa fa-wrench" aria-hidden="true"></span> ${trail.difficulty}</span>
-      <span class="infograph"><span class="fa fa-clock-o" aria-hidden="true"></span> ${trail.walktime} hr</span>
-      <span class="infograph"><span class="${status[trail.status].icon}" aria-hidden="true"></span> ${status[trail.status].text}</span>
+      ${trail.ascent ? `<span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>` : ""}
+      ${trail.difficulty ? `<span class="infograph"><span class="fa fa-wrench" aria-hidden="true"></span> ${trail.difficulty}</span>` : ""}
+      ${trail.walktime ? `<span class="infograph"><span class="fa fa-clock-o" aria-hidden="true"></span> ${trail.walktime} hr</span>` : ""}
+      ${trail.status ? `<span class="infograph"><span class="${status[trail.status].icon}" aria-hidden="true"></span> ${status[trail.status].text}</span>` : ""}
     `;
 
   }

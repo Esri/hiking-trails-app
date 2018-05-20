@@ -15,25 +15,28 @@ export default class BasemapPanel {
     this.container = dom.byId("basemapPanel");
     this.basemapContainer = document.querySelector(".basemaps");
 
-    const basemapGroup = <GroupLayer> state.view.map.layers.filter((layer) => {
-      return (layer.title === "Basemap");
-    }).getItemAt(0);
+    state.view.when(() => {
+      const basemapGroup = <GroupLayer> state.view.map.layers.filter((layer) => {
+        return (layer.title === "Basemap");
+      }).getItemAt(0);
 
-    basemapGroup.layers.forEach((layer) => {
+      basemapGroup.layers.forEach((layer) => {
 
-      // get access to portalItem property
-      const portalLayer = <GroupLayer> layer;
-      const basemapItem = domConstruct.create("div", {
-        class: "basemapItem",
-        style: `background: url(${portalLayer.portalItem.thumbnailUrl}) no-repeat center`,
-        "data-id": layer.id,
-        innerHTML: `<div>${layer.title}</div>`
-      }, this.basemapContainer);
+        // get access to portalItem property
+        const portalLayer = <GroupLayer> layer;
+        const basemapItem = domConstruct.create("div", {
+          class: "basemapItem",
+          style: `background: url(${portalLayer.portalItem.thumbnailUrl}) no-repeat center`,
+          "data-id": layer.id,
+          innerHTML: `<div>${layer.title}</div>`
+        }, this.basemapContainer);
 
-      on(basemapItem, "click", (evt) => {
-        state.currentBasemapId = evt.target.dataset.id;
+        on(basemapItem, "click", (evt) => {
+          state.currentBasemapId = evt.target.dataset.id;
+        });
       });
     });
+
 
   }
 }

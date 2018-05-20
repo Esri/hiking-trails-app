@@ -85,7 +85,7 @@ export default class FlickrLayer extends FeatureLayer {
   photoList: any[] = [];
   imagesLoaded: boolean = false;
 
-  constructor(wayPoints) {
+  constructor() {
     super({
       elevationInfo: {
         mode: "relative-to-scene"
@@ -111,36 +111,10 @@ export default class FlickrLayer extends FeatureLayer {
       })
     });
 
-    esriConfig.request.corsEnabledServers.push("https://api.flickr.com/");
 
-    for (let i = 1; i <= 9; i++) {
-      esriConfig.request.corsEnabledServers.push(`https://farm${i}.staticflickr.com/`);
-    }
-
-    const requests = [];
-    const radius = 0.5;
-
-    wayPoints.forEach((point) => {
-      const url = `https://api.flickr.com/services/rest/?
-        method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
-        &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
-        &per_page=1
-        &content_type=1
-        &license=1,2,3,4,5,6,7,8,9`;
-      requests.push(esriRequest(url, { responseType: "xml" }));
-    });
-
-    all(requests).then((results) => {
-      results.forEach((result) => {
-        const photo = result.data.getElementsByTagName("photo");
-        if (photo.length > 0) {
-          this.photoList.push(photo[0]);
-        }
-      });
-    });
   }
 
-  public loadImages() {
+  public loadImages(wayPoints) {
     if (this.imagesLoaded) {
       //create a fake promise
       const deferred = new Deferred();
@@ -149,7 +123,36 @@ export default class FlickrLayer extends FeatureLayer {
     }
     else {
       this.imagesLoaded = true;
-      return setImages(this);
+      esriConfig.request.corsEnabledServers.push("https://api.flickr.com/");
+
+      for (let i = 1; i <= 9; i++) {
+        esriConfig.request.corsEnabledServers.push(`https://farm${i}.staticflickr.com/`);
+      }
+
+      const requests = [];
+      const radius = 0.5;
+
+      wayPoints.forEach((point) => {
+        const url = `https://api.flickr.com/services/rest/?
+          method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
+          &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
+          &per_page=1
+          &content_type=1
+          &license=1,2,3,4,5,6,7,8,9`;
+        requests.push(esriRequest(url, { responseType: "xml" }));
+      });
+
+      return all(requests).then((results) => {
+        results.forEach((result) => {
+          const photo = result.data.getElementsByTagName("photo");
+          if (photo.length > 0) {
+            this.photoList.push(photo[0]);
+          }
+        });
+      })
+      .then(() => {
+        return setImages(this);
+      });
     }
 
   }
