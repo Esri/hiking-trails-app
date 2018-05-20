@@ -4,14 +4,13 @@ declare const serviceWorkerOption: {
   assets: string[];
 };
 
-const CACHE_NAME = "hiking-trails-v4";
+const CACHE_NAME = "hiking-trails-v5";
 
 function generateAssets(): Asset[] {
   const assets: Asset[] = [];
 
   generateAppResources(assets);
   generateRootResources(assets);
-  generateAPIResources(assets);
 
   return assets;
 }
@@ -33,41 +32,7 @@ function generateRootResources(assets: Asset[]) {
   assets.push(`${root}/src/img/background.jpg`);
 }
 
-function generateAPIResources(assets: Asset[]) {
-  const resources = [
-    "dojo/dojo.js",
-    "dojo/nls/dojo_en-us.js",
-    "esri/views/SceneView.js",
-    "esri/WebScene.js",
-    "esri/views/nls/SceneView_en-us.js",
-    "dojo/resources/blank.gif",
-    "esri/workers/mutableWorker.js",
-    "esri/workers/indexWorker.js",
-    "esri/workers/scripts/helpers.js",
-    "esri/workers/scripts/indexInterface.js",
-    "esri/workers/libs/rtree.js",
-    "esri/geometry/geometryEngine.js",
-    "esri/layers/GraphicsLayer.js",
-    "esri/layers/support/ElevationQuery.js",
-    "esri/portal/support/layersLoader.js",
-    "esri/views/layers/GroupLayerView.js",
-    "esri/views/3d/webgl-engine/lib/SmaaRenderPassData.js",
-    "esri/layers/support/ElevationTile.js",
-    "esri/views/3d/layers/TileLayerView3D.js",
-    "esri/css/main.css",
-    "esri/themes/base/icons/fonts/CalciteWebCoreIcons.ttf?cu4poq",
-    "esri/themes/base/fonts/avenir-next/Avenir_Next_W00_400.woff2",
-    "esri/views/3d/environment/resources/stars.wsv"
-  ];
-
-  assets.push("https://js.arcgis.com/4.7/");
-
-  for (const resource of resources) {
-    assets.push(`https://js.arcgis.com/4.7/${resource}`);
-  }
-}
-
- const imageryDomain = "services.arcgisonline.com";
+const imageryDomain = "services.arcgisonline.com";
 
 self.addEventListener("install", (event: any) => {
   console.log("install");
