@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
     filename: "[name].css",
@@ -60,9 +61,15 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/,
-        use: [
-          { loader: "url-loader" }
-        ]
+        loader: "url-loader",
+        options: {
+          limit: 10 * 1024
+        }
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: "image-webpack-loader",
+        enforce: "pre"
       }
     ]
   },
@@ -76,6 +83,7 @@ module.exports = {
       filename: '../sw.js',
       publicPath: '/hiking-app/dist/'
     }),
+    new UglifyJsPlugin()
 
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
