@@ -4,7 +4,7 @@ declare const serviceWorkerOption: {
   assets: string[];
 };
 
-const CACHE_NAME = "hiking-trails-v3";
+const CACHE_NAME = "hiking-trails-v4";
 
 function generateAssets(): Asset[] {
   const assets: Asset[] = [];
@@ -12,8 +12,6 @@ function generateAssets(): Asset[] {
   generateAppResources(assets);
   generateRootResources(assets);
   generateAPIResources(assets);
-  generateBasemapResources(assets);
-  generateGroundResources(assets);
 
   return assets;
 }
@@ -69,44 +67,7 @@ function generateAPIResources(assets: Asset[]) {
   }
 }
 
- // const imageryDomain = "services.arcgisonline.com";
- const imageryDomain = "wtb.maptiles.arcgis.com";
-
- function generateTileResources(serverUrl: string, numLevels: number, assets: Asset[]) {
-   assets.push(`${serverUrl}?f=json`);
-
-   for (let i = 8; i < numLevels; i++) {
-     const n = 1 << i;
-
-     assets.push(`${serverUrl}/tilemap/${i}/0/0/32/32`);
-
-     for (let x = 0; x < n; x++) {
-       for (let y = 0; y < n; y++) {
-         assets.push(`${serverUrl}/tile/${i}/${x}/${y}`);
-       }
-     }
-   }
-  }
-
- function generateBasemapResources(assets: Asset[]) {
-   const serverUrl = `https://${imageryDomain}/ArcGIS/rest/services/World_Imagery/MapServer`;
-   const cachedLevels = 12;
-
-   generateTileResources(serverUrl, cachedLevels, assets);
- }
-
-function generateGroundResources(assets: Asset[]) {
-   const serverUrl = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer";
-   const cachedLevels = 12;
-
-   generateTileResources(serverUrl, cachedLevels, assets);
- }
-
-function generatePortalResources(assets: Asset[]) {
-   assets.push(
-     "https://www.arcgis.com/sharing/rest/portals/self?f=json&culture=en-us"
-   );
- }
+ const imageryDomain = "services.arcgisonline.com";
 
 self.addEventListener("install", (event: any) => {
   console.log("install");
