@@ -1,6 +1,6 @@
 {
-  "short_name": "Hiking trails",
-  "name": "Hiking trails Swiss National Park",
+  "short_name": "Hiking app",
+  "name": "Hiking app Swiss National Park",
   "icons": [{
       "src": "src/img/android-icon-36x36.png",
       "sizes": "36x36",
