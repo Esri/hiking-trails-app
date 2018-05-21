@@ -37,3 +37,8 @@
 .esri-popup__pointer-direction.esri-popup--shadow {
   background: rgb(249, 163, 82);
 }
+
+.esri-popup--feature-updated {
+  transition: none;
+  opacity: 1;
+}
