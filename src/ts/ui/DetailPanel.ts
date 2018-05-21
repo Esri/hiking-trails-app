@@ -91,13 +91,16 @@ export default class SelectionPanel {
 
   createInfograph(trail) {
 
-    const status = [{
-      icon: "fa fa-calendar-times-o",
-      text: "Closed"
-    }, {
-      icon: "fa fa-calendar-check-o",
-      text: "Open"
-    }];
+    const status = {
+      Closed: {
+        icon: "fa fa-calendar-times-o",
+        text: "Closed"
+      },
+      Open: {
+        icon: "fa fa-calendar-check-o",
+        text: "Open"
+      }
+    };
 
     this.detailInfograph.innerHTML = `
       ${trail.ascent ? `<span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>` : ""}

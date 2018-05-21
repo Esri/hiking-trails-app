@@ -23,20 +23,19 @@ export default {
     websceneItemId: "d0580bb5df3840d384bda44b6ddeb54e"
   },
   data: {
-    trailsServiceUrl: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/SwissNationalParkTrails/FeatureServer/0",
+    trailsServiceUrl: "https://services2.arcgis.com/cFEFS0EWrhfDeVw9/arcgis/rest/services/SwissNationalParkTrails/FeatureServer/0",
     trailAttributes: {
       name: "Name",
       id: "RouteId",
       difficulty: "Difficulty",
-      category: "Category",
       walktime: "Hiketime",
-      status: "Status",
+      status: "Access",
       ascent: "Ascent",
       description: "Description"
     },
     filterOptions: {
-      singleChoice: ["difficulty", "category"],
-      range: ["walktime", "ascent"]
+      singleChoice: ["difficulty", "status"], // have string values
+      range: ["walktime", "ascent"] // have numeric values
     }
   },
   colors: {
