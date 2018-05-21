@@ -25,8 +25,10 @@ export default class Trail {
   }
 
   setZValues(view) {
-    return view.map.ground.queryElevation(this.geometry)
-      .then((response) => {
+    const elevationLayer = view.map.ground.layers.find((layer) => layer.title === "Terrain3D");
+    return elevationLayer.queryElevation(this.geometry, {
+      demResolution: "finest-contiguous"
+    }).then((response) => {
         this.geometry = response.geometry;
         this.hasZ = true;
         [this.profileData, this.segments] = this.getProperties();
@@ -63,7 +65,7 @@ export default class Trail {
           }
         }
 
-        if (length > 10) {
+        if (length > 150) {
           totalLength += length;
           points.push({ point: path[j], length: Math.round(totalLength / 100) / 10, value: Math.round(path[i][2]) });
           break;
