@@ -55,7 +55,7 @@ export default class Trail {
     const points = [];
     let totalLength = 0;
     let segmentLength = 0;
-    const path = this.geometry.paths[0];
+    const path = this.getLongestPath();
     const segments = [path[0]];
     let i = 0, j;
 
@@ -84,6 +84,20 @@ export default class Trail {
       i = j;
     }
     return [points, segments];
+  }
+
+  private getLongestPath(): number[][] {
+    let longestPath = null;
+    let maxPathLength = 0;
+    for (const path of this.geometry.paths) {
+      const length = this.computeLength(path);
+      if (length > maxPathLength) {
+        maxPathLength = length;
+        longestPath = path;
+      }
+    }
+
+    return longestPath;
   }
 
   private computeLength(path: number[][]): number {
