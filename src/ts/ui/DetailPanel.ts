@@ -74,7 +74,7 @@ export default class SelectionPanel {
 
     this.detailTitle.innerHTML = trail.name;
     this.createInfograph(trail);
-    this.detailDescription.innerHTML = trail.description;
+    this.detailDescription.innerHTML = `<b>Particularities: </b> ${ trail.description }`;
 
     // create the elevation profile
     if (trail.profileData) {
