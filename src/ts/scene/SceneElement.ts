@@ -11,6 +11,9 @@ import * as FeatureLayer from "esri/layers/FeatureLayer";
 import * as Query from "esri/tasks/support/Query";
 import * as GroupLayer from "esri/layers/GroupLayer";
 import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
+import * as NavigationToggle from "esri/widgets/NavigationToggle";
+import * as Zoom from "esri/widgets/Zoom";
+import * as Compass from "esri/widgets/Compass";
 import * as all from "dojo/promise/all";
 import * as esriConfig from "esri/config";
 import * as watchUtils from "esri/core/watchUtils";
@@ -97,7 +100,7 @@ export default class SceneElement {
       }
     });
 
-    return new SceneView({
+    const view = new SceneView({
       container: "scenePanel",
       map: webscene,
       constraints: {
@@ -127,16 +130,33 @@ export default class SceneElement {
       }
     });
 
+    const navigationToggle = new NavigationToggle({
+      view: view
+    });
+
+    const zoom = new Zoom({
+      view: view
+    });
+
+    const compass = new Compass({
+      view: view
+    });
+
+    view.ui.add([zoom, navigationToggle, compass], "top-right");
+    return view;
+
   }
 
   private setViewPadding() {
     if (this.state.device === "mobilePortrait") {
       this.view.padding = {
+        top: 30,
         left: 0
       };
     }
     else {
       this.view.padding = {
+        top: 30,
         left: 350
       };
     }
