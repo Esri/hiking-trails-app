@@ -1,21 +1,27 @@
 import config from "../config";
 import * as Polyline from "esri/geometry/Polyline";
 import * as geometryEngine from "esri/geometry/geometryEngine";
+import * as Deferred from "dojo/Deferred";
+import State from "../State";
 
 import FlickrLayer from "../scene/FlickrLayer";
+
+
 
 export default class Trail {
 
   geometry: Polyline;
-  hasZ = false;
+  elevationIsSet;
   profileData: Array<any>;
   flickrLayer: FlickrLayer;
   segments: any;
+  state: State;
 
-  constructor(feature) {
+  constructor(feature, state) {
 
     this.geometry = feature.geometry;
-
+    this.state = state;
+    this.elevationIsSet = null;
     // add attribute data based on the mapping in the configuration file
     const attributeMap = config.data.trailAttributes;
     for (const prop in attributeMap) {
@@ -24,15 +30,19 @@ export default class Trail {
 
   }
 
-  setZValues(view) {
-    const elevationLayer = view.map.ground.layers.find((layer) => layer.title === "Terrain3D");
-    return elevationLayer.queryElevation(this.geometry, {
-      demResolution: "finest-contiguous"
-    }).then((response) => {
-        this.geometry = response.geometry;
-        this.hasZ = true;
-        [this.profileData, this.segments] = this.getProperties();
-      });
+  setElevationValuesFromService() {
+    if (!this.elevationIsSet) {
+      this.elevationIsSet = new Deferred();
+      const elevationLayer = this.state.view.map.ground.layers.getItemAt(0);
+      elevationLayer.queryElevation(this.geometry, {
+        demResolution: "finest-contiguous"
+      }).then((response) => {
+          this.geometry = (<Polyline> response.geometry);
+          [this.profileData, this.segments] = this.getProperties();
+          this.elevationIsSet.resolve(1);
+        });
+    }
+    return this.elevationIsSet.promise;
   }
 
   public createFlickrLayer() {

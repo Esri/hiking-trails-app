@@ -77,11 +77,11 @@ export default class SelectionPanel {
     this.detailDescription.innerHTML = trail.description;
 
     // create the elevation profile
-    if (trail.hasZ) {
+    if (trail.profileData) {
       this.createChart(trail.profileData);
     } else {
       if (this.state.online) {
-        trail.setZValues(this.state.view)
+        trail.setElevationValuesFromService()
           .then(() => {
             this.createChart(trail.profileData);
           });

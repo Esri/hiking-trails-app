@@ -25,9 +25,8 @@ const trailManager = {
 
   initTrails: (state) => {
     return queryTrails().then((result) => {
-      console.log(result);
         state.trails = result.features.map((feature) => {
-          return new Trail(feature);
+          return new Trail(feature, state);
         });
       })
       .catch((err) => {

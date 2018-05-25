@@ -36,4 +36,5 @@ export interface Trail {
   hasZ: boolean;
   setZValues: (view: SceneView) => IPromise;
   createFlickrLayer: () => IPromise;
+  setElevationValuesFromService: () => IPromise;
 }

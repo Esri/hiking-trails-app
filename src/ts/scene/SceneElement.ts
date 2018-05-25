@@ -285,19 +285,19 @@ export default class SceneElement {
       { speedFactor: 0.5 }
     );
 
-    if (selectedTrail.hasZ) {
-      this.view.map.add(selectedTrail.flickrLayer);
-    } else {
-      if (this.state.online) {
-        selectedTrail.setZValues(this.view)
-          .then(() => {
-            selectedTrail.createFlickrLayer()
+   if (selectedTrail.flickrLayer) {
+    this.view.map.add(selectedTrail.flickrLayer);
+   } else {
+    if (this.state.online) {
+      selectedTrail.setElevationValuesFromService()
+        .then(() => {
+          selectedTrail.createFlickrLayer()
             .then(() => {
               this.view.map.add(selectedTrail.flickrLayer);
             });
-          });
-      }
+        });
     }
+   }
 
   }
 
