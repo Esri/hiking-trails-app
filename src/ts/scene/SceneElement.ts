@@ -311,10 +311,12 @@ export default class SceneElement {
     if (this.state.online) {
       selectedTrail.setElevationValuesFromService()
         .then(() => {
-          selectedTrail.createFlickrLayer()
+          if (config.flickrApiKey) {
+            selectedTrail.createFlickrLayer()
             .then(() => {
               this.view.map.add(selectedTrail.flickrLayer);
             });
+          }
         });
     }
    }
@@ -332,9 +334,19 @@ export default class SceneElement {
     const selectedTrail = this.state.trails.filter((trail) => {
       return (trail.id === oldId);
     })[0];
-    this.view.map.remove(selectedTrail.flickrLayer);
 
+    if (config.flickrApiKey) {
+      this.removeFlickrLayers();
+    }
     this.removeImage();
+  }
+
+  private removeFlickrLayers() {
+    this.view.map.layers.forEach((layer) => {
+      if (layer.title === "Flickr") {
+        this.view.map.remove(layer);
+      }
+    });
   }
 
 

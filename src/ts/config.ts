@@ -10,12 +10,17 @@ Data:
  - replace the trails service url
  - replace the attribute names to the ones in your service
  - remove attributes if they don't make sense for your data
+ - Status has hard-coded values Open/Closed (whether the track is open or closed)
  - filterOptions are the attributes that will be used for filtering
     they can be removed in case they are not useful
 
 Colors:
  - change the colors for visualizing the trails
  - for CSS colors check also the variables.scss file - selectedTrail is $orange
+
+ Flickr API key:
+ - your Flickr API key: https://www.flickr.com/services/api/
+ - set it to an empty string if no Flickr images should be displayed
 */
 
 export default {
@@ -41,5 +46,6 @@ export default {
   colors: {
     defaultTrail: "#db5353",
     selectedTrail: "#f9a352"
-  }
+  },
+  flickrApiKey: ""
 };

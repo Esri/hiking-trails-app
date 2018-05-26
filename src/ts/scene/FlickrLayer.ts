@@ -12,6 +12,8 @@ import * as IconSymbol3DLayer from "esri/symbols/IconSymbol3DLayer";
 import * as all from "dojo/promise/all";
 import * as Deferred from "dojo/Deferred";
 
+import config from "../config";
+
 function setImages(layer) {
   const promises = [];
   const photos = layer.photoList;
@@ -19,7 +21,7 @@ function setImages(layer) {
     const photo = photos[i];
     promises.push(esriRequest(`https://api.flickr.com/services/rest/?
       method=flickr.photos.geo.getLocation&
-      api_key=d2eeadac35a3dfc3fb64a92e7c792de0&
+      api_key=${config.flickrApiKey}&
       photo_id=${photo.getAttribute("id")}`,
       { responseType: "xml" }));
   }
@@ -138,7 +140,7 @@ export default class FlickrLayer extends FeatureLayer {
           &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
           &per_page=1
           &content_type=1
-          &license=1,2,3,4,5,6,7,8,9`;
+          &license=2,3,4,5,6,7,8,9`;
         requests.push(esriRequest(url, { responseType: "xml" }));
       });
 
