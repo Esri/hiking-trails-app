@@ -4,7 +4,7 @@ declare const serviceWorkerOption: {
   assets: string[];
 };
 
-const CACHE_NAME = "hiking-trails-v5";
+const CACHE_NAME = "hiking-trails-v6";
 
 function generateAssets(): Asset[] {
   const assets: Asset[] = [];
