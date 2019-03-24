@@ -1,3 +1,19 @@
+/* Copyright 2017 Esri
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import config from "../config";
 import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from "./utils";
 
@@ -14,15 +30,10 @@ import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
 import * as NavigationToggle from "esri/widgets/NavigationToggle";
 import * as Zoom from "esri/widgets/Zoom";
 import * as Compass from "esri/widgets/Compass";
-import * as all from "dojo/promise/all";
-import * as esriConfig from "esri/config";
-import * as watchUtils from "esri/core/watchUtils";
 
 import "../../style/scene-panel.scss";
 
 import { State } from "../types";
-
-esriConfig.request.corsEnabledServers.push("wtb.maptiles.arcgis.com");
 
 export default class SceneElement {
 
