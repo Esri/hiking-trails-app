@@ -10,12 +10,12 @@
 /******** Esri popups *************/
 
 
-.esri-popup__header-buttons, .esri-popup__feature-buttons {
+.esri-popup__header-buttons, .esri-popup__feature-buttons, .esri-popup__footer {
   display: none;
 }
 
 .esri-popup__header-title.esri-popup__header-title--button {
-  padding: 6px;
+  padding: 2px;
 }
 
 .esri-popup__header {
@@ -23,15 +23,15 @@
 }
 
 .esri-popup__main-container.esri-widget {
-  width: 70px;
+  width: 75px;
   text-align: center;
   background: rgb(249, 163, 82);
   border-radius: 3px;
   color: white;
 }
 
-.esri-popup__header>h1{
-  font-size: 1em;
+.esri-popup__header h2{
+  padding: 0.5em;
 }
 
 .esri-popup__pointer-direction.esri-popup--shadow {
