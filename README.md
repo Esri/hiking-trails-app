@@ -4,14 +4,13 @@ This application displays the hiking trails in the [Swiss National Park](http://
 
 [View it live](https://ralucanicola.github.io/hiking-app)
 
+![hiking-trails-app](screenshots/screenshot1.PNG)
+
 ## Features
 
 * Displaying hikes on a 3D map along with the altitude profile, descriptions and images. The altitude profile is automatically generated from the elevation service used in the map. The images are a selection of images marked under creative-commons license from Flickr.
 
- ![screenshot](screenshots/screenshot1.PNG)
 * The hikes can be filtered by Difficulty, Category, Walktime and Ascent. These categories are used to describe the degree of difficulty of the trails, according to the [Swiss National Park description](http://www.nationalpark.ch/en/visit/trails-routes).
-
- ![screenshot](screenshots/screenshot2.PNG)
 
 ## Instructions
 
