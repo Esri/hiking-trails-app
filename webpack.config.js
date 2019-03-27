@@ -13,8 +13,9 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    publicPath: "",
-    libraryTarget: "amd"
+    /* path: path.join(__dirname, 'dist'),
+    filename: '[name].bundle.js', */
+    libraryTarget: 'amd'
   },
   optimization: {
     minimizer: [
