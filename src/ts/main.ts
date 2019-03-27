@@ -14,6 +14,9 @@
  *
  */
 
+import "../style/reset.scss";
+import "../style/style.scss";
+
 import esriConfig = require("esri/config");
 esriConfig.request.useIdentity = false;
 

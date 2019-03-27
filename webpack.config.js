@@ -8,8 +8,7 @@ const path = require('path');
 module.exports = {
   entry: {
     main: [
-      './src/ts/main.ts',
-      './src/style/main.scss',
+      './src/ts/main.ts'
     ]
   },
   output: {
