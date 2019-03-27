@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "amcharts3": "^3.21.14",
+    "font-awesome": "^4.7.0",
     "nouislider": "^11.0.0"
   }
 }
