@@ -70,7 +70,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json', '.scss']
+    extensions: ['.ts', '.js', '.json']
   },
   plugins: [
     new ServiceWorkerWebpackPlugin({
