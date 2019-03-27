@@ -1,27 +1,21 @@
 const webpack = require('webpack');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const TSLintPlugin = require('tslint-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 
 module.exports = {
   entry: {
     main: [
-      './src/ts/main.ts'
+      './src/ts/main.ts',
+      './src/style/main.scss',
     ]
   },
   output: {
-    filename: './dist/[name].bundle.js',
-    /* path: path.join(__dirname, 'dist'),
-    filename: '[name].bundle.js', */
-    libraryTarget: 'amd'
+    filename: '[name].bundle.js',
+    publicPath: "",
   },
   module: {
-    loaders:[
-    {
-      test: /\.json$/,
-      loader: 'json-loader'
-    }
-    ],
     rules: [
       {
         test: /\.(ts|tsx)$/,
@@ -56,7 +50,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json', '.scss']
   },
   devtool: 'eval-source-map',
   plugins: [
@@ -67,6 +61,10 @@ module.exports = {
     }),
     new TSLintPlugin({
       files: ['./src/ts/**/*.ts']
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     })
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -92,4 +90,3 @@ module.exports = {
     }
   ]
 }
-

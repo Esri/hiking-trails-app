@@ -28,8 +28,6 @@ import "amcharts3/amcharts/serial";
 
 import "../../style/detail-panel.scss";
 
-import "font-awesome/scss/font-awesome.scss";
-
 import { State, Trail } from "../types";
 
 export default class SelectionPanel {
@@ -191,4 +189,3 @@ export default class SelectionPanel {
   }
 
 }
-
