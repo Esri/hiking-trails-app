@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const TSLintPlugin = require('tslint-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require('path');
 
 module.exports = {
@@ -10,18 +12,21 @@ module.exports = {
     ]
   },
   output: {
-    filename: './dist/[name].bundle.js',
+    filename: '[name].bundle.js',
     /* path: path.join(__dirname, 'dist'),
     filename: '[name].bundle.js', */
     libraryTarget: 'amd'
   },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: false
+      })
+    ]
+  },
   module: {
-    loaders:[
-    {
-      test: /\.json$/,
-      loader: 'json-loader'
-    }
-    ],
     rules: [
       {
         test: /\.(ts|tsx)$/,
@@ -39,43 +44,53 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [{
-          loader: "style-loader"
-        }, {
-            loader: "css-loader"
-        }, {
-            loader: "sass-loader"
-        }],
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "resolve-url-loader",
+            options: { includeRoot: true }
+          },
+          "sass-loader?sourceMap"
+        ]
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/,
-        use: [
-          { loader: "url-loader" }
-        ]
+        loader: "url-loader",
+        options: {
+          // Inline files smaller than 10 kB (10240 bytes)
+          limit: 10 * 1024
+        }
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: "image-webpack-loader",
+        enforce: "pre"
       }
     ]
   },
   resolve: {
     extensions: ['.ts', '.js', '.json']
   },
-  devtool: 'eval-source-map',
   plugins: [
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, 'src/ts/sw.ts'),
       filename: '../sw.js',
-      publicPath: '/hiking-app/dist/'
+      publicPath: '/hiking-trails-app/dist/'
     }),
     new TSLintPlugin({
       files: ['./src/ts/**/*.ts']
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+    new UglifyJsPlugin()
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity
     }) */
   ],
-  devServer: {
-    contentBase: __dirname
-  },
   externals: [
     function (context, request, callback) {
       // exclude any esri or dojo modules from the bundle
@@ -92,4 +107,3 @@ module.exports = {
     }
   ]
 }
-
