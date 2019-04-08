@@ -3,6 +3,7 @@ const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const TSLintPlugin = require('tslint-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -75,8 +76,8 @@ module.exports = {
   plugins: [
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, 'src/ts/sw.ts'),
-      filename: '../sw.js',
-      publicPath: '/hiking-trails-app/dist/'
+      filename: 'sw.js',
+      publicPath: '/hiking-trails-app/'
     }),
     new TSLintPlugin({
       files: ['./src/ts/**/*.ts']
@@ -85,7 +86,17 @@ module.exports = {
       filename: "[name].css",
       chunkFilename: "[id].css"
     }),
-    new UglifyJsPlugin()
+    new UglifyJsPlugin(),
+    new CopyWebpackPlugin([
+      { from: 'src/img',  to: 'src/img', force: true },
+      { from: 'index.html', to: 'index.html', force: true,
+        transform(content) {
+          return content.toString().replace(/dist\//g, "");
+        }
+      },
+      { from: 'manifest.json',  to: 'manifest.json', force: true },
+      { from: 'sw.js',  to: 'sw.js', force: true },
+    ]),
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity
