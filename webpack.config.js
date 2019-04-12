@@ -100,6 +100,7 @@ module.exports = {
       { from: 'src/img',  to: 'src/img', force: true },
     ]),
     new WebpackPwaManifest({
+      filename: "manifest.json",
       name: "Hiking app Swiss National Park",
       short_name: "Hiking app",
       description: "Hiking app",
