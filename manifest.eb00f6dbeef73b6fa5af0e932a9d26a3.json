@@ -1,0 +1,46 @@
+{
+  "icons": [
+    {
+      "src": "icon_512x512.3d6e81301115b221e9860268ae5f257f.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_192x192.509db5bff8c0ba3b390629e9985eb64f.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_144x144.324ea43a70dc9e962066099b2864c385.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_96x96.268048507c7311fb80858a68c3f3a0d0.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_72x72.74c7133420ddce615b04be920420c084.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_48x48.4a2d8dab624671db4e89dd4ed06aaacf.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_36x36.7d61c41e4e1fe3be5f28f5927ecee520.png",
+      "sizes": "36x36",
+      "type": "image/png"
+    }
+  ],
+  "name": "Hiking app Swiss National Park",
+  "short_name": "Hiking app",
+  "display": "standalone",
+  "start_url": "index.html",
+  "description": "Hiking app",
+  "background_color": "#2d2b07",
+  "theme_color": "#b5e2c1"
+}
