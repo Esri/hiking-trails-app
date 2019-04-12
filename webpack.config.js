@@ -1,9 +1,12 @@
 const webpack = require('webpack');
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const TSLintPlugin = require('tslint-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require('path');
 
 module.exports = {
@@ -13,7 +16,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].[chunkhash].js',
     /* path: path.join(__dirname, 'dist'),
     filename: '[name].bundle.js', */
     libraryTarget: 'amd'
@@ -74,6 +77,7 @@ module.exports = {
     extensions: ['.ts', '.js', '.json']
   },
   plugins: [
+    new CleanWebpackPlugin(['dist/*']),
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, 'src/ts/sw.ts'),
       filename: 'sw.js',
@@ -83,20 +87,33 @@ module.exports = {
       files: ['./src/ts/**/*.ts']
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
+      filename: "[name].[chunkhash].css",
       chunkFilename: "[id].css"
     }),
     new UglifyJsPlugin(),
+    new HtmlWebPackPlugin({
+      title: "Hiking trails",
+      template: "./index.html",
+      inject: false
+    }),
     new CopyWebpackPlugin([
       { from: 'src/img',  to: 'src/img', force: true },
-      { from: 'index.html', to: 'index.html', force: true,
-        transform(content) {
-          return content.toString().replace(/dist\//g, "");
-        }
-      },
-      { from: 'manifest.json',  to: 'manifest.json', force: true },
-      { from: 'sw.js',  to: 'sw.js', force: true },
     ]),
+    new WebpackPwaManifest({
+      name: "Hiking app Swiss National Park",
+      short_name: "Hiking app",
+      description: "Hiking app",
+      background_color: "#2d2b07",
+      theme_color: "#b5e2c1",
+      start_url: "index.html",
+      orientation: "omit",
+      icons: [
+        {
+          src: path.resolve("src/img/android-icon-512x512.png"),
+          sizes: [36, 48, 72, 96, 144, 192, 512]
+        }
+      ]
+    })
     /* new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity
