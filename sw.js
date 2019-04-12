@@ -1,8 +1,8 @@
 var serviceWorkerOption = {
   "assets": [
     "/hiking-trails-app/85698bcebe119154bb58475f0b76cf1e.jpg",
-    "/hiking-trails-app/fee66e712a8a08eef5805a46892932ad.woff",
     "/hiking-trails-app/af7ae505a9eed503f8b8e6982036873e.woff2",
+    "/hiking-trails-app/fee66e712a8a08eef5805a46892932ad.woff",
     "/hiking-trails-app/674f50d287a8c48dc19ba404d20fe713.eot",
     "/hiking-trails-app/b06871f281fee6b241d60582ae9369b9.ttf",
     "/hiking-trails-app/760bd83ee04dff470e0277f3eb7deebe.svg",
