@@ -47,5 +47,5 @@ export default {
     defaultTrail: "#db5353",
     selectedTrail: "#f9a352"
   },
-  flickrApiKey: ""
+  flickrApiKey: "61beb1c6dfe15c266afb403a3297b5a7"
 };

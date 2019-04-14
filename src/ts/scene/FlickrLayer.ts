@@ -122,6 +122,7 @@ export default class FlickrLayer extends FeatureLayer {
       featureReduction: {
         type: "selection"
       },
+      outFields: ["*"],
       renderer: new UniqueValueRenderer({
         field: "ObjectID",
         defaultSymbol: new PointSymbol3D()
