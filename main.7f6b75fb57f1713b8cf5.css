@@ -375,7 +375,7 @@ b {
   bottom: 0;
   display: table;
   font-size: 1.2em;
-  background-image: url(85698bcebe119154bb58475f0b76cf1e.jpg);
+  background-image: url(76971684dd3ecda4b869a7091aa8f00f.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -3678,7 +3678,7 @@ b {
 #filterPanel .noUi-active .noUi-tooltip {
   display: block;
 }
-/*! nouislider - 11.0.0 - 2018-01-12 20:37:52 */
+/*! nouislider - 13.1.4 - 3/20/2019 */
 
 /* Functional styling;
  * These styles are required for noUiSlider to function.
@@ -3713,7 +3713,7 @@ b {
 }
 
 /* Wrapper for all connect elements.
- */
+  */
 
 .noUi-connects {
   overflow: hidden;
@@ -3729,13 +3729,24 @@ b {
   left: 0;
   height: 100%;
   width: 100%;
+  -ms-transform-origin: 0 0;
   -webkit-transform-origin: 0 0;
+  -webkit-transform-style: preserve-3d;
   transform-origin: 0 0;
+  transform-style: flat;
+}
+
+/* Offset direction
+  */
+
+html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
+  left: auto;
+  right: 0;
 }
 
 /* Give origins 0 height/width so they don't interfere with clicking the
- * connect elements.
- */
+  * connect elements.
+  */
 
 .noUi-vertical .noUi-origin {
   width: 0;
@@ -3746,7 +3757,14 @@ b {
 }
 
 .noUi-handle {
-  position: relative;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  position: absolute;
+}
+
+.noUi-touch-area {
+  height: 100%;
+  width: 100%;
 }
 
 .noUi-state-tap .noUi-connect,
@@ -3760,34 +3778,38 @@ b {
 }
 
 /* Slider size and handle placement;
- */
+  */
 
 .noUi-horizontal {
-  height: 10px;
+  height: 18px;
 }
 
 .noUi-horizontal .noUi-handle {
-  width: 15px;
-  height: 15px;
-  left: -9px;
-  top: -3px;
-  border: 1px solid #b5e2c1;
+  width: 34px;
+  height: 28px;
+  left: -17px;
+  top: -6px;
 }
 
 .noUi-vertical {
-  width: 10px;
+  width: 18px;
 }
 
 /* .noUi-vertical .noUi-handle {
-  width: 15px;
-  height: 15px;
-  left: -6px;
-  top: -19px;
-} */
+   width: 28px;
+   height: 34px;
+   left: -6px;
+   top: -17px;
+ } */
+
+html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
+  right: -17px;
+  left: auto;
+}
 
 /* Styling;
- * Giving the connect element a border radius causes issues with using transform: scale
- */
+  * Giving the connect element a border radius causes issues with using transform: scale
+  */
 
 .noUi-target {
   background: #FAFAFA;
@@ -3796,12 +3818,16 @@ b {
   box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
 }
 
+.noUi-connects {
+  border-radius: 3px;
+}
+
 .noUi-connect {
-  background: #b5e2c1;
+  background: #3FB8AF;
 }
 
 /* Handles and cursors;
- */
+  */
 
 .noUi-draggable {
   cursor: ew-resize;
@@ -3813,6 +3839,7 @@ b {
 
 .noUi-handle {
   border: 1px solid #D9D9D9;
+  border-radius: 3px;
   background: #FFF;
   cursor: default;
   box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
@@ -3822,34 +3849,36 @@ b {
   box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #DDD, 0 3px 6px -3px #BBB;
 }
 
-/*
-.noUi-handle:before,
-.noUi-handle:after {
-  content: "";
-  display: block;
-  position: absolute;
-  height: 14px;
-  width: 1px;
-  background: #E8E7E6;
-  left: 14px;
-  top: 6px;
-}
-.noUi-handle:after {
-  left: 17px;
-}
-.noUi-vertical .noUi-handle:before,
-.noUi-vertical .noUi-handle:after {
-  width: 14px;
-  height: 1px;
-  left: 6px;
-  top: 14px;
-}
-.noUi-vertical .noUi-handle:after {
-  top: 17px;
-} */
+/* Handle stripes;
+  */
+
+/* .noUi-handle:before,
+ .noUi-handle:after {
+   content: "";
+   display: block;
+   position: absolute;
+   height: 14px;
+   width: 1px;
+   background: #E8E7E6;
+   left: 14px;
+   top: 6px;
+ }
+ .noUi-handle:after {
+   left: 17px;
+ }
+ .noUi-vertical .noUi-handle:before,
+ .noUi-vertical .noUi-handle:after {
+   width: 14px;
+   height: 1px;
+   left: 6px;
+   top: 14px;
+ }
+ .noUi-vertical .noUi-handle:after {
+   top: 17px;
+ } */
 
 /* Disabled state;
- */
+  */
 
 [disabled] .noUi-connect {
   background: #B8B8B8;
@@ -3862,8 +3891,8 @@ b {
 }
 
 /* Base;
- *
- */
+  *
+  */
 
 .noUi-pips,
 .noUi-pips * {
@@ -3877,8 +3906,8 @@ b {
 }
 
 /* Values;
- *
- */
+  *
+  */
 
 .noUi-value {
   position: absolute;
@@ -3892,8 +3921,8 @@ b {
 }
 
 /* Markings;
- *
- */
+  *
+  */
 
 .noUi-marker {
   position: absolute;
@@ -3909,10 +3938,11 @@ b {
 }
 
 /* Horizontal layout;
- *
- */
+  *
+  */
 
 .noUi-pips-horizontal {
+  padding: 10px 0;
   height: 80px;
   top: 100%;
   left: 0;
@@ -3920,8 +3950,8 @@ b {
 }
 
 .noUi-value-horizontal {
-  -webkit-transform: translate(-50%, 100%);
-  transform: translate(-50%, 100%);
+  -webkit-transform: translate(-50%, 50%);
+  transform: translate(-50%, 50%);
 }
 
 .noUi-rtl .noUi-value-horizontal {
@@ -3944,8 +3974,8 @@ b {
 }
 
 /* Vertical layout;
- *
- */
+  *
+  */
 
 .noUi-pips-vertical {
   padding: 0 10px;
@@ -3956,7 +3986,7 @@ b {
 
 .noUi-value-vertical {
   -webkit-transform: translate(0, -50%);
-  transform: translate(0, -50%, 0);
+  transform: translate(0, -50%);
   padding-left: 25px;
 }
 
@@ -3983,6 +4013,7 @@ b {
   display: block;
   position: absolute;
   border: 1px solid #D9D9D9;
+  border-radius: 3px;
   background: #fff;
   color: #000;
   padding: 5px;
@@ -4002,6 +4033,49 @@ b {
   transform: translate(0, -50%);
   top: 50%;
   right: 120%;
+}
+
+/* Style overwrites */
+
+.noUi-horizontal {
+  height: 10px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 15px;
+  height: 15px;
+  left: 0px;
+  top: -3px;
+  border: 1px solid #b5e2c1;
+}
+
+.noUi-connects {
+  border-radius: 3px;
+}
+
+.noUi-connect {
+  background: #b5e2c1;
+}
+
+.noUi-handle {
+  border-radius: 50%;
+}
+
+.noUi-pips-horizontal {
+  padding: 10px 0;
+  height: 80px;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
+  right: -5px;
+  left: auto;
+}
+
+.noUi-tooltip {
+  border-radius: 3px;
 }
 .basemaps {
   display: flex;
