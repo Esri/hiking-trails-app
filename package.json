@@ -14,7 +14,7 @@
     "trail"
   ],
   "author": "Raluca Nicola",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "typings": "src/ts/types.d.ts",
   "devDependencies": {
     "@types/amcharts": "^3.21.3",
