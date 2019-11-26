@@ -28,7 +28,7 @@ export default {
     websceneItemId: "d0580bb5df3840d384bda44b6ddeb54e"
   },
   data: {
-    trailsServiceUrl: "https://services2.arcgis.com/cFEFS0EWrhfDeVw9/arcgis/rest/services/SwissNationalParkTrails/FeatureServer/0",
+    trailsServiceUrl: "https://mapprod.environment.nsw.gov.au/arcgis/rest/services/VisitorInfo/VisitorInfo/FeatureServer/2",
     trailAttributes: {
       name: "Name",
       id: "RouteId",
