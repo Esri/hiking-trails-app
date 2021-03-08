@@ -21,6 +21,7 @@ import * as LineSymbol3DLayer from "esri/symbols/LineSymbol3DLayer";
 import * as LabelSymbol3D from "esri/symbols/LabelSymbol3D";
 import * as LabelClass from "esri/layers/support/LabelClass";
 import * as TextSymbol3DLayer from "esri/symbols/TextSymbol3DLayer";
+import * as UniqueValueInfo from "esri/renderers/support/UniqueValueInfo";
 
 export function getTrailRenderer(): UniqueValueRenderer {
   return new UniqueValueRenderer({
@@ -53,10 +54,10 @@ function createTrailSymbol(options) {
 
 export function getUniqueValueInfos(options) {
   if (options.selection) {
-    return [{
+    return [new UniqueValueInfo({
       value: options.selection,
       symbol: createTrailSymbol(options)
-    }];
+    })];
   }
 }
 

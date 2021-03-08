@@ -16,6 +16,7 @@
 
 import Accessor = require("esri/core/Accessor");
 import SceneView = require("esri/views/SceneView");
+import Graphic = require("esri/Graphic");
 import { Device, Trail } from "./types";
 import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 
@@ -27,8 +28,14 @@ export default class State extends declared(Accessor) {
 
   @property()
   selectedTrailId: number = null;
-  setSelectedTrailId(id: number) {
+
+  @property()
+  selectedGraphic: Graphic = null;
+
+  setSelectedTrailId(id: number, graphic: Graphic | null) {
     this.selectedTrailId = id;
+    this.selectedGraphic = graphic;
+
     if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
       this.visiblePanel = "detailPanel";
     }

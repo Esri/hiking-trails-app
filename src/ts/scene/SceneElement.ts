@@ -221,7 +221,7 @@ export default class SceneElement {
             else {
               this.removeLoadingIcon();
               if (result.graphic.layer.title === "Hiking trails") {
-                this.state.setSelectedTrailId(result.graphic.attributes[config.data.trailAttributes.id]);
+                this.state.setSelectedTrailId(result.graphic.attributes[config.data.trailAttributes.id], result.graphic);
               }
             }
           }
@@ -235,9 +235,9 @@ export default class SceneElement {
             this.trailsLayer.queryFeatures(query)
               .then((results) => {
                 if (results.features.length > 0) {
-                  this.state.setSelectedTrailId(results.features[0].attributes[config.data.trailAttributes.id]);
+                  this.state.setSelectedTrailId(results.features[0].attributes[config.data.trailAttributes.id], null);
                 } else {
-                  this.state.setSelectedTrailId(null);
+                  this.state.setSelectedTrailId(null, null);
                 }
                 this.removeLoadingIcon();
               })
@@ -300,6 +300,17 @@ export default class SceneElement {
   }
 
   private selectFeature(featureId): void {
+
+    const query = {
+      objectIds: [featureId],
+      outFields: ["*"],
+      returnGeometry: true
+    };
+
+    this.trailsLayer.queryFeatures(query)
+    .then((results) => {
+      this.state.selectedGraphic = results.features[0];
+    });
 
     const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = getUniqueValueInfos({ selection: featureId });
