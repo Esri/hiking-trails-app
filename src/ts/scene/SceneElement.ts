@@ -219,47 +219,16 @@ export default class SceneElement {
 
   private selectFeature(featureId): void {
 
-    // const query = {
-    //   where: `id = ${featureId}`,
-    //   outFields: ["*"],
-    //   returnGeometry: true
-    // };
-
-    // this.trailsLayer.queryFeatures(query)
-    // .then((results) => {
-    //   this.state.selectedGraphic = results.features[0];
-    // });
-
     const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = getUniqueValueInfos({ selection: featureId });
     this.trailsLayer.renderer = renderer;
 
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: featureId });
 
-    // const selectedTrail = this.state.trails.filter((trail) => {
-    //   return (trail.id === featureId);
-    // })[0];
-
     this.view.goTo(
       { target: this.state.selectedTrail.geometry, tilt: 60 },
       { speedFactor: 0.5 }
     );
-
-  //  if (selectedTrail.flickrLayer) {
-  //   this.view.map.add(selectedTrail.flickrLayer);
-  //  } else {
-  //   if (this.state.online) {
-  //     selectedTrail.setElevationValuesFromService()
-  //       .then(() => {
-  //         if (config.flickrApiKey) {
-  //           selectedTrail.createFlickrLayer()
-  //           .then(() => {
-  //             this.view.map.add(selectedTrail.flickrLayer);
-  //           });
-  //         }
-  //       });
-  //   }
-  //  }
 
   }
 
@@ -271,22 +240,6 @@ export default class SceneElement {
 
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
 
-  //   const selectedTrail = this.state.trails.filter((trail) => {
-  //     return (trail.id === oldId);
-  //   })[0];
-
-  //   if (config.flickrApiKey) {
-  //     this.removeFlickrLayers();
-  //   }
-  //   this.removeImage();
-  // }
-
-  // private removeFlickrLayers() {
-  //   this.view.map.layers.forEach((layer) => {
-  //     if (layer.title === "Flickr") {
-  //       this.view.map.remove(layer);
-  //     }
-  //   });
   }
 
 
