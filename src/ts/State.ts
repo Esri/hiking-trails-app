@@ -30,11 +30,13 @@ export default class State extends declared(Accessor) {
   selectedTrailId: number = null;
 
   @property()
-  selectedGraphic: Graphic = null;
+  selectedTrail: Trail = null;
 
-  setSelectedTrailId(id: number, graphic: Graphic | null) {
+  setSelectedTrail(id: number) {
     this.selectedTrailId = id;
-    this.selectedGraphic = graphic;
+    this.selectedTrail = this.trails.filter((trail: Trail) => {
+      return (trail.id === id);
+    })[0];
 
     if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
       this.visiblePanel = "detailPanel";

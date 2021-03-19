@@ -36,10 +36,11 @@ if ("serviceWorker" in navigator) {
 
 const state = new State();
 deviceUtils.init(state);
-const connectionManager = new ConnectionManager(state);
-const loadingPage = new LoadingPage(state);
-const sceneElement = new SceneElement(state);
+new ConnectionManager(state);
+new LoadingPage(state);
+new SceneElement(state);
+
 trailManager.initTrails(state)
   .then(() => {
-    const menuPanel = new MenuPanel(state);
+    new MenuPanel(state);
   });

@@ -37,7 +37,7 @@ export function getTrailRenderer(): UniqueValueRenderer {
 function createTrailSymbol(options) {
 
   const color = options.selection ? config.colors.selectedTrail : config.colors.defaultTrail;
-  const size = options.selection ? 4 : 2;
+  const size = options.selection ? 0 : 2;
 
   return new LineSymbol3D({
     symbolLayers: [
@@ -45,7 +45,7 @@ function createTrailSymbol(options) {
         material: {
           color: color
         },
-        size: size
+        size: 2
       })
     ]
   });
@@ -96,7 +96,7 @@ export function createLabelClass(options) {
         size: 13
       })],
       verticalOffset: {
-        screenLength: 80,
+        screenLength: 40,
         maxWorldLength: 2000,
         minWorldLength: 500
       },

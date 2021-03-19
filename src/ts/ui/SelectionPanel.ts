@@ -42,7 +42,7 @@ export default class SelectionPanel {
     this.generateTrailsPanel();
 
     on(document.querySelector(".removeSelected"), "click", (evt) => {
-      this.state.setSelectedTrailId(null);
+      this.state.setSelectedTrail(null);
     });
 
     this.filterPanel = dom.byId("filterPanel");
@@ -131,7 +131,7 @@ export default class SelectionPanel {
       }, this.trailsPanel);
 
       on(trailElement, "click", (evt) => {
-        state.setSelectedTrailId(parseInt(evt.target.dataset.id, 10));
+        state.setSelectedTrail(parseInt(evt.target.dataset.id, 10));
       });
     });
 

@@ -14,26 +14,16 @@
  *
  */
 
-import * as Point from "esri/geometry/Point";
-import * as Polyline from "esri/geometry/Polyline";
 import * as ElevationProfile from "esri/widgets/ElevationProfile";
 import * as dom from "dojo/dom";
-import * as on from "dojo/on";
 import * as domConstruct from "dojo/dom-construct";
-import * as domClass from "dojo/dom-class";
 import config from "../config";
-
-declare const AmCharts: any;
-
-import "amcharts3";
-import "amcharts3/amcharts/serial";
-
 import "../../style/detail-panel.scss";
 
 import "font-awesome/scss/font-awesome.scss";
 
 import { State, Trail } from "../types";
-
+import ElevationProfileLineGround = require("esri/widgets/ElevationProfile/ElevationProfileLineGround");
 export default class SelectionPanel {
 
   trails: Array<Trail>;
@@ -58,35 +48,36 @@ export default class SelectionPanel {
 
     state.watch("selectedTrailId", (id) => {
       this.emptyDetails();
+      if (this.elevationProfile) {
+        this.elevationProfile.destroy();
+        this.elevationProfile = null;
+      }
       if (id) {
-        const selectedTrail = this.trails.filter((trail) => { return trail.id === id; })[0];
-        this.displayInfo(selectedTrail);
+        const trail = this.state.selectedTrail;
+        this.displayInfo(trail);
+        domConstruct.empty(this.detailElevationProfile);
+          const container = domConstruct.create("div", {});
+          this.detailElevationProfile.append(container);
+
+          this.elevationProfile = new ElevationProfile({
+            view: this.state.view,
+            input: trail,
+            container,
+            profiles: [ new ElevationProfileLineGround({
+              title: "Trail statistics",
+              color: config.colors.selectedTrail
+            })],
+            visibleElements: {
+              selectButton: false,
+              sketchButton: false
+            }
+          });
       }
     });
 
     state.watch("device", () => {
       if (!this.state.selectedTrailId) {
         this.displayAppInfo();
-      }
-    });
-
-    state.watch("selectedGraphic", (selectedGraphic) => {
-      domConstruct.empty(this.detailElevationProfile);
-
-      if (this.elevationProfile) {
-        this.elevationProfile.destroy();
-        this.elevationProfile = null;
-      }
-
-      if (selectedGraphic) {
-        const container = domConstruct.create("div", {});
-        this.detailElevationProfile.append(container);
-
-        this.elevationProfile = new ElevationProfile({
-          view: this.state.view,
-          input: selectedGraphic,
-          container
-        });
       }
     });
   }

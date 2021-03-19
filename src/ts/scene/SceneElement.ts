@@ -17,14 +17,10 @@
 import config from "../config";
 import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from "./utils";
 
-import * as domConstruct from "dojo/dom-construct";
-import * as dom from "dojo/dom";
-import * as on from "dojo/on";
 
 import * as WebScene from "esri/WebScene";
 import * as SceneView from "esri/views/SceneView";
 import * as FeatureLayer from "esri/layers/FeatureLayer";
-import * as Query from "esri/tasks/support/Query";
 import * as GroupLayer from "esri/layers/GroupLayer";
 import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
 import * as NavigationToggle from "esri/widgets/NavigationToggle";
@@ -64,7 +60,7 @@ export default class SceneElement {
     state.watch("selectedTrailId", (value, oldValue) => {
 
       if (oldValue) {
-        this.unselectFeature(oldValue);
+        this.unselectFeature();
       }
       if (value) {
         this.selectFeature(value);
@@ -208,109 +204,31 @@ export default class SceneElement {
 
     // check if the user is online
     if (this.state.online) {
-      this.showLoadingIcon(event);
-      this.view.hitTest(event)
+      this.view.hitTest(event, {include: this.trailsLayer})
         .then((response) => {
           const result = response.results[0];
           // if a graphic was picked from the view
-          if (result.graphic) {
-            if (result.graphic.layer.title === "Flickr") {
-              this.removeLoadingIcon();
-              this.showImage(result.graphic, event);
-            }
-            else {
-              this.removeLoadingIcon();
-              if (result.graphic.layer.title === "Hiking trails") {
-                this.state.setSelectedTrailId(result.graphic.attributes[config.data.trailAttributes.id], result.graphic);
-              }
-            }
-          }
-          // otherwise check if server side there is a graphic that was draped
-          else {
-            const query = this.trailsLayer.createQuery();
-            query.geometry = result.mapPoint;
-            query.distance = 200;
-            query.units = "meters";
-            query.spatialRelationship = "intersects";
-            this.trailsLayer.queryFeatures(query)
-              .then((results) => {
-                if (results.features.length > 0) {
-                  this.state.setSelectedTrailId(results.features[0].attributes[config.data.trailAttributes.id], null);
-                } else {
-                  this.state.setSelectedTrailId(null, null);
-                }
-                this.removeLoadingIcon();
-              })
-              .catch(err => console.log(err));
+          if (result && result.graphic) {
+              this.state.setSelectedTrail(result.graphic.attributes[config.data.trailAttributes.id]);
+          } else {
+            this.state.setSelectedTrail(null);
           }
       });
     }
   }
 
-  private showLoadingIcon(event) {
-    domConstruct.create("span", {
-      class: "fa fa-spinner fa-spin",
-      id: "loadingIcon",
-      style: {
-        position: "absolute",
-        fontSize: "30px",
-        top: `${event.screenPoint.y - 15}px`,
-        left: `${event.screenPoint.x - 15}px`
-      }
-    }, document.body);
-  }
-
-  private removeLoadingIcon() {
-    domConstruct.destroy("loadingIcon");
-  }
-
-  private showImage(graphic, event) {
-
-    // remove previous image (if any)
-    this.removeImage();
-
-    const flickrContainer = domConstruct.create("div", {
-      innerHTML: `<img id="flickrImage" src="${graphic.attributes.image}"
-        style="left: ${event.screenPoint.x - 25}px; top: ${event.screenPoint.y - 25}px;">`,
-      id: "flickrContainer"
-    }, document.body);
-
-    const flickrImage = dom.byId("flickrImage");
-
-    window.setTimeout(() => {
-      flickrImage.style.top = "50%";
-      flickrImage.style.left = "50%";
-      flickrImage.style.transform = "translate(-50%, -50%)";
-    }, 0);
-
-    window.setTimeout(() => {
-      flickrImage.style.maxWidth = "90%";
-    }, 200);
-
-    on(flickrContainer, "click", () => {
-      this.removeImage();
-    });
-
-  }
-
-  private removeImage() {
-    if (dom.byId("flickrContainer")) {
-      domConstruct.destroy("flickrContainer");
-    }
-  }
-
   private selectFeature(featureId): void {
 
-    const query = {
-      objectIds: [featureId],
-      outFields: ["*"],
-      returnGeometry: true
-    };
+    // const query = {
+    //   where: `id = ${featureId}`,
+    //   outFields: ["*"],
+    //   returnGeometry: true
+    // };
 
-    this.trailsLayer.queryFeatures(query)
-    .then((results) => {
-      this.state.selectedGraphic = results.features[0];
-    });
+    // this.trailsLayer.queryFeatures(query)
+    // .then((results) => {
+    //   this.state.selectedGraphic = results.features[0];
+    // });
 
     const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = getUniqueValueInfos({ selection: featureId });
@@ -318,34 +236,34 @@ export default class SceneElement {
 
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: featureId });
 
-    const selectedTrail = this.state.trails.filter((trail) => {
-      return (trail.id === featureId);
-    })[0];
+    // const selectedTrail = this.state.trails.filter((trail) => {
+    //   return (trail.id === featureId);
+    // })[0];
 
     this.view.goTo(
-      { target: selectedTrail.geometry, tilt: 60 },
+      { target: this.state.selectedTrail.geometry, tilt: 60 },
       { speedFactor: 0.5 }
     );
 
-   if (selectedTrail.flickrLayer) {
-    this.view.map.add(selectedTrail.flickrLayer);
-   } else {
-    if (this.state.online) {
-      selectedTrail.setElevationValuesFromService()
-        .then(() => {
-          if (config.flickrApiKey) {
-            selectedTrail.createFlickrLayer()
-            .then(() => {
-              this.view.map.add(selectedTrail.flickrLayer);
-            });
-          }
-        });
-    }
-   }
+  //  if (selectedTrail.flickrLayer) {
+  //   this.view.map.add(selectedTrail.flickrLayer);
+  //  } else {
+  //   if (this.state.online) {
+  //     selectedTrail.setElevationValuesFromService()
+  //       .then(() => {
+  //         if (config.flickrApiKey) {
+  //           selectedTrail.createFlickrLayer()
+  //           .then(() => {
+  //             this.view.map.add(selectedTrail.flickrLayer);
+  //           });
+  //         }
+  //       });
+  //   }
+  //  }
 
   }
 
-  private unselectFeature(oldId): void {
+  private unselectFeature(): void {
 
     const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
     renderer.uniqueValueInfos = [];
@@ -353,22 +271,22 @@ export default class SceneElement {
 
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
 
-    const selectedTrail = this.state.trails.filter((trail) => {
-      return (trail.id === oldId);
-    })[0];
+  //   const selectedTrail = this.state.trails.filter((trail) => {
+  //     return (trail.id === oldId);
+  //   })[0];
 
-    if (config.flickrApiKey) {
-      this.removeFlickrLayers();
-    }
-    this.removeImage();
-  }
+  //   if (config.flickrApiKey) {
+  //     this.removeFlickrLayers();
+  //   }
+  //   this.removeImage();
+  // }
 
-  private removeFlickrLayers() {
-    this.view.map.layers.forEach((layer) => {
-      if (layer.title === "Flickr") {
-        this.view.map.remove(layer);
-      }
-    });
+  // private removeFlickrLayers() {
+  //   this.view.map.layers.forEach((layer) => {
+  //     if (layer.title === "Flickr") {
+  //       this.view.map.remove(layer);
+  //     }
+  //   });
   }
 
 
