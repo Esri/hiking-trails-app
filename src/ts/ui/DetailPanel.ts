@@ -14,24 +14,16 @@
  *
  */
 
-import * as Point from "esri/geometry/Point";
+import * as ElevationProfile from "esri/widgets/ElevationProfile";
 import * as dom from "dojo/dom";
-import * as on from "dojo/on";
 import * as domConstruct from "dojo/dom-construct";
-import * as domClass from "dojo/dom-class";
 import config from "../config";
-
-declare const AmCharts: any;
-
-import "amcharts3";
-import "amcharts3/amcharts/serial";
-
 import "../../style/detail-panel.scss";
 
 import "font-awesome/scss/font-awesome.scss";
 
 import { State, Trail } from "../types";
-
+import ElevationProfileLineGround = require("esri/widgets/ElevationProfile/ElevationProfileLineGround");
 export default class SelectionPanel {
 
   trails: Array<Trail>;
@@ -41,6 +33,7 @@ export default class SelectionPanel {
   detailInfograph: any;
   detailElevationProfile: any;
   detailDescription: any;
+  elevationProfile: ElevationProfile;
 
   constructor(trails, state: State) {
     this.state = state;
@@ -55,9 +48,30 @@ export default class SelectionPanel {
 
     state.watch("selectedTrailId", (id) => {
       this.emptyDetails();
+      if (this.elevationProfile) {
+        this.elevationProfile.destroy();
+        this.elevationProfile = null;
+      }
       if (id) {
-        const selectedTrail = this.trails.filter((trail) => { return trail.id === id; })[0];
-        this.displayInfo(selectedTrail);
+        const trail = this.state.selectedTrail;
+        this.displayInfo(trail);
+        domConstruct.empty(this.detailElevationProfile);
+          const container = domConstruct.create("div", {});
+          this.detailElevationProfile.append(container);
+
+          this.elevationProfile = new ElevationProfile({
+            view: this.state.view,
+            input: trail,
+            container,
+            profiles: [ new ElevationProfileLineGround({
+              title: "Trail statistics",
+              color: config.colors.selectedTrail
+            })],
+            visibleElements: {
+              selectButton: false,
+              sketchButton: false
+            }
+          });
       }
     });
 
@@ -90,18 +104,6 @@ export default class SelectionPanel {
     this.detailTitle.innerHTML = trail.name;
     this.createInfograph(trail);
     this.detailDescription.innerHTML = `<b>Particularities: </b> ${ trail.description }`;
-
-    // create the elevation profile
-    if (trail.profileData) {
-      this.createChart(trail.profileData);
-    } else {
-      if (this.state.online) {
-        trail.setElevationValuesFromService()
-          .then(() => {
-            this.createChart(trail.profileData);
-          });
-      }
-    }
   }
 
   createInfograph(trail) {
@@ -125,69 +127,4 @@ export default class SelectionPanel {
     `;
 
   }
-
-  createChart(data) {
-
-    const chart = AmCharts.makeChart(this.detailElevationProfile, {
-      type: "serial",
-      theme: "light",
-      dataProvider: data,
-      color: "#4b4b4b",
-      fontFamily: "Open Sans Condensed",
-      balloon: {
-        borderAlpha: 0,
-        fillAlpha: 0.8,
-        fillColor: config.colors.selectedTrail,
-        shadowAlpha: 0
-      },
-      graphs: [{
-        id: "g1",
-        balloonText: "Distance: <b>[[category]] km</b><br>Elevation:<b>[[value]] m</b>",
-        fillAlphas: 0.2,
-        bulletAlpha: 0,
-        lineColor: config.colors.selectedTrail,
-        lineThickness: 1,
-        valueField: "value"
-      }],
-      chartCursor: {
-        limitToGraph: "g1",
-        categoryBalloonEnabled: false,
-        zoomable: false
-      },
-      categoryField: "length",
-      categoryAxis: {
-        gridThickness: 0,
-        axisThickness: 0.1
-      },
-      valueAxes: [{
-        strictMinMax: true,
-        autoGridCount: false,
-        minimum: 1000,
-        maximum: 3500,
-        axisThickness: 0,
-        tickLength: 0
-      }]
-    });
-
-    const popup = this.state.view.popup;
-
-    chart.addListener("changed", (e) => {
-      if (e.index) {
-        const data = e.chart.dataProvider[ e.index ];
-        popup.dockEnabled = false;
-        popup.open({
-          title: data.value + " m",
-          location: new Point({
-            spatialReference: { wkid: 4326 },
-            longitude: data.point[0],
-            latitude: data.point[1],
-            z: data.point[2]
-          })
-        });
-      } else {
-        popup.close();
-      }
-    });
-  }
-
 }

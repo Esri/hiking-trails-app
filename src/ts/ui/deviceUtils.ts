@@ -27,11 +27,9 @@ function getMedia(): Device  {
 
 export default {
   init(state: State) {
-    function changeState(evt) {
+    mqDesktop.addEventListener("change", () => {
       const media: Device = getMedia();
       state.device = media;
-    }
-    mqDesktop.addListener(changeState);
-    changeState(mqDesktop);
+    });
   }
 };

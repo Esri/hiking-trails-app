@@ -1,16 +1,16 @@
 import Accessor = require("esri/core/Accessor");
 import Polyline = require("esri/geometry/Polyline");
 import SceneView = require("esri/views/SceneView");
-import FlickrLayer from "./scene/FlickrLayer";
 
 export type Device = ("mobilePortrait" | "desktop");
 
 export interface State extends Accessor {
   displayLoading: boolean;
   selectedTrailId: number;
-  setSelectedTrailId: (id: number) => void;
+  setSelectedTrail: (id: number) => void;
   filteredTrailIds: Array<number>;
   setFilteredTrailIds: (ids: Array<number>) => void;
+  selectedTrail: Trail;
   filters: any;
   setFilter: (property: string, value: string | number[]) => void;
   visiblePanel: "selectionPanel" | "detailPanel" | "basemapPanel";
@@ -31,10 +31,5 @@ export interface Trail {
   status: number;
   ascent: number;
   description: number;
-  profileData: Array<Object>;
-  flickrLayer: FlickrLayer;
   hasZ: boolean;
-  setZValues: (view: SceneView) => IPromise;
-  createFlickrLayer: () => IPromise;
-  setElevationValuesFromService: () => IPromise;
 }

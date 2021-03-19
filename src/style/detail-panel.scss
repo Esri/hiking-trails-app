@@ -9,10 +9,8 @@
   }
 
   #detailElevationProfile {
-    margin: 20px 0 0 0;
+    padding: 20px 0 0 0;
     width: 100%;
-    height: 200px;
-
   }
 
   #detailDescription {
@@ -39,6 +37,11 @@
       color: #7dad7c;
     }
   }
+
+  .esri-widget {
+    background: transparent;
+  }
+
 }
 
 @media (max-width: $max-width) {

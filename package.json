@@ -17,9 +17,8 @@
   "license": "Apache 2.0",
   "typings": "src/ts/types.d.ts",
   "devDependencies": {
-    "@types/amcharts": "^3.21.3",
-    "@types/arcgis-js-api": "~4.10.0",
-    "@types/dojo": "^1.9.41",
+    "@types/arcgis-js-api": "~4.18.0",
+    "@types/dojo": "^1.9.43",
     "@types/nouislider": "^9.0.5",
     "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^1.0.1",
@@ -31,7 +30,7 @@
     "jshint": "^2.10.2",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.4.4",
-    "node-sass": "^4.11.0",
+    "node-sass": "4.14.1",
     "resolve-url-loader": "^2.3.1",
     "sass-loader": "^6.0.6",
     "serviceworker-webpack-plugin": "^1.0.1",
@@ -48,7 +47,6 @@
     "webpack-pwa-manifest": "^3.8.0"
   },
   "dependencies": {
-    "amcharts3": "^3.21.14",
     "font-awesome": "^4.7.0",
     "nouislider": "^13.0.0"
   }

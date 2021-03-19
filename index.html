@@ -33,7 +33,7 @@
 
   <title>Hiking trails</title>
 
-  <link rel='stylesheet' href='https://js.arcgis.com/4.11/esri/css/main.css'>
+  <link rel='stylesheet' href='https://js.arcgis.com/4.19/esri/css/main.css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
 <% for (var css in htmlWebpackPlugin.files.css) { %>
   <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
@@ -111,7 +111,7 @@
     <span class="esri-icon-close" id="close"></span>
     <h1>Disclaimer</h1>
     <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
-      It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS API for JavaScript version 4.11</a>.</p>
+      It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS API for JavaScript version 4.19</a>.</p>
     <h1> Credits </h1>
       <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
       <p>This application uses the <a href="https://www.flickr.com/services/api/" target="_blank">Flickr API</a> but is not endorsed or certified by
@@ -134,7 +134,7 @@
       async: true
     };
   </script>
-  <script type='text/javascript' rel=preload src='https://js.arcgis.com/4.11/'></script>
+  <script type='text/javascript' rel=preload src='https://js.arcgis.com/4.19/'></script>
   <!--load app-->
   <script>
     require([<% for (var chunk in htmlWebpackPlugin.files.js) { %>

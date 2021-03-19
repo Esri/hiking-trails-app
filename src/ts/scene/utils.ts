@@ -21,6 +21,7 @@ import * as LineSymbol3DLayer from "esri/symbols/LineSymbol3DLayer";
 import * as LabelSymbol3D from "esri/symbols/LabelSymbol3D";
 import * as LabelClass from "esri/layers/support/LabelClass";
 import * as TextSymbol3DLayer from "esri/symbols/TextSymbol3DLayer";
+import * as UniqueValueInfo from "esri/renderers/support/UniqueValueInfo";
 
 export function getTrailRenderer(): UniqueValueRenderer {
   return new UniqueValueRenderer({
@@ -36,7 +37,7 @@ export function getTrailRenderer(): UniqueValueRenderer {
 function createTrailSymbol(options) {
 
   const color = options.selection ? config.colors.selectedTrail : config.colors.defaultTrail;
-  const size = options.selection ? 4 : 2;
+  const size = options.selection ? 0 : 2;
 
   return new LineSymbol3D({
     symbolLayers: [
@@ -44,7 +45,7 @@ function createTrailSymbol(options) {
         material: {
           color: color
         },
-        size: size
+        size: 2
       })
     ]
   });
@@ -53,10 +54,10 @@ function createTrailSymbol(options) {
 
 export function getUniqueValueInfos(options) {
   if (options.selection) {
-    return [{
+    return [new UniqueValueInfo({
       value: options.selection,
       symbol: createTrailSymbol(options)
-    }];
+    })];
   }
 }
 
@@ -95,7 +96,7 @@ export function createLabelClass(options) {
         size: 13
       })],
       verticalOffset: {
-        screenLength: 80,
+        screenLength: 40,
         maxWorldLength: 2000,
         minWorldLength: 500
       },

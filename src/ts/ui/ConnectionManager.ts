@@ -15,12 +15,13 @@
  */
 
 import * as domConstruct from "dojo/dom-construct";
+import { State } from "../types";
 
 export default class ConnectionManager {
 
   private messageContainer;
 
-  constructor(state) {
+  constructor(state: State) {
 
     window.addEventListener("load", function() {
 
