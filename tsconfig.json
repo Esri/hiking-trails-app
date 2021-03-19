@@ -9,8 +9,7 @@
         "typeRoots": ["./node_modules/@types"],
         "experimentalDecorators": true,
         "jsx": "react",
-        "reactNamespace": "jsxFactory",
-        "lib": ["es2019", "dom",  "scripthost"]
+        "reactNamespace": "jsxFactory"
     },
     "include": [
         "./src/**/*"

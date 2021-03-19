@@ -17,10 +17,6 @@ Data:
 Colors:
  - change the colors for visualizing the trails
  - for CSS colors check also the variables.scss file - selectedTrail is $orange
-
- Flickr API key:
- - your Flickr API key: https://www.flickr.com/services/api/
- - set it to an empty string if no Flickr images should be displayed
 */
 
 export default {
@@ -46,6 +42,5 @@ export default {
   colors: {
     defaultTrail: "#db5353",
     selectedTrail: "#f9a352"
-  },
-  flickrApiKey: "61beb1c6dfe15c266afb403a3297b5a7"
+  }
 };
