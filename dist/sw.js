@@ -1,0 +1,14 @@
+var serviceWorkerOption = {
+  "assets": [
+    "/hiking-trails-app/85698bcebe119154bb58475f0b76cf1e.jpg",
+    "/hiking-trails-app/760bd83ee04dff470e0277f3eb7deebe.svg",
+    "/hiking-trails-app/af7ae505a9eed503f8b8e6982036873e.woff2",
+    "/hiking-trails-app/b06871f281fee6b241d60582ae9369b9.ttf",
+    "/hiking-trails-app/674f50d287a8c48dc19ba404d20fe713.eot",
+    "/hiking-trails-app/fee66e712a8a08eef5805a46892932ad.woff",
+    "/hiking-trails-app/main.78897245e6a499391baa.css",
+    "/hiking-trails-app/main.78897245e6a499391baa.js"
+  ]
+};
+        
+        !function(e){var r={};function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:n})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,r){if(1&r&&(e=t(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(t.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var o in e)t.d(n,o,function(r){return e[r]}.bind(null,o));return n},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},t.p="",t(t.s=0)}([function(e,r){self.addEventListener("install",function(e){console.log("install"),e.waitUntil(caches.open("hiking-trails-v7").then(function(e){var r=function(){var e=[];return function(e){for(var r=0,t=serviceWorkerOption.assets;r<t.length;r++){var n=t[r];e.push(n)}}(e),function(e){var r=self.location.pathname.replace(/\/sw\.js$/g,"");e.push(r),e.push(r+"/"),e.push(r+"/index.html"),e.push(r+"/manifest.json"),e.push(r+"/src/img/esri-10GlobeLogo_1C.png"),e.push(r+"/src/img/background.jpg")}(e),e}();return e.addAll(r)}))}),self.addEventListener("activate",function(e){}),self.addEventListener("fetch",function(e){var r,t=/https:\/\/(server|services)\.arcgisonline\.com\/ArcGIS\/rest\/services\/World_Imagery\/MapServer/i;if(t.test(e.request.url)){var n=e.request.url.replace(t,"https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");r=new Request(n,e.request)}else r=e.request;e.respondWith(caches.match(r,{ignoreVary:!0}).then(function(e){if(e)return e;var t=r.clone();return fetch(t).then(function(e){if(!e||"opaque"!==e.type&&200!==e.status||"error"===e.type)return e;if(0===r.url.indexOf("chrome-extension:"))return e;var t=e.clone();return caches.open("hiking-trails-v7").then(function(e){e.put(r,t)}),e})}))})}]);
