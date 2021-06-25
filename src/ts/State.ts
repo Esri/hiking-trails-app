@@ -21,7 +21,7 @@ import { Device, Trail } from "./types";
 import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 
 @subclass()
-export default class State extends declared(Accessor) {
+export default class State extends Accessor {
 
   @property()
   displayLoading: boolean = true;
