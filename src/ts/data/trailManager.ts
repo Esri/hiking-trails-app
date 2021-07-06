@@ -15,7 +15,7 @@
  */
 
 import config from "../config";
-import * as Query from "esri/tasks/support/Query";
+import * as Query from "esri/rest/support/Query";
 import * as QueryTask from "esri/tasks/QueryTask";
 
 import Trail from "./Trail";
