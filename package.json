@@ -30,7 +30,7 @@
     "jshint": "^2.10.2",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.4.4",
-    "node-sass": "4.14.1",
+    "node-sass": "7.0.0",
     "resolve-url-loader": "^2.3.1",
     "sass-loader": "^6.0.6",
     "serviceworker-webpack-plugin": "^1.0.1",
