@@ -44,7 +44,7 @@
     "webpack": "^4.29.2",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
-    "webpack-pwa-manifest": "^3.8.0"
+    "webpack-pwa-manifest": "^4.3.0"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
