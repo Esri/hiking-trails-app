@@ -33,7 +33,6 @@ The following libraries, APIs and datasets  were used to make this application:<
 * [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/) for the map.
 * This application uses the <a href="https://www.flickr.com/services/api/" target="_blank">Flickr API</a> but is not endorsed or certified by <a href="https://www.flickr.com/" target="_blank">Flickr</a>. Flickr API is used to retrieve building images under <a href="https://creativecommons.org/licenses/" target="_blank">Creative Commons licenses</a>. See <a href="https://www.flickr.com/services/api/tos/" target="_blank">Flickr Terms of Use</a> for licensing information.
 * [amcharts](https://github.com/amcharts) for the altitude profile.
-* [Font Awesome](https://fontawesome.com/) for the icons.
 
 ## Disclaimer
 

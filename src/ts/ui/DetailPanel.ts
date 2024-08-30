@@ -14,35 +14,33 @@
  *
  */
 
-import * as ElevationProfile from "esri/widgets/ElevationProfile";
-import * as dom from "dojo/dom";
-import * as domConstruct from "dojo/dom-construct";
+import ElevationProfile from "@arcgis/core/widgets/ElevationProfile";
+import ElevationProfileLineGround from "@arcgis/core/widgets/ElevationProfile/ElevationProfileLineGround";
 import config from "../config";
+import { State, Trail } from "../types";
+
 import "../../style/detail-panel.scss";
 
-import "font-awesome/scss/font-awesome.scss";
-
-import { State, Trail } from "../types";
-import ElevationProfileLineGround = require("esri/widgets/ElevationProfile/ElevationProfileLineGround");
 export default class SelectionPanel {
-
   trails: Array<Trail>;
   state: State;
-  container: any;
-  detailTitle: any;
-  detailInfograph: any;
-  detailElevationProfile: any;
-  detailDescription: any;
+  container: HTMLElement;
+  detailTitle: HTMLElement;
+  detailInfograph: HTMLElement;
+  detailElevationProfile: HTMLElement;
+  detailDescription: HTMLElement;
   elevationProfile: ElevationProfile;
 
   constructor(trails, state: State) {
     this.state = state;
     this.trails = trails;
-    this.container = dom.byId("detailPanel");
-    this.detailTitle = dom.byId("detailTitle");
-    this.detailInfograph = dom.byId("detailInfograph");
-    this.detailDescription = dom.byId("detailDescription");
-    this.detailElevationProfile = dom.byId("detailElevationProfile");
+    this.container = document.getElementById("detailPanel");
+    this.detailTitle = document.getElementById("detailTitle");
+    this.detailInfograph = document.getElementById("detailInfograph");
+    this.detailDescription = document.getElementById("detailDescription");
+    this.detailElevationProfile = document.getElementById(
+      "detailElevationProfile"
+    );
 
     this.emptyDetails();
 
@@ -55,23 +53,25 @@ export default class SelectionPanel {
       if (id) {
         const trail = this.state.selectedTrail;
         this.displayInfo(trail);
-        domConstruct.empty(this.detailElevationProfile);
-          const container = domConstruct.create("div", {});
-          this.detailElevationProfile.append(container);
+        this.detailElevationProfile.innerHTML = "";
+        const container = document.createElement("div");
+        this.detailElevationProfile.append(container);
 
-          this.elevationProfile = new ElevationProfile({
-            view: this.state.view,
-            input: trail,
-            container,
-            profiles: [ new ElevationProfileLineGround({
+        this.elevationProfile = new ElevationProfile({
+          view: this.state.view,
+          input: trail,
+          container,
+          profiles: [
+            new ElevationProfileLineGround({
               title: "Trail statistics",
-              color: config.colors.selectedTrail
-            })],
-            visibleElements: {
-              selectButton: false,
-              sketchButton: false
-            }
-          });
+              color: config.colors.selectedTrail,
+            }),
+          ],
+          visibleElements: {
+            selectButton: false,
+            sketchButton: false,
+          },
+        });
       }
     });
 
@@ -83,48 +83,65 @@ export default class SelectionPanel {
   }
 
   emptyDetails() {
-    domConstruct.empty(this.detailTitle);
-    domConstruct.empty(this.detailDescription);
-    domConstruct.empty(this.detailInfograph);
-    domConstruct.empty(this.detailElevationProfile);
+    this.detailTitle.innerHTML = "";
+    this.detailDescription.innerHTML = "";
+    this.detailInfograph.innerHTML = "";
+    this.detailElevationProfile.innerHTML = "";
 
     this.displayAppInfo();
   }
 
   displayAppInfo() {
     if (this.state.device === "mobilePortrait") {
-      this.detailInfograph.innerHTML = "This app shows the hikes in the Swiss National Park. Select a hike on the map to find out more about it.";
+      this.detailInfograph.innerHTML =
+        "This app shows the hikes in the Swiss National Park. Select a hike on the map to find out more about it.";
     } else {
-      this.detailInfograph.innerHTML = "Select a hike in the map or in the Hikes panel to see more details about it.";
+      this.detailInfograph.innerHTML =
+        "Select a hike in the map or in the Hikes panel to see more details about it.";
     }
   }
 
   displayInfo(trail: Trail): void {
-
     this.detailTitle.innerHTML = trail.name;
     this.createInfograph(trail);
-    this.detailDescription.innerHTML = `<b>Particularities: </b> ${ trail.description }`;
+    this.detailDescription.innerHTML = `<b>Particularities: </b> ${trail.description}`;
   }
 
   createInfograph(trail) {
-
     const status = {
       Closed: {
         icon: "fa fa-calendar-times-o",
-        text: "Closed"
+        text: "Closed",
       },
       Open: {
         icon: "fa fa-calendar-check-o",
-        text: "Open"
-      }
+        text: "Open",
+      },
     };
 
     this.detailInfograph.innerHTML = `
-      ${trail.ascent ? `<span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>` : ""}
-      ${trail.difficulty ? `<span class="infograph"><span class="fa fa-wrench" aria-hidden="true"></span> ${trail.difficulty}</span>` : ""}
-      ${trail.walktime ? `<span class="infograph"><span class="fa fa-clock-o" aria-hidden="true"></span> ${trail.walktime} hr</span>` : ""}
-      ${trail.status ? `<span class="infograph"><span class="${status[trail.status].icon}" aria-hidden="true"></span> ${status[trail.status].text}</span>` : ""}
+      ${
+        trail.ascent
+          ? `<span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>`
+          : ""
+      }
+      ${
+        trail.difficulty
+          ? `<span class="infograph"><span class="fa fa-wrench" aria-hidden="true"></span> ${trail.difficulty}</span>`
+          : ""
+      }
+      ${
+        trail.walktime
+          ? `<span class="infograph"><span class="fa fa-clock-o" aria-hidden="true"></span> ${trail.walktime} hr</span>`
+          : ""
+      }
+      ${
+        trail.status
+          ? `<span class="infograph"><span class="${
+              status[trail.status].icon
+            }" aria-hidden="true"></span> ${status[trail.status].text}</span>`
+          : ""
+      }
     `;
-
   }
 }

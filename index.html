@@ -33,11 +33,8 @@
 
   <title>Hiking trails</title>
 
-  <link rel='stylesheet' href='https://js.arcgis.com/4.20/esri/css/main.css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
-<% for (var css in htmlWebpackPlugin.files.css) { %>
-  <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
-<% } %>
+  <script type='module' src='./src/ts/main.ts'></script>
 </head>
 
 <body>
@@ -115,26 +112,8 @@
     <h1> Credits </h1>
       <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
       <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
-      <p><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> was used for the icons.</p>
     </ul>
   </div>
-
-  <!--load ArcGIS API for JavaScript-->
-  <script>
-    var dojoConfig = {
-      has: {
-        "esri-promise-compatibility": 1
-      },
-      async: true
-    };
-  </script>
-  <script type='text/javascript' rel=preload src='https://js.arcgis.com/4.20/'></script>
-  <!--load app-->
-  <script>
-    require([<% for (var chunk in htmlWebpackPlugin.files.js) { %>
-      '<%= htmlWebpackPlugin.files.js[chunk] %>',
-    <% } %>], function (main) { });
-  </script>
 
   <!--script for Twitter sharing link-->
   <script>

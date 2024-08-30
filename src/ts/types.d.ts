@@ -1,8 +1,9 @@
-import Accessor = require("esri/core/Accessor");
-import Polyline = require("esri/geometry/Polyline");
-import SceneView = require("esri/views/SceneView");
+import Accessor from "@arcgis/core/core/Accessor";
+import Polyline from "@arcgis/core/geometry/Polyline";
+import SceneView from "@arcgis/core/views/SceneView";
 
-export type Device = ("mobilePortrait" | "desktop");
+export type Device = "mobilePortrait" | "desktop";
+export type Panel = "selectionPanel" | "detailPanel" | "basemapPanel";
 
 export interface State extends Accessor {
   displayLoading: boolean;
@@ -13,7 +14,7 @@ export interface State extends Accessor {
   selectedTrail: Trail;
   filters: any;
   setFilter: (property: string, value: string | number[]) => void;
-  visiblePanel: "selectionPanel" | "detailPanel" | "basemapPanel";
+  visiblePanel: Panel;
   device: Device;
   currentBasemapId: string;
   view: SceneView;
