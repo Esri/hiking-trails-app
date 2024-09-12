@@ -10,19 +10,19 @@
   <meta name='description' content='Hiking trails Swiss National Park'>
   <meta name='author' content='Raluca Nicola, ESRI'>
 
-  <link rel="apple-touch-icon" sizes="57x57" href="./src/img/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="./src/img/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="./src/img/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="./src/img/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="./src/img/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./src/img/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="./src/img/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./src/img/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./src/img/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="./src/img/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./src/img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="./src/img/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./src/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="./assets/apple-icon-57x57-Dzh8NbUF.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./assets/apple-icon-60x60-DX7FsKYi.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./assets/apple-icon-72x72-JJAnU4TX.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/apple-icon-76x76-DbxBBeo2.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./assets/apple-icon-114x114-mKsXRINa.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./assets/apple-icon-120x120-CD4kxh-e.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./assets/apple-icon-144x144-Sf4iwLT4.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./assets/apple-icon-152x152-kZbpavkK.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180-NFG5d2V8.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="./assets/android-icon-192x192-Bahtyr0F.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32-DBcQqrcw.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./assets/favicon-96x96-CEEaSUw0.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16-C6msuPOu.png">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
@@ -31,14 +31,15 @@
   <meta name='mobile-web-app-capable' content='yes'>
   <meta name='apple-mobile-web-app-status-bar-style' content='#b5e2c1'>
 
+  <script type="module" src="https://js.arcgis.com/calcite-components/2.12.2/calcite.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.12.2/calcite.css" />
+
   <title>Hiking trails</title>
 
-  <link rel='stylesheet' href='https://js.arcgis.com/4.20/esri/css/main.css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
-
-  <link href="main.4b56f7db4dc11a8d62a0.css" rel="stylesheet">
-
-<meta name="theme-color" content="#b5e2c1" /><link rel="manifest" href="manifest.json" /></head>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
+  <script type="module" crossorigin src="./assets/index-r0Ml_rWi.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-D3zlO2Gg.css">
+</head>
 
 <body>
 
@@ -75,15 +76,13 @@
   </div>
 
   <div class='smallMenu'>
-    <button aria-label='Set initial extent' id='home' class='fa fa-home'></button>
-    <button aria-label='Show details' id='details' class='fa fa-binoculars mobileButton'></button>
-    <button aria-label='Show information about this app' id='about' class='fa fa-info'></button>
+    <calcite-fab aria-label='Show details' id='details' icon="handle-vertical" kind="neutral" class="mobileButton"></calcite-fab>
+    <calcite-fab icon="home" aria-label='Set initial extent' id='home' kind="neutral"></calcite-fab>
+    <calcite-fab icon="information-f" aria-label='Show information about this app' id='about' kind="neutral"></calcite-fab>
+    <div>
+      <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
+    </div>
   </div>
-
-  <span class='share'>
-    <a aria-label='Fork me on github' class='fa fa-github-square' href='https://github.com/Esri/hiking-trails-app/' target='_blank'></a>
-    <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
-  </span>
 
   <div id='starterPage' class='starter'>
     <div class='inner'>
@@ -100,7 +99,7 @@
       <div class='center'>
         <p>
           <a href='http://developers.arcgis.com/javascript'>
-            <img src='./src/img/esri-10GlobeLogo_1C.png' alt='esri logo'>
+            <img src='./assets/esri-10GlobeLogo_1C-gYZlYBT8.png' alt='esri logo'>
           </a>
         </p>
       </div>
@@ -115,26 +114,8 @@
     <h1> Credits </h1>
       <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
       <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
-      <p><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> was used for the icons.</p>
     </ul>
   </div>
-
-  <!--load ArcGIS API for JavaScript-->
-  <script>
-    var dojoConfig = {
-      has: {
-        "esri-promise-compatibility": 1
-      },
-      async: true
-    };
-  </script>
-  <script type='text/javascript' rel=preload src='https://js.arcgis.com/4.20/'></script>
-  <!--load app-->
-  <script>
-    require([
-      'main.4b56f7db4dc11a8d62a0.js',
-    ], function (main) { });
-  </script>
 
   <!--script for Twitter sharing link-->
   <script>

@@ -1,0 +1,1 @@
+import{e2 as f,e3 as o,e4 as t,e5 as c,e6 as $,e7 as i,a8 as e}from"./index-r0Ml_rWi.js";function l(n){return t(n)??c(n)}function g(n,a){return f(n,a)??o(n,a)}function h(n,a,u){return r[0]=n[0],r[1]=n[1],r[2]=n.length===3?n[2]:0,s[0]=a[0],s[1]=a[1],s[2]=a.length===3?a[2]:0,$(r,s,u)??i(r,s,u)}const r=e(),s=e();export{l as c,g as m,h as u};

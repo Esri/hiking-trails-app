@@ -1,0 +1,1 @@
+import{fp as e,fq as t}from"./index-r0Ml_rWi.js";function n(f,u){return u.push(f.buffer),{buffer:f.buffer,layout:new t(f.layout)}}function o(f){return new e(f.layout).createView(f.buffer)}export{o as t,n as u};
