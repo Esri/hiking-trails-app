@@ -31,6 +31,9 @@
   <meta name='mobile-web-app-capable' content='yes'>
   <meta name='apple-mobile-web-app-status-bar-style' content='#b5e2c1'>
 
+  <script type="module" src="https://js.arcgis.com/calcite-components/2.12.2/calcite.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.12.2/calcite.css" />
+
   <title>Hiking trails</title>
 
   <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
@@ -72,15 +75,13 @@
   </div>
 
   <div class='smallMenu'>
-    <button aria-label='Set initial extent' id='home' class='fa fa-home'></button>
-    <button aria-label='Show details' id='details' class='fa fa-binoculars mobileButton'></button>
-    <button aria-label='Show information about this app' id='about' class='fa fa-info'></button>
+    <calcite-fab aria-label='Show details' id='details' icon="handle-vertical" kind="neutral" class="mobileButton"></calcite-fab>
+    <calcite-fab icon="home" aria-label='Set initial extent' id='home' kind="neutral"></calcite-fab>
+    <calcite-fab icon="information-f" aria-label='Show information about this app' id='about' kind="neutral"></calcite-fab>
+    <div>
+      <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
+    </div>
   </div>
-
-  <span class='share'>
-    <a aria-label='Fork me on github' class='fa fa-github-square' href='https://github.com/Esri/hiking-trails-app/' target='_blank'></a>
-    <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
-  </span>
 
   <div id='starterPage' class='starter'>
     <div class='inner'>

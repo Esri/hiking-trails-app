@@ -1,5 +1,4 @@
 @import "../../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
-@import "../../node_modules/@esri/calcite-components/dist/calcite/calcite.css";
 
 @import "variables";
 
@@ -71,7 +70,9 @@ h1 {
 }
 
 .smallMenu {
-  display: inherit;
+  display: flex;
+  gap: 5px;
+  align-items: center;
   position: absolute;
   top: 10px;
   left: 360px;
