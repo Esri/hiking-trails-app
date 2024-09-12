@@ -14,32 +14,32 @@
  *
  */
 
+import WebScene from "@arcgis/core/WebScene";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import SceneView from "@arcgis/core/views/SceneView";
+import SunLighting from "@arcgis/core/webscene/SunLighting";
+import Compass from "@arcgis/core/widgets/Compass";
+import NavigationToggle from "@arcgis/core/widgets/NavigationToggle";
+import Zoom from "@arcgis/core/widgets/Zoom";
 import config from "../config";
-import { getTrailRenderer, getLabelingInfo, getUniqueValueInfos } from "./utils";
+import { State } from "../types";
+import {
+  getLabelingInfo,
+  getTrailRenderer,
+  getUniqueValueInfos,
+} from "./utils";
 
-
-import * as WebScene from "esri/WebScene";
-import * as SceneView from "esri/views/SceneView";
-import * as FeatureLayer from "esri/layers/FeatureLayer";
-import * as GroupLayer from "esri/layers/GroupLayer";
-import * as UniqueValueRenderer from "esri/renderers/UniqueValueRenderer";
-import * as NavigationToggle from "esri/widgets/NavigationToggle";
-import * as Zoom from "esri/widgets/Zoom";
-import * as Compass from "esri/widgets/Compass";
-
+import GroupLayer from "@arcgis/core/layers/GroupLayer";
+import { UniqueValueRenderer } from "@arcgis/core/rasterRenderers";
 import "../../style/scene-panel.scss";
 
-import { State } from "../types";
-
 export default class SceneElement {
-
   state: State;
   view: SceneView;
   trailsLayer: FeatureLayer;
   trails: Array<any>;
 
   constructor(state: State) {
-
     this.state = state;
     this.view = this.initView();
     this.state.view = this.view;
@@ -55,21 +55,18 @@ export default class SceneElement {
     });
 
     //adding view to the window only for debugging reasons
-    (<any> window).view = this.view;
+    (<any>window).view = this.view;
 
     state.watch("selectedTrailId", (value, oldValue) => {
-
       if (oldValue) {
         this.unselectFeature();
       }
       if (value) {
         this.selectFeature(value);
       }
-
     });
 
     state.watch("filteredTrailIds", (trailIds: Array<number>) => {
-
       // before filtering go to the initial extent
       // to see which layers are filtered
       if (this.view.map instanceof WebScene) {
@@ -82,12 +79,11 @@ export default class SceneElement {
       }
       // set definitionExpression to display only filtered buildings
       else {
-        const query = trailIds.map(function(id) {
+        const query = trailIds.map(function (id) {
           return `${config.data.trailAttributes.id} = ${id}`;
         });
         this.trailsLayer.definitionExpression = query.join(" OR ");
       }
-
     });
 
     state.watch("device", () => {
@@ -100,11 +96,10 @@ export default class SceneElement {
   }
 
   private initView() {
-
     const webscene = new WebScene({
       portalItem: {
-        id: config.scene.websceneItemId
-      }
+        id: config.scene.websceneItemId,
+      },
     });
 
     const view = new SceneView({
@@ -113,59 +108,53 @@ export default class SceneElement {
       constraints: {
         tilt: {
           max: 80,
-          mode: "manual"
-        }
-      },
-      qualityProfile: "high",
-      environment: {
-        lighting: {
-          directShadowsEnabled: true,
-          ambientOcclusionEnabled: true
+          mode: "manual",
         },
+      },
+      environment: {
+        lighting: new SunLighting({
+          directShadowsEnabled: true,
+        }),
         atmosphereEnabled: true,
         atmosphere: {
-          quality: "high"
+          quality: "high",
         },
-        starsEnabled: false
+        starsEnabled: false,
       },
       ui: {
-        components: ["attribution"]
+        components: ["attribution"],
       },
       popup: {
         dockEnabled: false,
-        collapsed: true
-      }
+      },
     });
 
     const navigationToggle = new NavigationToggle({
-      view: view
+      view: view,
     });
 
     const zoom = new Zoom({
-      view: view
+      view: view,
     });
 
     const compass = new Compass({
-      view: view
+      view: view,
     });
 
     view.ui.add([zoom, navigationToggle, compass], "top-right");
     return view;
-
   }
 
   private setViewPadding() {
-    console.log(this.state.device);
     if (this.state.device === "mobilePortrait") {
       this.view.padding = {
-        top: 30,
-        left: 0
+        top: 0,
+        left: 0,
       };
-    }
-    else {
+    } else {
       this.view.padding = {
-        top: 30,
-        left: 350
+        top: 0,
+        left: 350,
       };
     }
   }
@@ -177,50 +166,54 @@ export default class SceneElement {
       outFields: ["*"],
       renderer: getTrailRenderer(),
       elevationInfo: {
-        mode: "on-the-ground"
+        mode: "on-the-ground",
       },
       labelsVisible: true,
       popupEnabled: false,
-      labelingInfo: getLabelingInfo({ selection: null })
+      labelingInfo: getLabelingInfo({ selection: null }),
     });
   }
 
   private setCurrentBasemap(id) {
-    const basemapGroup = <GroupLayer> this.view.map.layers.filter((layer) => {
-      return (layer.title === "Basemap");
-    }).getItemAt(0);
+    const basemapGroup = this.view.map.layers
+      .filter((layer) => {
+        return layer.title === "Basemap";
+      })
+      .getItemAt(0) as GroupLayer;
 
-    const activeLayer = basemapGroup.layers.filter((layer) => {
-      if (layer.id === id) {
-        return true;
-      }
-      return false;
-    }).getItemAt(0);
+    const activeLayer = basemapGroup.layers
+      .filter((layer) => {
+        if (layer.id === id) {
+          return true;
+        }
+        return false;
+      })
+      .getItemAt(0);
 
     activeLayer.visible = true;
-
   }
 
   private onViewClick(event) {
-
     // check if the user is online
     if (this.state.online) {
-      this.view.hitTest(event, {include: this.trailsLayer})
+      this.view
+        .hitTest(event, { include: this.trailsLayer })
         .then((response) => {
           const result = response.results[0];
           // if a graphic was picked from the view
-          if (result && result.graphic) {
-              this.state.setSelectedTrail(result.graphic.attributes[config.data.trailAttributes.id]);
+          if (result?.type === "graphic" && result.graphic) {
+            this.state.setSelectedTrail(
+              result.graphic.attributes[config.data.trailAttributes.id]
+            );
           } else {
             this.state.setSelectedTrail(null);
           }
-      });
+        });
     }
   }
 
   private selectFeature(featureId): void {
-
-    const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
+    const renderer = (this.trailsLayer.renderer as UniqueValueRenderer).clone();
     renderer.uniqueValueInfos = getUniqueValueInfos({ selection: featureId });
     this.trailsLayer.renderer = renderer;
 
@@ -230,18 +223,13 @@ export default class SceneElement {
       { target: this.state.selectedTrail.geometry, tilt: 60 },
       { speedFactor: 0.5 }
     );
-
   }
 
   private unselectFeature(): void {
-
-    const renderer = (<UniqueValueRenderer> this.trailsLayer.renderer).clone();
+    const renderer = (this.trailsLayer.renderer as UniqueValueRenderer).clone();
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
 
     this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
-
   }
-
-
 }

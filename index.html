@@ -31,13 +31,13 @@
   <meta name='mobile-web-app-capable' content='yes'>
   <meta name='apple-mobile-web-app-status-bar-style' content='#b5e2c1'>
 
+  <script type="module" src="https://js.arcgis.com/calcite-components/2.12.2/calcite.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.12.2/calcite.css" />
+
   <title>Hiking trails</title>
 
-  <link rel='stylesheet' href='https://js.arcgis.com/4.20/esri/css/main.css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
-<% for (var css in htmlWebpackPlugin.files.css) { %>
-  <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
-<% } %>
+  <script type='module' src='./src/ts/main.ts'></script>
 </head>
 
 <body>
@@ -75,15 +75,13 @@
   </div>
 
   <div class='smallMenu'>
-    <button aria-label='Set initial extent' id='home' class='fa fa-home'></button>
-    <button aria-label='Show details' id='details' class='fa fa-binoculars mobileButton'></button>
-    <button aria-label='Show information about this app' id='about' class='fa fa-info'></button>
+    <calcite-fab aria-label='Show details' id='details' icon="handle-vertical" kind="neutral" class="mobileButton"></calcite-fab>
+    <calcite-fab icon="home" aria-label='Set initial extent' id='home' kind="neutral"></calcite-fab>
+    <calcite-fab icon="information-f" aria-label='Show information about this app' id='about' kind="neutral"></calcite-fab>
+    <div>
+      <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
+    </div>
   </div>
-
-  <span class='share'>
-    <a aria-label='Fork me on github' class='fa fa-github-square' href='https://github.com/Esri/hiking-trails-app/' target='_blank'></a>
-    <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
-  </span>
 
   <div id='starterPage' class='starter'>
     <div class='inner'>
@@ -115,26 +113,8 @@
     <h1> Credits </h1>
       <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
       <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
-      <p><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> was used for the icons.</p>
     </ul>
   </div>
-
-  <!--load ArcGIS API for JavaScript-->
-  <script>
-    var dojoConfig = {
-      has: {
-        "esri-promise-compatibility": 1
-      },
-      async: true
-    };
-  </script>
-  <script type='text/javascript' rel=preload src='https://js.arcgis.com/4.20/'></script>
-  <!--load app-->
-  <script>
-    require([<% for (var chunk in htmlWebpackPlugin.files.js) { %>
-      '<%= htmlWebpackPlugin.files.js[chunk] %>',
-    <% } %>], function (main) { });
-  </script>
 
   <!--script for Twitter sharing link-->
   <script>

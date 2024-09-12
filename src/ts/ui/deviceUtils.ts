@@ -14,11 +14,11 @@
  *
  */
 
-import { State, Device } from "../types";
+import { Device, State } from "../types";
 
 const mqDesktop = window.matchMedia("(min-width: 601px)");
 
-function getMedia(): Device  {
+function getMedia(): Device {
   if (mqDesktop.matches) {
     return "desktop";
   }
@@ -32,5 +32,5 @@ export default {
       const media: Device = getMedia();
       state.device = media;
     });
-  }
+  },
 };

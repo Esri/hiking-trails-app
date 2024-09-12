@@ -3,16 +3,20 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "noImplicitAny": false,
-        "module": "commonjs",
-        "target": "es5",
-        "types": ["arcgis-js-api", "dojo"],
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "Bundler",
+        "types": [],
         "typeRoots": ["./node_modules/@types"],
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "useDefineForClassFields": false,
         "jsx": "react",
         "reactNamespace": "jsxFactory",
-        "lib": ["es2019", "dom",  "scripthost"]
+        "lib": ["ESNext", "dom",  "scripthost"]
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "node_modules/@arcgis/core/**/*"
     ]
 }

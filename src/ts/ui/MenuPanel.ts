@@ -14,27 +14,22 @@
  *
  */
 
-import * as on from "dojo/on";
-import * as dom from "dojo/dom";
 import DetailPanel from "./DetailPanel";
 import SelectionPanel from "./SelectionPanel";
 import BasemapPanel from "./BasemapPanel";
-import { State } from "../types";
-import * as SceneView from "esri/views/SceneView";
-import * as WebScene from "esri/WebScene";
+import { Panel, State } from "../types";
+import WebScene from "@arcgis/core/WebScene";
 
 import "../../style/menu-panel.scss";
 
 export default class MenuPanel {
-
   state: State;
   container: HTMLElement;
 
   constructor(state: State) {
-
     const trails = state.trails;
     this.state = state;
-    this.container = <HTMLElement> document.querySelector(".menuPanel");
+    this.container = <HTMLElement>document.querySelector(".menuPanel");
 
     const selectionPanel = new SelectionPanel(trails, state);
     const detailPanel = new DetailPanel(trails, state);
@@ -43,28 +38,32 @@ export default class MenuPanel {
     const panels = {
       selectionPanel,
       detailPanel,
-      basemapPanel
+      basemapPanel,
     };
 
     this.initVisiblePanel(panels);
 
     state.watch("visiblePanel", (newPanel, oldPanel) => {
-
       // activate the selected panel (newPanel)
-      document.querySelector(`[data-tab="${newPanel}"]`).classList.add("active");
+      document
+        .querySelector(`[data-tab="${newPanel}"]`)
+        .classList.add("active");
       panels[newPanel].container.style.display = "block";
 
       // deactivate the old active panel (oldPanel)
-      document.querySelector(`[data-tab="${oldPanel}"]`).classList.remove("active");
+      document
+        .querySelector(`[data-tab="${oldPanel}"]`)
+        .classList.remove("active");
       panels[oldPanel].container.style.display = "none";
     });
 
-    on(document.querySelector(".menuTabs"), "click", (evt) => {
-      this.state.visiblePanel = evt.target.dataset.tab;
+    document.querySelector(".menuTabs").addEventListener("click", (evt) => {
+      this.state.visiblePanel = (evt.target as HTMLElement).dataset
+        .tab as Panel;
     });
 
     // this class also takes care of the mobile menu
-    on(document.querySelector("#home"), "click", (evt) => {
+    document.querySelector("#home").addEventListener("click", (evt) => {
       const view = this.state.view;
       if (view.map instanceof WebScene) {
         view.goTo(view.map.initialViewProperties.viewpoint);
@@ -72,11 +71,11 @@ export default class MenuPanel {
       }
     });
 
-    on(dom.byId("about"), "click", function() {
-      dom.byId("credentialsPanel").style.display = "inline";
+    document.getElementById("about").addEventListener("click", function () {
+      document.getElementById("credentialsPanel").style.display = "inline";
     });
-    on(dom.byId("close"), "click", function() {
-      dom.byId("credentialsPanel").style.display = "none";
+    document.getElementById("close").addEventListener("click", function () {
+      document.getElementById("credentialsPanel").style.display = "none";
     });
 
     state.watch("device", () => {
@@ -88,7 +87,6 @@ export default class MenuPanel {
         } else {
           this.container.style.display = "flex";
         }
-
       } else {
         if (!this.state.selectedTrailId) {
           this.state.visiblePanel = "selectionPanel";
@@ -101,26 +99,24 @@ export default class MenuPanel {
       if (this.state.device === "mobilePortrait") {
         if (this.state.selectedTrailId) {
           this.container.style.display = "flex";
-        }
-        else {
+        } else {
           this.container.style.display = "none";
         }
       }
     });
 
-    on(document.querySelector("#details"), "click", (evt) => {
+    document.querySelector("#details").addEventListener("click", (evt) => {
       const displayValue = this.container.style.display;
       console.log(displayValue);
-      this.container.style.display = (displayValue === "none" || displayValue === "") ? "flex" : "none";
+      this.container.style.display =
+        displayValue === "none" || displayValue === "" ? "flex" : "none";
     });
-
   }
 
   private initVisiblePanel(panels) {
     if (this.state.device === "mobilePortrait") {
       this.state.visiblePanel = "detailPanel";
-    }
-    else {
+    } else {
       this.state.visiblePanel = "selectionPanel";
     }
     panels[this.state.visiblePanel].container.style.display = "block";

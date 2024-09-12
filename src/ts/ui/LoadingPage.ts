@@ -14,35 +14,27 @@
  *
  */
 
-import * as dom from "dojo/dom";
-import * as on from "dojo/on";
-
 import "../../style/loading-page.scss";
 import { State } from "../types";
 
 export default class LoadingPage {
-
   container;
   state: State;
 
   constructor(state) {
-    this.container = dom.byId("starterPage");
+    this.container = document.getElementById("starterPage");
     this.state = state;
 
     state.watch("displayLoading", (value) => {
       if (!value) {
         this.container.style.display = "none";
-      }
-      else {
+      } else {
         this.container.style.display = "table";
       }
     });
 
-
-    on(dom.byId("showMap"), "click", () => {
+    document.getElementById("showMap").addEventListener("click", () => {
       state.displayLoading = false;
     });
   }
 }
-
-

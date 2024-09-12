@@ -14,17 +14,13 @@
  *
  */
 
-import * as domConstruct from "dojo/dom-construct";
 import { State } from "../types";
 
 export default class ConnectionManager {
-
-  private messageContainer;
+  private messageContainer: HTMLElement;
 
   constructor(state: State) {
-
-    window.addEventListener("load", function() {
-
+    window.addEventListener("load", function () {
       function updateOnlineStatus() {
         state.online = navigator.onLine ? true : false;
       }
@@ -33,21 +29,25 @@ export default class ConnectionManager {
       window.addEventListener("offline", updateOnlineStatus);
     });
 
-    this.messageContainer = domConstruct.create("div", {}, document.body);
+    this.messageContainer = document.body.appendChild(
+      document.createElement("div")
+    );
 
     state.watch("online", (value) => {
       console.log(value);
       if (!value) {
         this.createOfflineMessage();
-      }
-      else {
+      } else {
         this.createOnlineMessage();
       }
     });
   }
 
   createOfflineMessage() {
-    this.setMessage("You seem to be offline. This application has limited functionality.", false);
+    this.setMessage(
+      "You seem to be offline. This application has limited functionality.",
+      false
+    );
   }
 
   createOnlineMessage() {
@@ -55,28 +55,22 @@ export default class ConnectionManager {
   }
 
   private setMessage(message: string, online: boolean): void {
-
     // display message
     this.messageContainer.innerHTML = message;
     this.messageContainer.classList.add("connectionMessage");
 
     if (online) {
+      this.messageContainer.classList.add("online");
+      this.messageContainer.classList.remove("offline");
 
-    this.messageContainer.classList.add("online");
-    this.messageContainer.classList.remove("offline");
-
-    // message disappears after 3 seconds
-    window.setTimeout(() => {
-      this.messageContainer.innerHTML = "";
-      this.messageContainer.classList.remove("online", "connectionMessage");
-    }, 3000);
-    }
-    else {
+      // message disappears after 3 seconds
+      window.setTimeout(() => {
+        this.messageContainer.innerHTML = "";
+        this.messageContainer.classList.remove("online", "connectionMessage");
+      }, 3000);
+    } else {
       this.messageContainer.classList.remove("online");
       this.messageContainer.classList.add("offline");
     }
-
-
   }
-
 }

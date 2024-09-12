@@ -14,15 +14,16 @@
  *
  */
 
-import Accessor = require("esri/core/Accessor");
-import SceneView = require("esri/views/SceneView");
-import Graphic = require("esri/Graphic");
+import Accessor from "@arcgis/core/core/Accessor";
+import {
+  property,
+  subclass,
+} from "@arcgis/core/core/accessorSupport/decorators";
+import SceneView from "@arcgis/core/views/SceneView";
 import { Device, Trail } from "./types";
-import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 
 @subclass()
 export default class State extends Accessor {
-
   @property()
   displayLoading: boolean = true;
 
@@ -35,7 +36,7 @@ export default class State extends Accessor {
   setSelectedTrail(id: number) {
     this.selectedTrailId = id;
     this.selectedTrail = this.trails.filter((trail: Trail) => {
-      return (trail.id === id);
+      return trail.id === id;
     })[0];
 
     if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
@@ -57,7 +58,7 @@ export default class State extends Accessor {
   filters = {};
   setFilter(property: string, value: string | Array<number>): void {
     this.filters = {
-      ...this.filters
+      ...this.filters,
     };
     this.filters[property] = value;
   }

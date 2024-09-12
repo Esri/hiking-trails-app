@@ -14,38 +14,33 @@
  *
  */
 
-import * as dom from "dojo/dom";
-import * as on from "dojo/on";
-import * as domConstruct from "dojo/dom-construct";
 import config from "../config";
-import noUiSlider = require("nouislider");
+import noUiSlider from "nouislider";
 import "../../style/selection-panel.scss";
 import "../../style/nouislider.scss";
 import { State, Trail } from "../types";
 
 export default class SelectionPanel {
-
-  trailsPanel;
-  filterPanel;
+  trailsPanel: HTMLElement;
+  filterPanel: HTMLElement;
   trails: Array<Trail>;
   state: State;
   container: any;
 
   constructor(trails, state: State) {
-
     this.state = state;
     this.trails = trails;
 
-    this.container = dom.byId("selectionPanel");
+    this.container = document.getElementById("selectionPanel");
 
-    this.trailsPanel = dom.byId("trailsPanel");
+    this.trailsPanel = document.getElementById("trailsPanel");
     this.generateTrailsPanel();
 
-    on(document.querySelector(".removeSelected"), "click", (evt) => {
+    document.querySelector(".removeSelected").addEventListener("click", () => {
       this.state.setSelectedTrail(null);
     });
 
-    this.filterPanel = dom.byId("filterPanel");
+    this.filterPanel = document.getElementById("filterPanel");
     this.generateFilterPanel();
 
     state.watch("selectedTrailId", (id) => {
@@ -55,38 +50,39 @@ export default class SelectionPanel {
       if (id) {
         document.querySelector(`[data-id ="${id}"]`).classList.add("selected");
         document.querySelector(".removeSelected").removeAttribute("disabled");
-      }
-      else {
+      } else {
         document.querySelector(".removeSelected").setAttribute("disabled", "");
       }
     });
 
     state.watch("filters", (filters: any) => {
-      const filteredTrailIds = this.getFilteredTrails(filters).map((trail) => trail.id);
+      const filteredTrailIds = this.getFilteredTrails(filters).map(
+        (trail) => trail.id
+      );
       this.state.setFilteredTrailIds(filteredTrailIds);
     });
 
     state.watch("filteredTrailIds", (ids) => {
       this.updateVisibleTrails(ids);
     });
-
   }
 
   private getFilteredTrails(filters: any): Array<Trail> {
     const filteredTrails = this.trails.filter((trail) => {
-
       // we assume the trail will not be filtered out
       let keepTrail = true;
 
       // go through each filter criteria and verify if the trail should be filtered out
       for (const filter in filters) {
         if (Array.isArray(filters[filter])) {
-          if (trail[filter] < filters[filter][0] || trail[filter] > filters[filter][1]) {
+          if (
+            trail[filter] < filters[filter][0] ||
+            trail[filter] > filters[filter][1]
+          ) {
             keepTrail = false;
             break;
           }
-        }
-        else {
+        } else {
           if (filters[filter] !== "All") {
             if (trail[filter].toString() !== filters[filter]) {
               keepTrail = false;
@@ -104,37 +100,36 @@ export default class SelectionPanel {
 
   private updateVisibleTrails(ids) {
     const trailElements = document.querySelectorAll(".trail");
-    [].forEach.call(trailElements, function(elem) {
+    [].forEach.call(trailElements, function (elem) {
       if (ids.indexOf(parseInt(elem.dataset.id, 10)) === -1) {
         elem.classList.add("disabled");
-      }
-      else {
+      } else {
         elem.classList.remove("disabled");
       }
     });
   }
 
   private generateTrailsPanel(): void {
-
     const state = this.state;
 
     this.trails.forEach((trail) => {
-      const trailElement = domConstruct.create("div", {
-        "innerHTML": trail.name,
-        "data-difficulty": trail.difficulty,
-        "data-id": trail.id,
-        "data-category": trail.category,
-        "data-walktime": trail.walktime,
-        "data-status": trail.status,
-        "data-ascent": trail.ascent,
-        "class": "trail"
-      }, this.trailsPanel);
+      const trailElement = document.createElement("div");
+      trailElement.className = "trail";
+      trailElement.innerHTML = trail.name;
+      trailElement.dataset.difficulty = trail.difficulty;
+      trailElement.dataset.id = String(trail.id);
+      trailElement.dataset.category = trail.category;
+      trailElement.dataset.walktime = String(trail.walktime);
+      trailElement.dataset.status = String(trail.status);
+      trailElement.dataset.ascent = String(trail.ascent);
+      this.trailsPanel.appendChild(trailElement);
 
-      on(trailElement, "click", (evt) => {
-        state.setSelectedTrail(parseInt(evt.target.dataset.id, 10));
+      trailElement.addEventListener("click", (evt) => {
+        state.setSelectedTrail(
+          parseInt((evt.target as HTMLElement).dataset.id, 10)
+        );
       });
     });
-
   }
 
   private generateFilterPanel(): void {
@@ -144,28 +139,28 @@ export default class SelectionPanel {
 
   // create radio buttons for single choice filter criteria
   private generateSingleChoiceFilters(): void {
-
-    const singleChoiceFilters: Array<string> = config.data.filterOptions.singleChoice;
+    const singleChoiceFilters: Array<string> =
+      config.data.filterOptions.singleChoice;
 
     for (const filter of singleChoiceFilters) {
-
       // get unique values for the single choice options
       const uniqueValues = this.getUniqueValues(filter);
 
       // create a single choice options text so that users know what to select
       const text = filter.charAt(0).toUpperCase() + filter.slice(1);
-      domConstruct.create("div", {
-        innerHTML: text,
-        class: "filter-category"
-        }, this.filterPanel);
+
+      const filterCategory = document.createElement("div");
+      filterCategory.className = "filter-category";
+      filterCategory.innerHTML = text;
+      this.filterPanel.appendChild(filterCategory);
 
       // add options as radio buttons
-      const spanContainer = domConstruct.create("span", {
-        "class": "radio-group"
-      }, this.filterPanel);
+      const spanContainer = document.createElement("span");
+      spanContainer.className = "radio-group";
+      this.filterPanel.appendChild(spanContainer);
 
       for (let i = 0; i < uniqueValues.length; i++) {
-        const checked = (i === 0) ? "checked" : "";
+        const checked = i === 0 ? "checked" : "";
         const id = `${filter}-${uniqueValues[i]}`;
         const radioOption = `<input type="radio" id="${id}" name=${filter} ${checked}/><label for="${id}" data-group="${filter}" data-option="${uniqueValues[i]}">${uniqueValues[i]}</label>`;
         spanContainer.innerHTML += radioOption;
@@ -174,23 +169,21 @@ export default class SelectionPanel {
       // initialize state
       this.state.setFilter(filter, "All");
 
-      on(spanContainer, "click", (evt) => {
-        const target = evt.target;
-        if (target.localName === "label" ) {
+      spanContainer.addEventListener("click", (evt) => {
+        const target = evt.target as HTMLElement;
+        if (target.localName === "label") {
           this.state.setFilter(target.dataset.group, target.dataset.option);
         }
       });
     }
-
   }
 
   // function that gets unique values for a trail attribute (filter)
   private getUniqueValues(filter): Array<string> {
-
     const uniqueValues = ["All"];
 
     this.trails.forEach((elem) => {
-      if (uniqueValues.indexOf(elem[filter]) === -1)  {
+      if (uniqueValues.indexOf(elem[filter]) === -1) {
         uniqueValues.push(elem[filter]);
       }
     });
@@ -200,21 +193,21 @@ export default class SelectionPanel {
 
   // creates range sliders for interval type filter criteria
   private generateRangeFilters(): void {
-
     const rangeFilters: Array<string> = config.data.filterOptions.range;
     const state: State = this.state;
 
     for (const filter of rangeFilters) {
-
       const text = filter.charAt(0).toUpperCase() + filter.slice(1);
-      domConstruct.create("div", {
-        innerHTML: text,
-        class: "filter-category"
-        }, this.filterPanel);
+
+      const filterCategory = document.createElement("div");
+      filterCategory.className = "filter-category";
+      filterCategory.innerHTML = text;
+      this.filterPanel.appendChild(filterCategory);
 
       // get minimum and maximum for the filter criteria
       const extremes: Extremes = this.getExtremes(filter);
-      let unit: string = "", step: number = 1;
+      let unit: string = "",
+        step: number = 1;
 
       switch (filter) {
         case "walktime": {
@@ -229,53 +222,53 @@ export default class SelectionPanel {
         }
       }
 
-      domConstruct.create("span", {
-        innerHTML: extremes.min + " " + unit
-      }, this.filterPanel);
+      const span = document.createElement("div");
+      span.innerHTML = `${extremes.min} ${unit}`;
+      this.filterPanel.appendChild(span);
 
-
-      const rangeSliderContainer = domConstruct.create("div", {
-        "class": "range-slider",
-        "data-group": filter
-      }, this.filterPanel);
+      const rangeSliderContainer = document.createElement("div");
+      rangeSliderContainer.className = "range-slider";
+      rangeSliderContainer.dataset.group = filter;
+      this.filterPanel.appendChild(rangeSliderContainer);
 
       const format = {
-        to: ( value ) => {
-          return `${parseInt(value, 10)} ${unit}`;
+        to: (value: number): string | number => {
+          return `${parseInt(String(value), 10)} ${unit}`;
         },
-        from: ( value ) => {
-          return `${parseInt(value, 10)} ${unit}`;
-        }
+        from: (value: string): number | false => {
+          return parseInt(value, 10);
+        },
       };
 
       noUiSlider.create(rangeSliderContainer, {
         start: [extremes.min, extremes.max],
         range: {
           min: extremes.min,
-          max: extremes.max
+          max: extremes.max,
         },
         connect: true,
         step: step,
-        tooltips: [format, format]
+        tooltips: [format, format],
       });
 
       //initialize state
       state.setFilter(filter, [extremes.min, extremes.max]);
 
       //add event listener on slider to change the state when slider values change
-      rangeSliderContainer.noUiSlider.on("end", function(values) {
+      (rangeSliderContainer as any).noUiSlider.on("end", function (values) {
         state.setFilter(this.target.dataset.group, values);
       });
 
-      domConstruct.create("span", {
-        innerHTML: extremes.max + " " + unit
-      }, this.filterPanel);
+      const span2 = document.createElement("div");
+      span2.innerHTML = `${extremes.max} ${unit}`;
+      this.filterPanel.appendChild(span2);
     }
   }
 
   private getExtremes(prop): Extremes {
-    let min = 1000, max = 0;
-    this.trails.forEach(function(elem) {
+    let min = 1000,
+      max = 0;
+    this.trails.forEach(function (elem) {
       if (elem[prop] !== null) {
         if (elem[prop] < min) {
           min = elem[prop];
@@ -287,10 +280,9 @@ export default class SelectionPanel {
     });
     return {
       min: min,
-      max: max
+      max: max,
     };
   }
-
 }
 
 interface Extremes {

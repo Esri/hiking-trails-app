@@ -14,33 +14,29 @@
  *
  */
 
+import Query from "@arcgis/core/rest/support/Query";
 import config from "../config";
-import * as Query from "esri/rest/support/Query";
-import * as QueryTask from "esri/tasks/QueryTask";
 
 import Trail from "./Trail";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 function queryTrails() {
-  const query = new Query({
+  return new FeatureLayer({
+    url: config.data.trailsServiceUrl,
+  }).queryFeatures({
     outFields: ["*"],
     where: "1=1",
     returnGeometry: true,
     outSpatialReference: {
-      wkid: 4326
-    }
+      wkid: 4326,
+    },
   });
-
-  const queryTask = new QueryTask({
-    url: config.data.trailsServiceUrl
-  });
-
-  return queryTask.execute(query);
 }
 
 const trailManager = {
-
   initTrails: (state) => {
-    return queryTrails().then((result) => {
+    return queryTrails()
+      .then((result) => {
         state.trails = result.features.map((feature) => {
           return new Trail(feature, state);
         });
@@ -48,7 +44,7 @@ const trailManager = {
       .catch((err) => {
         console.log(err);
       });
-  }
+  },
 };
 
 export default trailManager;

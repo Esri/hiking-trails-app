@@ -1,11 +1,14 @@
-@import 'variables';
+@import "../../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
 
-html, body {
+@import "variables";
+
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-size: 16px;
-  font-family: 'Open Sans Condensed', sans-serif;
+  font-family: "Open Sans Condensed", sans-serif;
   color: $font-color;
   overflow: hidden;
 }
@@ -23,18 +26,21 @@ h1 {
   z-index: 1;
   &:before {
     border-top: 10px solid $green;
-    content:"";
+    content: "";
     margin: 0 auto; /* this centers the line to the full width specified */
     position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-    top: 50%; left: 0; right: 0; bottom: 0;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 80%;
     z-index: -1;
   }
 
   span {
-      /* to hide the lines from behind the text, you have to set the background color the same as the container */
-      background: #fff;
-      padding: 0 30px;
+    /* to hide the lines from behind the text, you have to set the background color the same as the container */
+    background: #fff;
+    padding: 0 30px;
   }
 }
 
@@ -63,8 +69,10 @@ h1 {
   }
 }
 
-.smallMenu{
-  display: inherit;
+.smallMenu {
+  display: flex;
+  gap: 5px;
+  align-items: center;
   position: absolute;
   top: 10px;
   left: 360px;
@@ -109,13 +117,14 @@ h1 {
     padding: 10px;
   }
 
-  a, #logo a, #impressumLink a{
+  a,
+  #logo a,
+  #impressumLink a {
     font-weight: bold;
     color: inherit;
     text-decoration: none;
   }
 }
-
 
 #flickrImage {
   position: absolute;
@@ -132,21 +141,21 @@ h1 {
 #flickrContainer {
   position: absolute;
   z-index: 99;
-  top: 0; right: 0; left: 0; bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
   background-color: rgba(100, 100, 100, 0.4);
 }
-
 
 @media (max-width: $max-width) {
   .smallMenu {
     left: 10px;
-    .mobileButton{
+    .mobileButton {
       display: inline-block;
     }
   }
-
 }
-
 
 .connectionMessage {
   position: absolute;
