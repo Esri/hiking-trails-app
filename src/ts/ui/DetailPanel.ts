@@ -14,9 +14,7 @@
  *
  */
 
-import ElevationProfile from "@arcgis/core/widgets/ElevationProfile";
-import ElevationProfileLineGround from "@arcgis/core/widgets/ElevationProfile/ElevationProfileLineGround";
-import config from "../config";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { State, Trail } from "../types";
 
 import "../../style/detail-panel.scss";
@@ -27,9 +25,8 @@ export default class SelectionPanel {
   container: HTMLElement;
   detailTitle: HTMLElement;
   detailInfograph: HTMLElement;
-  detailElevationProfile: HTMLElement;
+  detailElevationProfile: any;
   detailDescription: HTMLElement;
-  elevationProfile: ElevationProfile;
 
   constructor(trails, state: State) {
     this.state = state;
@@ -38,44 +35,28 @@ export default class SelectionPanel {
     this.detailTitle = document.getElementById("detailTitle");
     this.detailInfograph = document.getElementById("detailInfograph");
     this.detailDescription = document.getElementById("detailDescription");
-    this.detailElevationProfile = document.getElementById(
-      "detailElevationProfile"
-    );
+    this.detailElevationProfile = document.getElementById("detailElevationProfile");
+    this.detailElevationProfile.referenceElement = this.state.view;
+    this.detailElevationProfile.view = this.state.view;
+    this.detailElevationProfile.visibleElements = {
+      selectButton: false,
+      sketchButton: false,
+    };
 
     this.emptyDetails();
 
-    state.watch("selectedTrailId", (id) => {
+    reactiveUtils.watch(() => state.selectedTrailId, (id) => {
       this.emptyDetails();
-      if (this.elevationProfile) {
-        this.elevationProfile.destroy();
-        this.elevationProfile = null;
-      }
       if (id) {
         const trail = this.state.selectedTrail;
         this.displayInfo(trail);
-        this.detailElevationProfile.innerHTML = "";
-        const container = document.createElement("div");
-        this.detailElevationProfile.append(container);
-
-        this.elevationProfile = new ElevationProfile({
-          view: this.state.view,
-          input: trail,
-          container,
-          profiles: [
-            new ElevationProfileLineGround({
-              title: "Trail statistics",
-              color: config.colors.selectedTrail,
-            }),
-          ],
-          visibleElements: {
-            selectButton: false,
-            sketchButton: false,
-          },
-        });
+        this.detailElevationProfile.input = trail;
+      } else {
+        this.detailElevationProfile.input = null;
       }
     });
 
-    state.watch("device", () => {
+    reactiveUtils.watch(() => state.device, () => {
       if (!this.state.selectedTrailId) {
         this.displayAppInfo();
       }
@@ -86,7 +67,6 @@ export default class SelectionPanel {
     this.detailTitle.innerHTML = "";
     this.detailDescription.innerHTML = "";
     this.detailInfograph.innerHTML = "";
-    this.detailElevationProfile.innerHTML = "";
 
     this.displayAppInfo();
   }

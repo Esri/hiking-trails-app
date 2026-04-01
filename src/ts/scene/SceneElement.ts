@@ -14,50 +14,29 @@
  *
  */
 
-import WebScene from "@arcgis/core/WebScene";
-import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import SceneView from "@arcgis/core/views/SceneView";
-import SunLighting from "@arcgis/core/webscene/SunLighting";
-import Compass from "@arcgis/core/widgets/Compass";
-import NavigationToggle from "@arcgis/core/widgets/NavigationToggle";
-import Zoom from "@arcgis/core/widgets/Zoom";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import config from "../config";
 import { State } from "../types";
-import {
-  getLabelingInfo,
-  getTrailRenderer,
-  getUniqueValueInfos,
-} from "./utils";
-
-import GroupLayer from "@arcgis/core/layers/GroupLayer";
-import { UniqueValueRenderer } from "@arcgis/core/rasterRenderers";
 import "../../style/scene-panel.scss";
 
 export default class SceneElement {
   state: State;
   view: SceneView;
-  trailsLayer: FeatureLayer;
+  trailsLayer: any;
   trails: Array<any>;
+  sceneElement: any;
+  ready: Promise<SceneView>;
+  private initialized = false;
 
   constructor(state: State) {
     this.state = state;
-    this.view = this.initView();
-    this.state.view = this.view;
-    this.setViewPadding();
+    this.ready = this.initScene();
 
-    this.trailsLayer = this.initTrailsLayer();
-    this.view.when(() => {
-      this.view.map.add(this.trailsLayer);
-    });
-
-    this.view.on("click", (event) => {
-      this.onViewClick(event);
-    });
-
-    //adding view to the window only for debugging reasons
-    (<any>window).view = this.view;
-
-    state.watch("selectedTrailId", (value, oldValue) => {
+    reactiveUtils.watch(() => state.selectedTrailId, (value, oldValue) => {
+      if (!this.view) {
+        return;
+      }
       if (oldValue) {
         this.unselectFeature();
       }
@@ -66,16 +45,21 @@ export default class SceneElement {
       }
     });
 
-    state.watch("filteredTrailIds", (trailIds: Array<number>) => {
+    reactiveUtils.watch(() => state.filteredTrailIds, (trailIds: Array<number>) => {
+      if (!this.view) {
+        return;
+      }
+
+      const map = this.view.map as any;
       // before filtering go to the initial extent
       // to see which layers are filtered
-      if (this.view.map instanceof WebScene) {
-        this.view.goTo(this.view.map.initialViewProperties.viewpoint);
+      if (map?.initialViewProperties?.viewpoint) {
+        this.view.goTo(map.initialViewProperties.viewpoint);
       }
 
       // remove filters
       if (trailIds.length === 0) {
-        this.trailsLayer.definitionExpression = "1=0";
+        this.trailsLayer.definitionExpression = "1=1";
       }
       // set definitionExpression to display only filtered buildings
       else {
@@ -86,111 +70,105 @@ export default class SceneElement {
       }
     });
 
-    state.watch("device", () => {
+    reactiveUtils.watch(() => state.device, () => {
       this.setViewPadding();
-    });
-
-    state.watch("currentBasemapId", (id) => {
-      this.setCurrentBasemap(id);
     });
   }
 
-  private initView() {
-    const webscene = new WebScene({
-      portalItem: {
-        id: config.scene.websceneItemId,
-      },
-    });
+  private initScene(): Promise<SceneView> {
+    this.sceneElement = document.querySelector("arcgis-scene#viewElement") as any;
+    if (!this.sceneElement) {
+      return Promise.reject(new Error("Scene element #viewElement not found"));
+    }
 
-    const view = new SceneView({
-      container: "scenePanel",
-      map: webscene,
-      constraints: {
-        tilt: {
-          max: 80,
-          mode: "manual",
-        },
-      },
-      environment: {
-        lighting: new SunLighting({
-          directShadowsEnabled: true,
-        }),
-        atmosphereEnabled: true,
-        atmosphere: {
-          quality: "high",
-        },
-        starsEnabled: false,
-      },
-      ui: {
-        components: ["attribution"],
-      },
-      popup: {
-        dockEnabled: false,
-      },
-    });
+    if (!this.sceneElement.getAttribute("item-id")) {
+      this.sceneElement.setAttribute("item-id", config.scene.websceneItemId);
+    }
 
-    const navigationToggle = new NavigationToggle({
-      view: view,
-    });
+    return new Promise((resolve) => {
+      const onViewReady = async () => {
+        this.view = this.sceneElement.view;
+        this.state.view = this.view;
 
-    const zoom = new Zoom({
-      view: view,
-    });
+        if (this.initialized) {
+          resolve(this.view);
+          return;
+        }
 
-    const compass = new Compass({
-      view: view,
-    });
+        this.initialized = true;
+        this.setViewPadding();
 
-    view.ui.add([zoom, navigationToggle, compass], "top-right");
-    return view;
+        if (!this.trailsLayer) {
+          this.trailsLayer = await this.createTrailsLayer();
+        }
+
+        if (!this.view.map.layers.includes(this.trailsLayer)) {
+          this.view.map.add(this.trailsLayer);
+        }
+
+        this.view.on("click", (event) => {
+          this.onViewClick(event);
+        });
+
+        // adding view to the window only for debugging reasons
+        (<any>window).view = this.view;
+        resolve(this.view);
+      };
+
+      this.sceneElement.addEventListener("arcgisViewReadyChange", onViewReady, {
+        once: true,
+      });
+
+      if (this.sceneElement.view) {
+        onViewReady();
+      }
+    });
   }
 
   private setViewPadding() {
+    if (!this.view) {
+      return;
+    }
+
     if (this.state.device === "mobilePortrait") {
       this.view.padding = {
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
       };
     } else {
       this.view.padding = {
         top: 0,
-        left: 350,
+        left: 0,
+        right: 0,
+        bottom: 0,
       };
     }
   }
 
-  private initTrailsLayer() {
+  private async createTrailsLayer() {
+    const arcgis = (window as any).$arcgis;
+    if (!arcgis?.import) {
+      throw new Error("ArcGIS components runtime ($arcgis.import) is not available");
+    }
+
+    const [FeatureLayer] = await arcgis.import([
+      "@arcgis/core/layers/FeatureLayer.js",
+    ]);
+
     return new FeatureLayer({
       url: config.data.trailsServiceUrl,
       title: "Hiking trails",
       outFields: ["*"],
-      renderer: getTrailRenderer(),
+      renderer: this.getTrailRenderer(),
       elevationInfo: {
         mode: "on-the-ground",
       },
       labelsVisible: true,
       popupEnabled: false,
-      labelingInfo: getLabelingInfo({ selection: null }),
+      labelingInfo: this.getLabelingInfo(null),
     });
-  }
-
-  private setCurrentBasemap(id) {
-    const basemapGroup = this.view.map.layers
-      .filter((layer) => {
-        return layer.title === "Basemap";
-      })
-      .getItemAt(0) as GroupLayer;
-
-    const activeLayer = basemapGroup.layers
-      .filter((layer) => {
-        if (layer.id === id) {
-          return true;
-        }
-        return false;
-      })
-      .getItemAt(0);
-
-    activeLayer.visible = true;
   }
 
   private onViewClick(event) {
@@ -213,11 +191,15 @@ export default class SceneElement {
   }
 
   private selectFeature(featureId): void {
-    const renderer = (this.trailsLayer.renderer as UniqueValueRenderer).clone();
-    renderer.uniqueValueInfos = getUniqueValueInfos({ selection: featureId });
+    if (!this.view || !this.trailsLayer) {
+      return;
+    }
+
+    const renderer = this.trailsLayer.renderer.clone();
+    renderer.uniqueValueInfos = this.getUniqueValueInfos(featureId);
     this.trailsLayer.renderer = renderer;
 
-    this.trailsLayer.labelingInfo = getLabelingInfo({ selection: featureId });
+    this.trailsLayer.labelingInfo = this.getLabelingInfo(featureId);
 
     this.view.goTo(
       { target: this.state.selectedTrail.geometry, tilt: 60 },
@@ -226,10 +208,115 @@ export default class SceneElement {
   }
 
   private unselectFeature(): void {
-    const renderer = (this.trailsLayer.renderer as UniqueValueRenderer).clone();
+    if (!this.view || !this.trailsLayer) {
+      return;
+    }
+
+    const renderer = this.trailsLayer.renderer.clone();
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
 
-    this.trailsLayer.labelingInfo = getLabelingInfo({ selection: null });
+    this.trailsLayer.labelingInfo = this.getLabelingInfo(null);
+  }
+
+  private getTrailRenderer() {
+    return {
+      type: "unique-value",
+      field: config.data.trailAttributes.id,
+      defaultSymbol: this.createTrailSymbol(null),
+      uniqueValueInfos: [],
+    };
+  }
+
+  private createTrailSymbol(selection: number | null) {
+    const color = selection
+      ? config.colors.selectedTrail
+      : config.colors.defaultTrail;
+
+    return {
+      type: "line-3d",
+      symbolLayers: [
+        {
+          type: "line",
+          material: {
+            color,
+          },
+          size: 2,
+        },
+      ],
+    };
+  }
+
+  private getUniqueValueInfos(selection: number) {
+    if (!selection) {
+      return [];
+    }
+
+    return [
+      {
+        value: selection,
+        symbol: this.createTrailSymbol(selection),
+      },
+    ];
+  }
+
+  private getLabelingInfo(selection: number | null) {
+    if (selection) {
+      return [this.createLabelClass(selection), this.createLabelClass(null)];
+    }
+
+    return [this.createLabelClass(null)];
+  }
+
+  private createLabelClass(selection: number | null) {
+    const color = selection
+      ? config.colors.selectedTrail
+      : config.colors.defaultTrail;
+
+    const labelClass: any = {
+      labelPlacement: "above-center",
+      labelExpressionInfo: {
+        expression: `$feature.${config.data.trailAttributes.name}`,
+      },
+      symbol: {
+        type: "label-3d",
+        symbolLayers: [
+          {
+            type: "text",
+            material: {
+              color: "white",
+            },
+            halo: {
+              color,
+              size: 1,
+            },
+            font: {
+              family: "Open Sans Condensed",
+              weight: "bold",
+            },
+            size: 13,
+          },
+        ],
+        verticalOffset: {
+          screenLength: 40,
+          maxWorldLength: 2000,
+          minWorldLength: 500,
+        },
+        callout: {
+          type: "line",
+          size: 1,
+          color: "white",
+          border: {
+            color,
+          },
+        },
+      },
+    };
+
+    if (selection) {
+      labelClass.where = `${config.data.trailAttributes.id} = ${selection}`;
+    }
+
+    return labelClass;
   }
 }

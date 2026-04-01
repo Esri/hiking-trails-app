@@ -1,6 +1,7 @@
 @import "../../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
 
 @import "variables";
+@import "menu-panel";
 
 html,
 body {
@@ -11,6 +12,10 @@ body {
   font-family: "Open Sans Condensed", sans-serif;
   color: $font-color;
   overflow: hidden;
+}
+
+:root {
+  --side-panel-width: 33.333vw;
 }
 
 h1 {
@@ -48,26 +53,14 @@ h1 {
   outline: none;
 }
 
-.share {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  .fa-github-square {
-    vertical-align: top;
-    font-size: 1.5em;
-    color: black;
-    text-decoration: none;
-  }
-
-  .fa-github-square:hover {
-    color: $font-color;
-  }
-
-  .twitter-share-button {
-    margin-top: 3px;
-  }
+#scene-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
+
 
 .smallMenu {
   display: flex;
@@ -75,7 +68,7 @@ h1 {
   align-items: center;
   position: absolute;
   top: 10px;
-  left: 360px;
+  left: calc(var(--side-panel-width) + 10px);
 
   button {
     background: $background-color;
@@ -91,64 +84,51 @@ h1 {
   }
 }
 
-#credentialsPanel {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  max-width: 600px;
-  margin: 50px auto 0 auto;
-  background-color: #fff;
-  padding: 20px;
-  z-index: 1000;
-  line-height: $big-font;
-  background-color: $background-color;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  display: none;
+// #credentialsPanel {
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   top: 0;
+//   max-width: 600px;
+//   margin: 50px auto 0 auto;
+//   background-color: #fff;
+//   padding: 20px;
+//   z-index: 1000;
+//   line-height: $big-font;
+//   background-color: $background-color;
+//   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+//   display: none;
 
-  .esri-icon-close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-  }
+//   .esri-icon-close {
+//     position: absolute;
+//     right: 20px;
+//     top: 20px;
+//     cursor: pointer;
+//   }
 
-  li {
-    padding: 10px;
-  }
+//   li {
+//     padding: 10px;
+//   }
 
-  a,
-  #logo a,
-  #impressumLink a {
-    font-weight: bold;
-    color: inherit;
-    text-decoration: none;
-  }
-}
-
-#flickrImage {
-  position: absolute;
-  -webkit-transition: max-width 0.5s, left 0.5s, top 0.5s, transform 0.5s;
-  -moz-transition: max-width 0.5s, left 0.5s, top 0.5s, transform 0.5s;
-  -ms-transition: max-width 0.5s, left 0.5s, top 0.5s, transform 0.5s;
-  -o-transition: max-width 0.5s, left 0.5s, top 0.5s, transform 0.5s;
-  transition: max-width 0.5s, left 0.5s, top 0.5s, transform 0.5s;
-  max-width: 50px;
-  box-shadow: 0px 0px 2px 1px $delimiter;
-  z-index: 100;
-}
-
-#flickrContainer {
-  position: absolute;
-  z-index: 99;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: rgba(100, 100, 100, 0.4);
-}
+//   a,
+//   #logo a,
+//   #impressumLink a {
+//     font-weight: bold;
+//     color: inherit;
+//     text-decoration: none;
+//   }
+// }
 
 @media (max-width: $max-width) {
+  :root {
+    --side-panel-width: 100vw;
+  }
+
+  #scene-wrapper {
+    width: 100vw;
+    height: 100vh;
+  }
+
   .smallMenu {
     left: 10px;
     .mobileButton {

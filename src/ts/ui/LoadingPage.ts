@@ -15,6 +15,7 @@
  */
 
 import "../../style/loading-page.scss";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { State } from "../types";
 
 export default class LoadingPage {
@@ -25,7 +26,7 @@ export default class LoadingPage {
     this.container = document.getElementById("starterPage");
     this.state = state;
 
-    state.watch("displayLoading", (value) => {
+    reactiveUtils.watch(() => state.displayLoading, (value) => {
       if (!value) {
         this.container.style.display = "none";
       } else {

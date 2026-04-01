@@ -39,9 +39,9 @@ export default class State extends Accessor {
       return trail.id === id;
     })[0];
 
-    if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
-      this.visiblePanel = "detailPanel";
-    }
+    // if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
+    //   this.visiblePanel = "detailPanel";
+    // }
   }
 
   @property()
@@ -62,9 +62,6 @@ export default class State extends Accessor {
     };
     this.filters[property] = value;
   }
-
-  @property()
-  visiblePanel: "selectionPanel" | "detailPanel" | "basemapPanel";
 
   @property()
   device: Device = null;

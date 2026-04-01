@@ -1,8 +1,15 @@
-#scenePanel {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 0;
+#viewElement {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+	height: 100%;
+	z-index: 0;
+	display: block;
+}
+
+@media (max-width: 600px) {
+	#viewElement {
+		width: 100%;
+		height: 100%;
+	}
 }

@@ -18,11 +18,11 @@
   "typings": "src/ts/types.d.ts",
   "devDependencies": {
     "sass-embedded": "^1.77.8",
-    "typescript": "^5.5.4",
+    "typescript": "^5.9.3",
     "vite": "^5.4.2"
   },
   "dependencies": {
-    "@arcgis/core": "^4.30.9",
+    "@arcgis/core": "^5.0.0",
     "nouislider": "^15.8.1"
   }
 }

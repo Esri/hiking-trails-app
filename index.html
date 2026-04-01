@@ -33,6 +33,7 @@
 
   <script type="module" src="https://js.arcgis.com/calcite-components/2.12.2/calcite.esm.js"></script>
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.12.2/calcite.css" />
+  <script type="module" src="https://js.arcgis.com/5.0/"></script>
 
   <title>Hiking trails</title>
 
@@ -41,48 +42,62 @@
 </head>
 
 <body>
-
-  <div id='scenePanel'></div>
-
+ <div id="scene-wrapper">
   <div class='menuPanel'>
-
     <h1 class='section title'>Hiking trails Swiss National Park</h1>
 
-    <ul class='menuTabs section'>
-      <li class='active' data-tab='selectionPanel'>Hikes</li>
-      <li data-tab='detailPanel'>Details</li>
-      <li data-tab='basemapPanel'>Basemap</li>
+    <calcite-tabs layout="center" scale="l">
+      <calcite-tab-nav slot="title-group">
+        <calcite-tab-title selected>
+            Hikes
+        </calcite-tab-title>
+        <calcite-tab-title>Details</calcite-tab-title>
+        <calcite-tab-title>Basemap</calcite-tab-title>
+      </calcite-tab-nav>
+      <calcite-tab selected>
+          <div id='selectionPanel' class='panel'>
+          <div id='trailsPanel'></div>
+          <button aria-label='Remove trail button' class='removeSelected' disabled>Remove selected trail</button>
+          <div id='filterPanel'></div>
+        </div>
+      </calcite-tab>
+      <calcite-tab>
+        <div id='detailPanel' class='panel'>
+          <h1 class='center' id='detailTitle'></h1>
+          <div id='detailInfograph'></div>
+          <div id='detailDescription'></div>
+          <arcgis-elevation-profile id='detailElevationProfile'></arcgis-elevation-profile>
+        </div>
+          </calcite-tab>
+          <calcite-tab>
+                <div id='basemapPanel' class='panel'>
+          <h1 class='center' id='basemapTitle'></h1>
+            <arcgis-basemap-gallery reference-element="viewElement"></arcgis-basemap-gallery>      
+        </div>
+      </calcite-tab>
+    </calcite-tabs>
+  </div>
+  <arcgis-scene id='viewElement' item-id='d0580bb5df3840d384bda44b6ddeb54e'>
+    <arcgis-home slot="top-right"></arcgis-home>
+    <arcgis-zoom slot='top-right'></arcgis-zoom>
+    <arcgis-navigation-toggle slot='top-right' visual-scale="m"></arcgis-navigation-toggle>
+    <arcgis-compass slot='top-right'></arcgis-compass>
+      <arcgis-expand
+    slot="bottom-right"
+    expand-icon="information-f"
+  >
+      <calcite-panel>
+    <h1>Disclaimer</h1>
+    <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
+      It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS Maps SDK for JavaScript version 5.x</a>.</p>
+    <h1> Credits </h1>
+      <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
+      <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
     </ul>
-
-    <div id='selectionPanel' class='panel invisible'>
-      <div id='trailsPanel'></div>
-      <button aria-label='Remove trail button' class='removeSelected' disabled>Remove selected trail</button>
-      <div id='filterPanel'></div>
-    </div>
-
-    <div id='detailPanel' class='panel invisible'>
-      <h1 class='center' id='detailTitle'></h1>
-      <div id='detailInfograph'></div>
-      <div id='detailDescription'></div>
-      <div id='detailElevationProfile'></div>
-    </div>
-
-    <div id='basemapPanel' class='panel invisible'>
-      <div class='basemaps'></div>
-      <div class='layers'></div>
-    </div>
-
-  </div>
-
-  <div class='smallMenu'>
-    <calcite-fab aria-label='Show details' id='details' icon="handle-vertical" kind="neutral" class="mobileButton"></calcite-fab>
-    <calcite-fab icon="home" aria-label='Set initial extent' id='home' kind="neutral"></calcite-fab>
-    <calcite-fab icon="information-f" aria-label='Show information about this app' id='about' kind="neutral"></calcite-fab>
-    <div>
-      <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
-    </div>
-  </div>
-
+  </calcite-panel>
+  </arcgis-expand>
+  </arcgis-scene>
+</div>
   <div id='starterPage' class='starter'>
     <div class='inner'>
       <div class='cell'>
@@ -105,36 +120,8 @@
     </div>
   </div>
 
-  <div id='credentialsPanel'>
-    <span class="esri-icon-close" id="close"></span>
-    <h1>Disclaimer</h1>
-    <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
-      It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS API for JavaScript version 4.20</a>.</p>
-    <h1> Credits </h1>
-      <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
-      <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
-    </ul>
-  </div>
 
-  <!--script for Twitter sharing link-->
-  <script>
-    window.twttr = (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0],
-        t = window.twttr || {};
-      if (d.getElementById(id)) return t;
-      js = d.createElement(s);
-      js.id = id;
-      js.src = 'https://platform.twitter.com/widgets.js';
-      fjs.parentNode.insertBefore(js, fjs);
 
-      t._e = [];
-      t.ready = function (f) {
-        t._e.push(f);
-      };
-
-      return t;
-    }(document, 'script', 'twitter-wjs'));
-  </script>
 </body>
 
 </html>

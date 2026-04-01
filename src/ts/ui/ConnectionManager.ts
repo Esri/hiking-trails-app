@@ -14,6 +14,7 @@
  *
  */
 
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { State } from "../types";
 
 export default class ConnectionManager {
@@ -33,7 +34,7 @@ export default class ConnectionManager {
       document.createElement("div")
     );
 
-    state.watch("online", (value) => {
+    reactiveUtils.watch(() => state.online, (value) => {
       console.log(value);
       if (!value) {
         this.createOfflineMessage();

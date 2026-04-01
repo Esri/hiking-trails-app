@@ -14,45 +14,20 @@
  *
  */
 import { State } from "../types";
-import GroupLayer from "@arcgis/core/layers/GroupLayer";
 
-import "../../style/basemap-panel.scss";
+// import "../../style/basemap-panel.scss";
 
 export default class BasemapPanel {
-  container: any;
-  basemapContainer: any;
+  container: HTMLElement | null;
+  basemapLayerList: HTMLElement | null;
 
   constructor(state: State) {
-    this.container = document.getElementById("basemapPanel");
-    this.basemapContainer = document.querySelector(".basemaps");
+    // this.container = document.getElementById("basemapPanel");
+    // this.basemapLayerList = document.getElementById("basemapLayerList");
 
-    state.view.map.watch("loaded", (value) => {
-      if (value) {
-        const basemapGroup = <GroupLayer>state.view.map.layers
-          .filter((layer) => {
-            return layer.title === "Basemap";
-          })
-          .getItemAt(0);
-
-        basemapGroup.layers.forEach((layer) => {
-          // get access to portalItem property
-          const portalLayer = <GroupLayer>layer;
-          portalLayer.portalItem.watch("loaded", (value) => {
-            if (value) {
-              const basemapItem = document.createElement("div");
-              basemapItem.classList.add("basemapItem");
-              basemapItem.style.background = `url(${portalLayer.portalItem.getThumbnailUrl()}) no-repeat center`;
-              basemapItem.dataset.id = layer.id;
-              basemapItem.innerHTML = `<div>${layer.title}</div>`;
-              this.basemapContainer.appendChild(basemapItem);
-
-              basemapItem.addEventListener("click", (evt) => {
-                state.currentBasemapId = (evt.target as HTMLElement).dataset.id;
-              });
-            }
-          });
-        });
-      }
-    });
+    // if (this.basemapLayerList) {
+    //   (this.basemapLayerList as any).referenceElement = state.view;
+    //   (this.basemapLayerList as any).view = state.view;
+    // }
   }
 }

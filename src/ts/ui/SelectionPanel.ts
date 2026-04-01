@@ -15,6 +15,7 @@
  */
 
 import config from "../config";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import noUiSlider from "nouislider";
 import "../../style/selection-panel.scss";
 import "../../style/nouislider.scss";
@@ -43,7 +44,7 @@ export default class SelectionPanel {
     this.filterPanel = document.getElementById("filterPanel");
     this.generateFilterPanel();
 
-    state.watch("selectedTrailId", (id) => {
+    reactiveUtils.watch(() => state.selectedTrailId, (id) => {
       if (document.querySelector(".selected")) {
         document.querySelector(".selected").classList.remove("selected");
       }
@@ -55,14 +56,14 @@ export default class SelectionPanel {
       }
     });
 
-    state.watch("filters", (filters: any) => {
+    reactiveUtils.watch(() => state.filters, (filters: any) => {
       const filteredTrailIds = this.getFilteredTrails(filters).map(
         (trail) => trail.id
       );
       this.state.setFilteredTrailIds(filteredTrailIds);
     });
 
-    state.watch("filteredTrailIds", (ids) => {
+    reactiveUtils.watch(() => state.filteredTrailIds, (ids) => {
       this.updateVisibleTrails(ids);
     });
   }

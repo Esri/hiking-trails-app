@@ -32,8 +32,8 @@ const state = new State();
 deviceUtils.init(state);
 new ConnectionManager(state);
 new LoadingPage(state);
-new SceneElement(state);
+const sceneElement = new SceneElement(state);
 
-trailManager.initTrails(state).then(() => {
+Promise.all([sceneElement.ready, trailManager.initTrails(state)]).then(() => {
   new MenuPanel(state);
 });
