@@ -34,6 +34,7 @@
   <script type="module" src="https://js.arcgis.com/calcite-components/2.12.2/calcite.esm.js"></script>
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.12.2/calcite.css" />
   <script type="module" src="https://js.arcgis.com/5.0/"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
   <title>Hiking trails</title>
 
@@ -57,7 +58,7 @@
       <calcite-tab selected>
           <div id='selectionPanel' class='panel'>
           <div id='trailsPanel'></div>
-          <button aria-label='Remove trail button' class='removeSelected' disabled>Remove selected trail</button>
+          <calcite-button appearance="outline" width="full" class='removeSelected' disabled>Remove selected trail</calcite-button>
           <div id='filterPanel'></div>
         </div>
       </calcite-tab>
@@ -66,7 +67,8 @@
           <h1 class='center' id='detailTitle'></h1>
           <div id='detailInfograph'></div>
           <div id='detailDescription'></div>
-          <arcgis-elevation-profile id='detailElevationProfile'></arcgis-elevation-profile>
+          <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-select-button
+    hide-start-button></arcgis-elevation-profile>
         </div>
           </calcite-tab>
           <calcite-tab>

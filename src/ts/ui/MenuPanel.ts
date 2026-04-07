@@ -16,11 +16,13 @@
 
 import SelectionPanel from "./SelectionPanel";
 import DetailPanel from "./DetailPanel";
+import BasemapPanel from "./BasemapPanel";
 import { State } from "../types";
 
 export default class MenuPanel {
   constructor(state: State) {
     new SelectionPanel(state.trails, state);
     new DetailPanel(state.trails, state);
+    new BasemapPanel();
   }
 }

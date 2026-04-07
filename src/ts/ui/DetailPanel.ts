@@ -15,6 +15,7 @@
  */
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import Graphic from "@arcgis/core/Graphic";
 import { State, Trail } from "../types";
 
 import "../../style/detail-panel.scss";
@@ -31,27 +32,60 @@ export default class SelectionPanel {
   constructor(trails, state: State) {
     this.state = state;
     this.trails = trails;
-    this.container = document.getElementById("detailPanel");
-    this.detailTitle = document.getElementById("detailTitle");
-    this.detailInfograph = document.getElementById("detailInfograph");
-    this.detailDescription = document.getElementById("detailDescription");
-    this.detailElevationProfile = document.getElementById("detailElevationProfile");
-    this.detailElevationProfile.referenceElement = this.state.view;
-    this.detailElevationProfile.view = this.state.view;
-    this.detailElevationProfile.visibleElements = {
-      selectButton: false,
-      sketchButton: false,
-    };
+    this.container = document.getElementById("detailPanel")!;
+    this.detailTitle = document.getElementById("detailTitle")!;
+    this.detailInfograph = document.getElementById("detailInfograph")!;
+    this.detailDescription = document.getElementById("detailDescription")!;
+    this.detailElevationProfile = document.getElementById("detailElevationProfile") as any;
+
+    this.detailElevationProfile.profiles = [
+      {
+        type: "input",
+        title: "Trail Statistics",
+      },
+    ];
 
     this.emptyDetails();
 
     reactiveUtils.watch(() => state.selectedTrailId, (id) => {
       this.emptyDetails();
       if (id) {
+        (document.querySelectorAll("calcite-tab-title")[1] as any).selected = true;
         const trail = this.state.selectedTrail;
+
+        console.log("[DetailPanel] selected trail", {
+          id,
+          trail,
+          geometry: trail?.geometry,
+          geometryType: trail?.geometry?.type,
+          spatialReference: trail?.geometry?.spatialReference,
+          paths: trail?.geometry?.paths,
+          inputBeforeAssign: this.detailElevationProfile.input,
+        });
+
         this.displayInfo(trail);
-        this.detailElevationProfile.input = trail;
+        const trailGraphic =
+          trail?.geometry
+            ? new Graphic({
+                geometry: trail.geometry,
+              })
+            : null;
+
+        this.detailElevationProfile.input = trailGraphic;
+        // this.detailElevationProfile.input = trail.geometry;
+        
+        console.log(
+          "[DetailPanel] assigned elevation profile input",
+          {
+            input: this.detailElevationProfile.input,
+            inputGeometry: this.detailElevationProfile.input?.geometry,
+            componentGeometry:
+              this.detailElevationProfile.input?.geometry?.toJSON?.() ??
+              this.detailElevationProfile.input?.geometry,
+          }
+        );
       } else {
+        console.log("[DetailPanel] clearing elevation profile input");
         this.detailElevationProfile.input = null;
       }
     });

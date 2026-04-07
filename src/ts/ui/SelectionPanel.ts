@@ -16,9 +16,7 @@
 
 import config from "../config";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-import noUiSlider from "nouislider";
 import "../../style/selection-panel.scss";
-import "../../style/nouislider.scss";
 import { State, Trail } from "../types";
 
 export default class SelectionPanel {
@@ -27,6 +25,7 @@ export default class SelectionPanel {
   trails: Array<Trail>;
   state: State;
   container: any;
+  removeSelectedButton: any;
 
   constructor(trails, state: State) {
     this.state = state;
@@ -35,24 +34,36 @@ export default class SelectionPanel {
     this.container = document.getElementById("selectionPanel");
 
     this.trailsPanel = document.getElementById("trailsPanel");
+    this.removeSelectedButton = document.querySelector(".removeSelected");
     this.generateTrailsPanel();
 
-    document.querySelector(".removeSelected").addEventListener("click", () => {
+    this.removeSelectedButton.addEventListener("click", () => {
       this.state.setSelectedTrail(null);
     });
 
     this.filterPanel = document.getElementById("filterPanel");
     this.generateFilterPanel();
+    this.state.setFilteredTrailIds(this.trails.map((trail) => trail.id));
 
     reactiveUtils.watch(() => state.selectedTrailId, (id) => {
-      if (document.querySelector(".selected")) {
-        document.querySelector(".selected").classList.remove("selected");
+      const previousSelectedTrail = this.trailsPanel.querySelector(
+        ".selected"
+      ) as any;
+
+      if (previousSelectedTrail) {
+        previousSelectedTrail.selected = false;
+        previousSelectedTrail.classList.remove("selected");
       }
+
       if (id) {
-        document.querySelector(`[data-id ="${id}"]`).classList.add("selected");
-        document.querySelector(".removeSelected").removeAttribute("disabled");
+        const selectedTrail = this.trailsPanel.querySelector(
+          `[data-id="${id}"]`
+        ) as any;
+        selectedTrail?.classList.add("selected");
+        selectedTrail.selected = true;
+        this.removeSelectedButton.disabled = false;
       } else {
-        document.querySelector(".removeSelected").setAttribute("disabled", "");
+        this.removeSelectedButton.disabled = true;
       }
     });
 
@@ -104,8 +115,10 @@ export default class SelectionPanel {
     [].forEach.call(trailElements, function (elem) {
       if (ids.indexOf(parseInt(elem.dataset.id, 10)) === -1) {
         elem.classList.add("disabled");
+        elem.disabled = true;
       } else {
         elem.classList.remove("disabled");
+        elem.disabled = false;
       }
     });
   }
@@ -114,21 +127,22 @@ export default class SelectionPanel {
     const state = this.state;
 
     this.trails.forEach((trail) => {
-      const trailElement = document.createElement("div");
+      const trailElement = document.createElement("calcite-chip") as any;
       trailElement.className = "trail";
-      trailElement.innerHTML = trail.name;
+      trailElement.innerText = trail.name;
       trailElement.dataset.difficulty = trail.difficulty;
       trailElement.dataset.id = String(trail.id);
       trailElement.dataset.category = trail.category;
       trailElement.dataset.walktime = String(trail.walktime);
       trailElement.dataset.status = String(trail.status);
       trailElement.dataset.ascent = String(trail.ascent);
+      trailElement.scale = "s";
+      trailElement.kind = "brand";
+      trailElement.value = String(trail.id);
       this.trailsPanel.appendChild(trailElement);
 
-      trailElement.addEventListener("click", (evt) => {
-        state.setSelectedTrail(
-          parseInt((evt.target as HTMLElement).dataset.id, 10)
-        );
+      trailElement.addEventListener("click", () => {
+        state.setSelectedTrail(trail.id);
       });
     });
   }
@@ -155,26 +169,31 @@ export default class SelectionPanel {
       filterCategory.innerHTML = text;
       this.filterPanel.appendChild(filterCategory);
 
-      // add options as radio buttons
-      const spanContainer = document.createElement("span");
-      spanContainer.className = "radio-group";
-      this.filterPanel.appendChild(spanContainer);
+      const segmentedControl = document.createElement(
+        "calcite-segmented-control"
+      ) as any;
+      segmentedControl.className = "segmented-group";
+      segmentedControl.width = "full";
+
+      this.filterPanel.appendChild(segmentedControl);
 
       for (let i = 0; i < uniqueValues.length; i++) {
-        const checked = i === 0 ? "checked" : "";
-        const id = `${filter}-${uniqueValues[i]}`;
-        const radioOption = `<input type="radio" id="${id}" name=${filter} ${checked}/><label for="${id}" data-group="${filter}" data-option="${uniqueValues[i]}">${uniqueValues[i]}</label>`;
-        spanContainer.innerHTML += radioOption;
+        const option = document.createElement(
+          "calcite-segmented-control-item"
+        ) as any;
+        option.innerText = uniqueValues[i];
+        option.value = uniqueValues[i];
+        if (i === 0) {
+          option.checked = true;
+        }
+        segmentedControl.appendChild(option);
       }
 
       // initialize state
       this.state.setFilter(filter, "All");
 
-      spanContainer.addEventListener("click", (evt) => {
-        const target = evt.target as HTMLElement;
-        if (target.localName === "label") {
-          this.state.setFilter(target.dataset.group, target.dataset.option);
-        }
+      segmentedControl.addEventListener("calciteSegmentedControlChange", () => {
+        this.state.setFilter(filter, segmentedControl.value);
       });
     }
   }
@@ -223,46 +242,57 @@ export default class SelectionPanel {
         }
       }
 
-      const span = document.createElement("div");
-      span.innerHTML = `${extremes.min} ${unit}`;
-      this.filterPanel.appendChild(span);
-
-      const rangeSliderContainer = document.createElement("div");
+      const rangeSliderContainer = document.createElement("calcite-slider") as any;
       rangeSliderContainer.className = "range-slider";
       rangeSliderContainer.dataset.group = filter;
+      rangeSliderContainer.min = extremes.min;
+      rangeSliderContainer.max = extremes.max;
+      rangeSliderContainer.minValue = extremes.min;
+      rangeSliderContainer.maxValue = extremes.max;
+      rangeSliderContainer.step = step;
+      rangeSliderContainer.labelHandles = true;
+      rangeSliderContainer.labelFormatter = (value: number) => {
+  return `${Math.round(Number(value))} ${unit}`;
+};
+      // rangeSliderContainer.labelTicks = true;
+      // rangeSliderContainer.ticks = true;
+
+      // // Use a numeric tick interval to avoid invalid tick label values.
+      // rangeSliderContainer.labelFormatter = (
+      //   value: number,
+      //   _type: string,
+      //   defaultFormatter: (value: number) => string
+      // ) => {
+      //   const parseSafeNumber = (raw: unknown): number => {
+      //     const normalized = String(raw).replace(/[^\d.-]/g, "").trim();
+      //     if (!normalized) {
+      //       return NaN;
+      //     }
+      //     return parseFloat(normalized);
+      //   };
+
+      //   const numericValue = parseSafeNumber(value);
+      //   if (Number.isFinite(numericValue)) {
+      //     return `${Math.round(numericValue)} ${unit}`;
+      //   }
+
+      //   const fallback = defaultFormatter ? defaultFormatter(value) : "";
+      //   const fallbackNumber = parseSafeNumber(fallback);
+      //   return Number.isFinite(fallbackNumber)
+      //     ? `${Math.round(fallbackNumber)} ${unit}`
+      //     : "";
+      // };
       this.filterPanel.appendChild(rangeSliderContainer);
-
-      const format = {
-        to: (value: number): string | number => {
-          return `${parseInt(String(value), 10)} ${unit}`;
-        },
-        from: (value: string): number | false => {
-          return parseInt(value, 10);
-        },
-      };
-
-      noUiSlider.create(rangeSliderContainer, {
-        start: [extremes.min, extremes.max],
-        range: {
-          min: extremes.min,
-          max: extremes.max,
-        },
-        connect: true,
-        step: step,
-        tooltips: [format, format],
-      });
 
       //initialize state
       state.setFilter(filter, [extremes.min, extremes.max]);
 
-      //add event listener on slider to change the state when slider values change
-      (rangeSliderContainer as any).noUiSlider.on("end", function (values) {
-        state.setFilter(this.target.dataset.group, values);
+      rangeSliderContainer.addEventListener("calciteSliderChange", () => {
+        state.setFilter(filter, [
+          Number(rangeSliderContainer.minValue),
+          Number(rangeSliderContainer.maxValue),
+        ]);
       });
-
-      const span2 = document.createElement("div");
-      span2.innerHTML = `${extremes.max} ${unit}`;
-      this.filterPanel.appendChild(span2);
     }
   }
 

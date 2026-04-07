@@ -57,9 +57,13 @@ export default class SceneElement {
         this.view.goTo(map.initialViewProperties.viewpoint);
       }
 
+      const hasConfiguredFilters = Object.keys(this.state.filters).length > 0;
+
       // remove filters
       if (trailIds.length === 0) {
-        this.trailsLayer.definitionExpression = "1=1";
+        this.trailsLayer.definitionExpression = hasConfiguredFilters
+          ? "1=0"
+          : "1=1";
       }
       // set definitionExpression to display only filtered buildings
       else {
@@ -190,7 +194,7 @@ export default class SceneElement {
     }
   }
 
-  private selectFeature(featureId): void {
+  private async selectFeature(featureId): Promise<void> {
     if (!this.view || !this.trailsLayer) {
       return;
     }
@@ -201,8 +205,25 @@ export default class SceneElement {
 
     this.trailsLayer.labelingInfo = this.getLabelingInfo(featureId);
 
+    const query = this.trailsLayer.createQuery();
+    query.where = `${config.data.trailAttributes.id} = ${featureId}`;
+    query.returnGeometry = true;
+    query.num = 1;
+
+    const queryResult = await this.trailsLayer.queryFeatures(query);
+    const selectedGeometry =
+      queryResult?.features?.[0]?.geometry ?? this.state.selectedTrail?.geometry;
+
+    if (!selectedGeometry) {
+      return;
+    }
+
+    const target = selectedGeometry.extent
+      ? selectedGeometry.extent.expand(2)
+      : selectedGeometry;
+
     this.view.goTo(
-      { target: this.state.selectedTrail.geometry, tilt: 60 },
+      { target, tilt: 60 },
       { speedFactor: 0.5 }
     );
   }

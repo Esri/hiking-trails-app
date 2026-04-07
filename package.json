@@ -22,7 +22,6 @@
     "vite": "^5.4.2"
   },
   "dependencies": {
-    "@arcgis/core": "^5.0.0",
-    "nouislider": "^15.8.1"
+    "@arcgis/core": "^5.0.0"
   }
 }

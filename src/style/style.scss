@@ -10,12 +10,21 @@ body {
   padding: 0;
   font-size: 16px;
   font-family: "Open Sans Condensed", sans-serif;
-  color: $font-color;
+  color: var(--app-text);
   overflow: hidden;
 }
 
 :root {
   --side-panel-width: 33.333vw;
+  --app-text: #323232;
+  --app-brand-green: #b5e2c1;
+  --app-brand-green-hover: #9fd4ae;
+  --app-brand-green-press: #8ac79c;
+  --app-selected-orange: #f9a352;
+
+  --calcite-color-brand: var(--app-brand-green);
+  --calcite-color-brand-hover: var(--app-brand-green-hover);
+  --calcite-color-brand-press: var(--app-brand-green-press);
 }
 
 h1 {

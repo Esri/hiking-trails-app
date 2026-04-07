@@ -13,21 +13,45 @@
  * limitations under the License.
  *
  */
-import { State } from "../types";
+import Basemap from "@arcgis/core/Basemap";
+import TileLayer from "@arcgis/core/layers/TileLayer";
+import LocalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource";
 
 // import "../../style/basemap-panel.scss";
 
 export default class BasemapPanel {
-  container: HTMLElement | null;
-  basemapLayerList: HTMLElement | null;
+  // container: HTMLElement | null;
+  basemapGallery: any;
 
-  constructor(state: State) {
+  constructor() {
     // this.container = document.getElementById("basemapPanel");
-    // this.basemapLayerList = document.getElementById("basemapLayerList");
+    // this.basemapGallery = this.container?.querySelector("arcgis-basemap-gallery");
 
-    // if (this.basemapLayerList) {
-    //   (this.basemapLayerList as any).referenceElement = state.view;
-    //   (this.basemapLayerList as any).view = state.view;
+    // if (!this.basemapGallery) {
+    //   return;
     // }
+
+    this.setBasemaps();
+  }
+
+  private setBasemaps() {
+    const customBasemaps = [
+      Basemap.fromId("satellite"),
+      Basemap.fromId("hybrid"),
+      Basemap.fromId("topo"),
+      new Basemap({
+        id: "world-topo-base",
+        title: "World Topo Base",
+        baseLayers: [
+          new TileLayer({
+            url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Base/MapServer",
+            title: "World Topo Base",
+          }),
+        ],
+      }),
+      Basemap.fromId("terrain"),
+    ];
+    // document.querySelector("arcgis-basemap-gallery")!.source =
+    // new LocalBasemapsSource({ basemaps: customBasemaps });
   }
 }

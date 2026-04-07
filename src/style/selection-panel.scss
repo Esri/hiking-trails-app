@@ -1,117 +1,101 @@
 @import 'variables';
 
+#selectionPanel {
+  padding: 12px;
+  box-sizing: border-box;
+  --calcite-color-brand: var(--app-brand-green);
+  --calcite-color-brand-hover: var(--app-brand-green-hover);
+  --calcite-color-brand-press: var(--app-brand-green-press);
+
+  .removeSelected {
+    margin: 6px 0 12px;
+    --calcite-button-text-color: var(--app-text);
+  }
+}
+
 #trailsPanel {
   margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
+
+  calcite-chip {
+  color: var(--app-text);
+  }
 
   .trail {
-    background-color: $green;
-    border: 1px solid $green;
-    margin: 5px 5px 5px 0;
     cursor: pointer;
-    pointer-events: auto;
-    padding: 4px 8px;
-    font-size: $normal-font;
+    // border-radius: 18px;
+    // --calcite-chip-text-color: var(--app-text);
 
     &.disabled {
-      cursor: default;
-      background-color: white;
-      border: 1px solid $disabled-gray;
-      color: $disabled-gray;
       pointer-events: none;
     }
 
-    &.disabled:hover {
-      cursor: default;
-      border: 1px solid $disabled-gray;
-      color: $disabled-gray;
-    }
-
     &.selected {
-      background-color: $orange;
-      border: 1px solid $orange;
+      --calcite-color-brand: var(--app-selected-orange);
+      --calcite-color-brand-hover: var(--app-selected-orange);
+      --calcite-color-brand-press: var(--app-selected-orange);
     }
   }
-
-  .trail:hover {
-    background-color: $orange;
-    border: 1px solid $orange;
-  }
-
 }
-
-.removeSelected {
-  background: none;
-  border: none;
-  border-bottom: 1px dashed $font-color;
-  color: $font-color;
-  font-family: 'Open Sans Condensed';
-  font-size: $normal-font;
-  line-height: $normal-font;
-  padding: 0;
-  cursor: pointer;
-
-  &:disabled {
-    border-bottom: 1px dashed $disabled-gray;
-    color: $disabled-gray;
-    cursor: default;
-  }
-}
-
 
 #filterPanel {
-
-  overflow: hidden;
+  // overflow: hidden;
   padding-bottom: 10px;
 
   .filter-category {
     font-size: $small-font;
     font-weight: bold;
-    padding: 20px 0;
+    padding: 1rem 0 0.5rem 0;
   }
 
-  input[type=radio] {
-    position: absolute;
-    visibility: hidden;
-    display: none;
-    pointer-events: none;
-  }
+  .segmented-group {
+    display: block;
+    width: 88%;
+    margin: 0 auto;
+    --calcite-segmented-control-border-color: var(--app-brand-green);
+    --calcite-segmented-control-background-color: var(--app-brand-green);
 
-  label {
-    display: inline-block;
-    cursor: pointer;
-    padding: 5px 10px;
-    &:hover {
-      background: $green;
+    calcite-segmented-control-item {
+      --calcite-segmented-control-background-color: var(--app-brand-green);
+      --calcite-segmented-control-border-color: var(--app-brand-green);
+      --calcite-segmented-control-color: #000;
+    }
+
+    calcite-segmented-control-item[checked] {
+      --calcite-color-brand: var(--app-brand-green);
+      --calcite-color-brand-hover: var(--app-brand-green);
+      --calcite-color-brand-press: var(--app-brand-green);
+      --calcite-segmented-control-color: #000;
     }
   }
 
-  input[type=radio]:checked + label{
-    background: $green;
-  }
-
-  label + input[type=radio] + label {
-    border-left: solid 1px $green;
-  }
-
-  .radio-group {
-    border: solid 1px $green;
-    display: inline-block;
-  }
-
   .range-slider {
-    display: inline-block;
-    width: 200px;
-    margin: 0 15px;
+    display: block;
+    width: 72%;
+    margin: 8px auto 2px;
+    --calcite-slider-track-fill-color: var(--app-brand-green);
+    --calcite-slider-track-color: rgba(181, 226, 193, 0.35);
+    --calcite-slider-handle-fill-color: var(--app-brand-green);
+    --calcite-slider-accent-color: var(--app-brand-green);
   }
 
-  .noUi-tooltip {
-    display: none;
-  }
+  .range-boundary {
+    color: $font-color;
+    font-size: $small-font;
+    width: 72%;
+    margin-left: auto;
+    margin-right: auto;
 
-  .noUi-active .noUi-tooltip {
-      display: block;
+    &.min {
+      margin-top: 4px;
+    }
+
+    &.max {
+      margin-bottom: 8px;
+      text-align: right;
+    }
   }
 }
 
