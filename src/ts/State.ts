@@ -20,7 +20,7 @@ import {
   subclass,
 } from "@arcgis/core/core/accessorSupport/decorators";
 import SceneView from "@arcgis/core/views/SceneView";
-import { Device, Trail } from "./types";
+import { Trail } from "./types";
 
 @subclass()
 export default class State extends Accessor {
@@ -64,9 +64,6 @@ export default class State extends Accessor {
   }
 
   @property()
-  device: Device = null;
-
-  @property()
   currentBasemapId: string = null;
 
   @property()
@@ -75,6 +72,4 @@ export default class State extends Accessor {
   @property()
   trails: Array<Trail> = null;
 
-  @property()
-  online: boolean = true;
 }

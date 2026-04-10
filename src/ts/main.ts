@@ -23,14 +23,10 @@ esriConfig.request.useIdentity = false;
 import trailManager from "./data/trailManager";
 import SceneElement from "./scene/SceneElement";
 import State from "./State";
-import ConnectionManager from "./ui/ConnectionManager";
-import deviceUtils from "./ui/deviceUtils";
 import LoadingPage from "./ui/LoadingPage";
 import MenuPanel from "./ui/MenuPanel";
 
 const state = new State();
-deviceUtils.init(state);
-new ConnectionManager(state);
 new LoadingPage(state);
 const sceneElement = new SceneElement(state);
 

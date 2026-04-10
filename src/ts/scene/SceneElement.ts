@@ -74,9 +74,6 @@ export default class SceneElement {
       }
     });
 
-    reactiveUtils.watch(() => state.device, () => {
-      this.setViewPadding();
-    });
   }
 
   private initScene(): Promise<SceneView> {
@@ -100,7 +97,6 @@ export default class SceneElement {
         }
 
         this.initialized = true;
-        this.setViewPadding();
 
         if (!this.trailsLayer) {
           this.trailsLayer = await this.createTrailsLayer();
@@ -129,28 +125,6 @@ export default class SceneElement {
     });
   }
 
-  private setViewPadding() {
-    if (!this.view) {
-      return;
-    }
-
-    if (this.state.device === "mobilePortrait") {
-      this.view.padding = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      };
-    } else {
-      this.view.padding = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      };
-    }
-  }
-
   private async createTrailsLayer() {
     const arcgis = (window as any).$arcgis;
     if (!arcgis?.import) {
@@ -177,21 +151,19 @@ export default class SceneElement {
 
   private onViewClick(event) {
     // check if the user is online
-    if (this.state.online) {
-      this.view
-        .hitTest(event, { include: this.trailsLayer })
-        .then((response) => {
-          const result = response.results[0];
-          // if a graphic was picked from the view
-          if (result?.type === "graphic" && result.graphic) {
-            this.state.setSelectedTrail(
-              result.graphic.attributes[config.data.trailAttributes.id]
-            );
-          } else {
-            this.state.setSelectedTrail(null);
-          }
-        });
-    }
+    this.view
+      .hitTest(event, { include: this.trailsLayer })
+      .then((response) => {
+        const result = response.results[0];
+        // if a graphic was picked from the view
+        if (result?.type === "graphic" && result.graphic) {
+          this.state.setSelectedTrail(
+            result.graphic.attributes[config.data.trailAttributes.id]
+          );
+        } else {
+          this.state.setSelectedTrail(null);
+        }
+      });
   }
 
   private async selectFeature(featureId): Promise<void> {

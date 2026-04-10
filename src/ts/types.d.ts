@@ -13,11 +13,9 @@ export interface State extends Accessor {
   selectedTrail: Trail;
   filters: any;
   setFilter: (property: string, value: string | number[]) => void;
-  device: Device;
   currentBasemapId: string;
   view: SceneView;
   trails: Array<Trail>;
-  online: boolean;
 }
 
 export interface Trail {

@@ -67,8 +67,10 @@
           <h1 class='center' id='detailTitle'></h1>
           <div id='detailInfograph'></div>
           <div id='detailDescription'></div>
-          <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-select-button
-    hide-start-button></arcgis-elevation-profile>
+          <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-start-button highlight-disabled
+   ></arcgis-elevation-profile>
+              <!-- <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" highlight-disabled hide-select-button
+    hide-start-button></arcgis-elevation-profile> -->
         </div>
           </calcite-tab>
           <calcite-tab>
@@ -84,7 +86,7 @@
     <arcgis-zoom slot='top-right'></arcgis-zoom>
     <arcgis-navigation-toggle slot='top-right' visual-scale="m"></arcgis-navigation-toggle>
     <arcgis-compass slot='top-right'></arcgis-compass>
-      <arcgis-expand
+      <arcgis-expand visual-scale="m" scale="m"
     slot="bottom-right"
     expand-icon="information-f"
   >
