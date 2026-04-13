@@ -16,6 +16,7 @@
 
 import SceneView from "@arcgis/core/views/SceneView";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import config from "../config";
 import { State } from "../types";
 import "../../style/scene-panel.scss";
@@ -82,10 +83,6 @@ export default class SceneElement {
       return Promise.reject(new Error("Scene element #viewElement not found"));
     }
 
-    if (!this.sceneElement.getAttribute("item-id")) {
-      this.sceneElement.setAttribute("item-id", config.scene.websceneItemId);
-    }
-
     return new Promise((resolve) => {
       const onViewReady = async () => {
         this.view = this.sceneElement.view;
@@ -126,20 +123,11 @@ export default class SceneElement {
   }
 
   private async createTrailsLayer() {
-    const arcgis = (window as any).$arcgis;
-    if (!arcgis?.import) {
-      throw new Error("ArcGIS components runtime ($arcgis.import) is not available");
-    }
-
-    const [FeatureLayer] = await arcgis.import([
-      "@arcgis/core/layers/FeatureLayer.js",
-    ]);
-
     return new FeatureLayer({
       url: config.data.trailsServiceUrl,
       title: "Hiking trails",
       outFields: ["*"],
-      renderer: this.getTrailRenderer(),
+      renderer: this.getTrailRenderer() as any,
       elevationInfo: {
         mode: "on-the-ground",
       },

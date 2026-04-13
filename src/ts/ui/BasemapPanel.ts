@@ -13,6 +13,10 @@
  * limitations under the License.
  *
  */
+import Basemap from "@arcgis/core/Basemap";
+import TileLayer from "@arcgis/core/layers/TileLayer";
+import LocalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource";
+
 // import "../../style/basemap-panel.scss";
 
 export default class BasemapPanel {
@@ -21,35 +25,14 @@ export default class BasemapPanel {
   }
 
   private async setBasemaps() {
-    await customElements.whenDefined("arcgis-basemap-gallery");
 
-    const basemapGallery = document.querySelector("arcgis-basemap-gallery") as
-      | (HTMLElement & { source?: unknown; componentOnReady?: () => Promise<unknown> })
-      | null;
+    const basemapGallery = document.querySelector("arcgis-basemap-gallery");
 
-    if (!basemapGallery) {
-      return;
-    }
-
-    if (typeof basemapGallery.componentOnReady === "function") {
-      await basemapGallery.componentOnReady();
-    }
-    const arcgis = (window as any).$arcgis;
-    if (!arcgis?.import) {
-      throw new Error("ArcGIS components runtime ($arcgis.import) is not available");
-    }
-
-    const [Basemap, TileLayer, LocalBasemapsSource] = await arcgis.import([
-      "@arcgis/core/Basemap.js",
-      "@arcgis/core/layers/TileLayer.js",
-      "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource.js",
-    ]);
-
-    basemapGallery.source = new LocalBasemapsSource({
+    basemapGallery!.source = new LocalBasemapsSource({
       basemaps: [
-        Basemap.fromId("satellite"),
-        Basemap.fromId("hybrid"),
-        Basemap.fromId("topo"),
+        Basemap.fromId("satellite")!,
+        Basemap.fromId("hybrid")!,
+        Basemap.fromId("topo")!,
         new Basemap({
           id: "world-topo-base",
           title: "World Topo Base",

@@ -16,6 +16,11 @@
 
 import "../style/reset.scss";
 import "../style/style.scss";
+import "@arcgis/map-components/main.css";
+import "@esri/calcite-components/main.css";
+
+import { defineCustomElements as defineArcGISCustomElements } from "@arcgis/map-components/loader";
+import { defineCustomElements as defineCalciteCustomElements } from "@esri/calcite-components/loader";
 
 import esriConfig from "@arcgis/core/config";
 esriConfig.request.useIdentity = false;
@@ -26,10 +31,19 @@ import State from "./State";
 import LoadingPage from "./ui/LoadingPage";
 import MenuPanel from "./ui/MenuPanel";
 
-const state = new State();
-new LoadingPage(state);
-const sceneElement = new SceneElement(state);
+async function bootstrap() {
+  await Promise.all([
+    defineCalciteCustomElements(window),
+    defineArcGISCustomElements(window),
+  ]);
 
-Promise.all([sceneElement.ready, trailManager.initTrails(state)]).then(() => {
-  new MenuPanel(state);
-});
+  const state = new State();
+  new LoadingPage(state);
+  const sceneElement = new SceneElement(state);
+
+  Promise.all([sceneElement.ready, trailManager.initTrails(state)]).then(() => {
+    new MenuPanel(state);
+  });
+}
+
+bootstrap();
