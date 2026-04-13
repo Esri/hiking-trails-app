@@ -1,5 +1,3 @@
-@import 'variables';
-
 #selectionPanel {
   padding: 12px;
   box-sizing: border-box;
@@ -45,7 +43,7 @@
   padding-bottom: 10px;
 
   .filter-category {
-    font-size: $small-font;
+    font-size: var(--app-small-font);
     font-weight: bold;
     padding: 1rem 0 0.5rem 0;
   }
@@ -60,14 +58,14 @@
     calcite-segmented-control-item {
       --calcite-segmented-control-background-color: var(--app-brand-green);
       --calcite-segmented-control-border-color: var(--app-brand-green);
-      --calcite-segmented-control-color: #000;
+      --calcite-segmented-control-color: var(--app-black);
     }
 
     calcite-segmented-control-item[checked] {
       --calcite-color-brand: var(--app-brand-green);
       --calcite-color-brand-hover: var(--app-brand-green);
       --calcite-color-brand-press: var(--app-brand-green);
-      --calcite-segmented-control-color: #000;
+      --calcite-segmented-control-color: var(--app-black);
     }
   }
 
@@ -82,8 +80,8 @@
   }
 
   .range-boundary {
-    color: $font-color;
-    font-size: $small-font;
+    color: var(--app-text);
+    font-size: var(--app-small-font);
     width: 72%;
     margin-left: auto;
     margin-right: auto;

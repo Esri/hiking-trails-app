@@ -1,6 +1,5 @@
 @import "../../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
 
-@import "variables";
 @import "menu-panel";
 
 html,
@@ -16,11 +15,22 @@ body {
 
 :root {
   --side-panel-width: 33.333vw;
+  --app-surface: #fff;
+  --app-black: #000;
   --app-text: #323232;
+  --app-delimiter: rgba(100, 100, 100, 0.75);
+  --app-background-color: rgba(255, 255, 255, 0.9);
+  --app-small-font: 0.9em;
+  --app-normal-font: 1em;
+  --app-medium-font: 1.2em;
+  --app-big-font: 1.3em;
+  --app-huge-font: 2em;
   --app-brand-green: #b5e2c1;
   --app-brand-green-hover: #9fd4ae;
   --app-brand-green-press: #8ac79c;
   --app-selected-orange: #f9a352;
+  --app-trail-closed: #d98c8c;
+  --app-trail-open: #7dad7c;
 
   --calcite-color-brand: var(--app-brand-green);
   --calcite-color-brand-hover: var(--app-brand-green-hover);
@@ -28,7 +38,7 @@ body {
 }
 
 h1 {
-  font-size: $big-font;
+  font-size: var(--app-big-font);
   font-weight: bold;
   padding: 20px;
   text-align: center;
@@ -39,7 +49,7 @@ h1 {
   position: relative;
   z-index: 1;
   &:before {
-    border-top: 10px solid $green;
+    border-top: 10px solid var(--app-brand-green);
     content: "";
     margin: 0 auto; /* this centers the line to the full width specified */
     position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
@@ -53,7 +63,7 @@ h1 {
 
   span {
     /* to hide the lines from behind the text, you have to set the background color the same as the container */
-    background: #fff;
+    background: var(--app-surface);
     padding: 0 30px;
   }
 }
@@ -70,65 +80,7 @@ h1 {
   overflow: hidden;
 }
 
-
-.smallMenu {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  position: absolute;
-  top: 10px;
-  left: calc(var(--side-panel-width) + 10px);
-
-  button {
-    background: $background-color;
-    border: none;
-    height: 30px;
-    width: 30px;
-    font-size: $big-font;
-    cursor: pointer;
-  }
-
-  .mobileButton {
-    display: none;
-  }
-}
-
-// #credentialsPanel {
-//   position: absolute;
-//   left: 0;
-//   right: 0;
-//   top: 0;
-//   max-width: 600px;
-//   margin: 50px auto 0 auto;
-//   background-color: #fff;
-//   padding: 20px;
-//   z-index: 1000;
-//   line-height: $big-font;
-//   background-color: $background-color;
-//   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-//   display: none;
-
-//   .esri-icon-close {
-//     position: absolute;
-//     right: 20px;
-//     top: 20px;
-//     cursor: pointer;
-//   }
-
-//   li {
-//     padding: 10px;
-//   }
-
-//   a,
-//   #logo a,
-//   #impressumLink a {
-//     font-weight: bold;
-//     color: inherit;
-//     text-decoration: none;
-//   }
-// }
-
-@media (max-width: $max-width) {
+@media (max-width: 600px) {
   :root {
     --side-panel-width: 100vw;
   }
@@ -137,35 +89,6 @@ h1 {
     width: 100vw;
     height: 100vh;
   }
-
-  .smallMenu {
-    left: 10px;
-    .mobileButton {
-      display: inline-block;
-    }
-  }
-}
-
-.connectionMessage {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  margin-left: -170px;
-  width: 300px;
-  z-index: 100;
-  padding: 20px;
-  text-align: center;
-  font-size: $normal-font;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  font-weight: bold;
-}
-
-.online {
-  background-color: rgba(184, 242, 204, 0.9);
-}
-
-.offline {
-  background-color: rgba(241, 189, 183, 0.9);
 }
 
 b {

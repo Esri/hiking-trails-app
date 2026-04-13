@@ -1,6 +1,3 @@
-
-@import 'variables';
-
 #detailPanel {
   overflow-y: auto;
 
@@ -15,7 +12,7 @@
 
   #detailDescription {
     margin: 20px;
-    line-height: $big-font;
+    line-height: var(--app-big-font);
   }
 
   #detailInfograph {
@@ -30,11 +27,11 @@
     }
 
     .fa-calendar-times-o {
-      color: #d98c8c;
+      color: var(--app-trail-closed);
     }
 
     .fa-calendar-check-o {
-      color: #7dad7c;
+      color: var(--app-trail-open);
     }
   }
 
@@ -44,7 +41,7 @@
 
 }
 
-@media (max-width: $max-width) {
+@media (max-width: 600px) {
   #detailPanel {
     h1 {
       text-align: left;

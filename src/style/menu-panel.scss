@@ -1,5 +1,3 @@
-@import 'variables';
-
 .menuPanel {
   position: relative;
   flex: none;
@@ -7,8 +5,8 @@
   width: var(--side-panel-width);
   max-width: var(--side-panel-width);
   min-width: var(--side-panel-width);
-  background-color: $background-color;
-  box-shadow: 0px 0px 2px 1px $delimiter;
+  background-color: var(--app-background-color);
+  box-shadow: 0px 0px 2px 1px var(--app-delimiter);
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -25,30 +23,6 @@
   //   box-sizing: border-box;
   //   overflow-y: auto;
   // }
-
-  ul {
-    list-style-type: none;
-    margin: 0 20px;
-    display: flex;
-    padding: 0;
-    font-size: $medium-font;
-    justify-content: center;
-    min-height: 40px;
-
-    li {
-      list-style: none;
-      padding: 10px 30px;
-      cursor: pointer;
-
-      &.active {
-        border-bottom: 3px solid $green;
-      }
-
-      &:hover {
-        border-bottom: 3px solid $green;
-      }
-    }
-  }
 
   calcite-tabs {
     flex: 1;
@@ -89,10 +63,10 @@
 }
 
 .section{
-  border-bottom: 1px solid $delimiter;
+  border-bottom: 1px solid var(--app-delimiter);
 }
 
-@media (max-width: $max-width) {
+@media (max-width: 600px) {
   .menuPanel {
     display: none;
     position: absolute;
@@ -110,10 +84,6 @@
     // }
 
     >h1 {
-      display: none;
-    }
-
-    >ul {
       display: none;
     }
   }

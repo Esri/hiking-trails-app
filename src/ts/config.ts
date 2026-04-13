@@ -3,8 +3,8 @@ in this file.
 
 Webscene:
  - copy the webscene that I use: http://www.arcgis.com/home/item.html?id=d0580bb5df3840d384bda44b6ddeb54e
- - remove/add layers with additional data in the Layers group
- - remove/add basemap layers in the Basemap group
+ - remove/add layers with additional data
+ - update the webscene id in arcgis-scene element in the index.html file 
 
 Data:
  - replace the trails service url
@@ -20,9 +20,6 @@ Colors:
 */
 
 export default {
-  scene: {
-    websceneItemId: "d0580bb5df3840d384bda44b6ddeb54e"
-  },
   data: {
     trailsServiceUrl: "https://services2.arcgis.com/cFEFS0EWrhfDeVw9/arcgis/rest/services/SwissNationalParkTrails/FeatureServer/0",
     trailAttributes: {

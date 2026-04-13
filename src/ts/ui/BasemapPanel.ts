@@ -13,45 +13,54 @@
  * limitations under the License.
  *
  */
-import Basemap from "@arcgis/core/Basemap";
-import TileLayer from "@arcgis/core/layers/TileLayer";
-import LocalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource";
-
 // import "../../style/basemap-panel.scss";
 
 export default class BasemapPanel {
-  // container: HTMLElement | null;
-  basemapGallery: any;
-
   constructor() {
-    // this.container = document.getElementById("basemapPanel");
-    // this.basemapGallery = this.container?.querySelector("arcgis-basemap-gallery");
-
-    // if (!this.basemapGallery) {
-    //   return;
-    // }
-
     this.setBasemaps();
   }
 
-  private setBasemaps() {
-    const customBasemaps = [
-      Basemap.fromId("satellite"),
-      Basemap.fromId("hybrid"),
-      Basemap.fromId("topo"),
-      new Basemap({
-        id: "world-topo-base",
-        title: "World Topo Base",
-        baseLayers: [
-          new TileLayer({
-            url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Base/MapServer",
-            title: "World Topo Base",
-          }),
-        ],
-      }),
-      Basemap.fromId("terrain"),
-    ];
-    // document.querySelector("arcgis-basemap-gallery")!.source =
-    // new LocalBasemapsSource({ basemaps: customBasemaps });
+  private async setBasemaps() {
+    await customElements.whenDefined("arcgis-basemap-gallery");
+
+    const basemapGallery = document.querySelector("arcgis-basemap-gallery") as
+      | (HTMLElement & { source?: unknown; componentOnReady?: () => Promise<unknown> })
+      | null;
+
+    if (!basemapGallery) {
+      return;
+    }
+
+    if (typeof basemapGallery.componentOnReady === "function") {
+      await basemapGallery.componentOnReady();
+    }
+    const arcgis = (window as any).$arcgis;
+    if (!arcgis?.import) {
+      throw new Error("ArcGIS components runtime ($arcgis.import) is not available");
+    }
+
+    const [Basemap, TileLayer, LocalBasemapsSource] = await arcgis.import([
+      "@arcgis/core/Basemap.js",
+      "@arcgis/core/layers/TileLayer.js",
+      "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource.js",
+    ]);
+
+    basemapGallery.source = new LocalBasemapsSource({
+      basemaps: [
+        Basemap.fromId("satellite"),
+        Basemap.fromId("hybrid"),
+        Basemap.fromId("topo"),
+        new Basemap({
+          id: "world-topo-base",
+          title: "World Topo Base",
+          baseLayers: [
+            new TileLayer({
+              url: "https://wtb.maptiles.arcgis.com/arcgis/rest/services/World_Topo_Base/MapServer",
+              title: "World Topo Base",
+            }),
+          ],
+        }),
+      ],
+    });
   }
 }
