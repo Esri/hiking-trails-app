@@ -41,40 +41,26 @@ export default class SelectionPanel {
 
     reactiveUtils.watch(() => state.selectedTrailId, (id) => {
       this.emptyDetails();
-        (document.querySelectorAll("calcite-tab-title")[1] as any).selected = true;
-        const trail = this.state.selectedTrail;
+      const trail = this.state.selectedTrail;
 
-        this.displayInfo(trail);
-        this.detailElevationProfile.profiles = [
-          {
-            type: "ground",
-            title: "Trail Statistics",
-          },
-        ];
+      if (!id || !trail) {
+        this.detailElevationProfile.style.display = "none";
+        this.detailElevationProfile.feature = null;
+        this.detailElevationProfile.profiles = [];
+        return;
+      }
 
-        const trailGeometry =
-          trail?.geometry
-            ? {
-                type: "polyline",
-                paths: trail.geometry.paths,
-                spatialReference: trail.geometry.spatialReference?.toJSON?.(),
-              }
-            : null;
+      this.detailElevationProfile.style.display = "block";
+      (document.querySelectorAll("calcite-tab-title")[1] as any).selected = true;
+      this.displayInfo(trail);
+      this.detailElevationProfile.profiles = [
+        {
+          type: "ground",
+          title: "Trail Statistics",
+        },
+      ];
 
-        const trailGraphic =
-          trailGeometry
-            ? {
-                geometry: trailGeometry,
-                // geometry: trail?.geometry,
-                // symbol: {
-                //   // type: "simple-line",
-                //   // color: [80, 80, 80, 1],
-                //   // width: 2,
-                // },
-              }
-            : null;
-
-        this.detailElevationProfile.feature = trailGraphic;
+      this.detailElevationProfile.feature = trail;
     });
 
   }
@@ -83,6 +69,7 @@ export default class SelectionPanel {
     this.detailTitle.innerHTML = "";
     this.detailDescription.innerHTML = "";
     this.detailInfograph.innerHTML = "Select a hike in the map or in the Hikes panel to see more details about it.";
+    this.detailElevationProfile.style.display = "none";
   }
 
   displayInfo(trail: Trail): void {

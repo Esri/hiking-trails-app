@@ -33,7 +33,17 @@ export default {
     },
     filterOptions: {
       singleChoice: ["difficulty", "status"], // have string values
-      range: ["walktime", "ascent"] // have numeric values
+      range: ["walktime", "ascent"], // have numeric values
+      rangeOptions: {
+        walktime: {
+          unit: "hrs",
+          step: 1,
+        },
+        ascent: {
+          unit: "m",
+          step: 50,
+        },
+      },
     }
   },
   colors: {

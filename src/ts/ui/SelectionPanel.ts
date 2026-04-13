@@ -33,7 +33,7 @@ export default class SelectionPanel {
 
     this.container = document.getElementById("selectionPanel");
 
-    this.trailsPanel = document.getElementById("trailsPanel");
+    this.trailsPanel = document.getElementById("trailsPanel")!;
     this.removeSelectedButton = document.querySelector(".removeSelected");
     this.generateTrailsPanel();
 
@@ -41,7 +41,7 @@ export default class SelectionPanel {
       this.state.setSelectedTrail(null);
     });
 
-    this.filterPanel = document.getElementById("filterPanel");
+    this.filterPanel = document.getElementById("filterPanel")!;
     this.generateFilterPanel();
     this.state.setFilteredTrailIds(this.trails.map((trail) => trail.id));
 
@@ -86,17 +86,22 @@ export default class SelectionPanel {
 
       // go through each filter criteria and verify if the trail should be filtered out
       for (const filter in filters) {
-        if (Array.isArray(filters[filter])) {
+        const filterValue = filters[filter];
+        const trailValue = (trail as any)[filter];
+
+        if (Array.isArray(filterValue)) {
+          const numericTrailValue = Number(trailValue);
           if (
-            trail[filter] < filters[filter][0] ||
-            trail[filter] > filters[filter][1]
+            !Number.isFinite(numericTrailValue) ||
+            numericTrailValue < filterValue[0] ||
+            numericTrailValue > filterValue[1]
           ) {
             keepTrail = false;
             break;
           }
         } else {
-          if (filters[filter] !== "All") {
-            if (trail[filter].toString() !== filters[filter]) {
+          if (filterValue !== "All") {
+            if (String(trailValue) !== String(filterValue)) {
               keepTrail = false;
               break;
             }
@@ -111,8 +116,8 @@ export default class SelectionPanel {
   }
 
   private updateVisibleTrails(ids) {
-    const trailElements = document.querySelectorAll(".trail");
-    [].forEach.call(trailElements, function (elem) {
+    const trailElements = document.querySelectorAll(".trail") as NodeListOf<any>;
+    trailElements.forEach(function (elem) {
       if (ids.indexOf(parseInt(elem.dataset.id, 10)) === -1) {
         elem.classList.add("disabled");
         elem.disabled = true;
@@ -125,17 +130,25 @@ export default class SelectionPanel {
 
   private generateTrailsPanel(): void {
     const state = this.state;
+    const filterAttributes = [
+      ...config.data.filterOptions.singleChoice,
+      ...config.data.filterOptions.range,
+    ];
+    const uniqueFilterAttributes = Array.from(new Set(filterAttributes));
 
     this.trails.forEach((trail) => {
       const trailElement = document.createElement("calcite-chip") as any;
       trailElement.className = "trail";
       trailElement.innerText = trail.name;
-      trailElement.dataset.difficulty = trail.difficulty;
       trailElement.dataset.id = String(trail.id);
-      trailElement.dataset.category = trail.category;
-      trailElement.dataset.walktime = String(trail.walktime);
-      trailElement.dataset.status = String(trail.status);
-      trailElement.dataset.ascent = String(trail.ascent);
+
+      uniqueFilterAttributes.forEach((attribute) => {
+        const value = (trail as any)[attribute];
+        if (value !== null && value !== undefined) {
+          trailElement.dataset[attribute] = String(value);
+        }
+      });
+
       trailElement.scale = "s";
       trailElement.kind = "brand";
       trailElement.value = String(trail.id);
@@ -203,8 +216,14 @@ export default class SelectionPanel {
     const uniqueValues = ["All"];
 
     this.trails.forEach((elem) => {
-      if (uniqueValues.indexOf(elem[filter]) === -1) {
-        uniqueValues.push(elem[filter]);
+      const value = (elem as any)[filter];
+      if (value === null || value === undefined) {
+        return;
+      }
+
+      const normalizedValue = String(value);
+      if (uniqueValues.indexOf(normalizedValue) === -1) {
+        uniqueValues.push(normalizedValue);
       }
     });
 
@@ -226,21 +245,9 @@ export default class SelectionPanel {
 
       // get minimum and maximum for the filter criteria
       const extremes: Extremes = this.getExtremes(filter);
-      let unit: string = "",
-        step: number = 1;
-
-      switch (filter) {
-        case "walktime": {
-          unit = "hrs";
-          step = 1;
-          break;
-        }
-        case "ascent": {
-          unit = "m";
-          step = 50;
-          break;
-        }
-      }
+      const rangeOptions = (config as any).data?.filterOptions?.rangeOptions?.[filter] || {};
+      const unit = typeof rangeOptions.unit === "string" ? rangeOptions.unit : "";
+      const step = Number(rangeOptions.step) > 0 ? Number(rangeOptions.step) : 1;
 
       const rangeSliderContainer = document.createElement("calcite-slider") as any;
       rangeSliderContainer.className = "range-slider";
@@ -252,36 +259,10 @@ export default class SelectionPanel {
       rangeSliderContainer.step = step;
       rangeSliderContainer.labelHandles = true;
       rangeSliderContainer.labelFormatter = (value: number) => {
-  return `${Math.round(Number(value))} ${unit}`;
-};
-      // rangeSliderContainer.labelTicks = true;
-      // rangeSliderContainer.ticks = true;
+        const normalizedValue = Math.round(Number(value));
+        return unit ? `${normalizedValue} ${unit}` : `${normalizedValue}`;
+      };
 
-      // // Use a numeric tick interval to avoid invalid tick label values.
-      // rangeSliderContainer.labelFormatter = (
-      //   value: number,
-      //   _type: string,
-      //   defaultFormatter: (value: number) => string
-      // ) => {
-      //   const parseSafeNumber = (raw: unknown): number => {
-      //     const normalized = String(raw).replace(/[^\d.-]/g, "").trim();
-      //     if (!normalized) {
-      //       return NaN;
-      //     }
-      //     return parseFloat(normalized);
-      //   };
-
-      //   const numericValue = parseSafeNumber(value);
-      //   if (Number.isFinite(numericValue)) {
-      //     return `${Math.round(numericValue)} ${unit}`;
-      //   }
-
-      //   const fallback = defaultFormatter ? defaultFormatter(value) : "";
-      //   const fallbackNumber = parseSafeNumber(fallback);
-      //   return Number.isFinite(fallbackNumber)
-      //     ? `${Math.round(fallbackNumber)} ${unit}`
-      //     : "";
-      // };
       this.filterPanel.appendChild(rangeSliderContainer);
 
       //initialize state
@@ -297,21 +278,29 @@ export default class SelectionPanel {
   }
 
   private getExtremes(prop): Extremes {
-    let min = 1000,
-      max = 0;
+    let min = Number.POSITIVE_INFINITY,
+      max = Number.NEGATIVE_INFINITY;
+
     this.trails.forEach(function (elem) {
-      if (elem[prop] !== null) {
-        if (elem[prop] < min) {
-          min = elem[prop];
+      const value = Number((elem as any)[prop]);
+
+      if (Number.isFinite(value)) {
+        if (value < min) {
+          min = value;
         }
-        if (elem[prop] > max) {
-          max = elem[prop];
+        if (value > max) {
+          max = value;
         }
       }
     });
+
+    if (!Number.isFinite(min) || !Number.isFinite(max)) {
+      return { min: 0, max: 0 };
+    }
+
     return {
-      min: min,
-      max: max,
+      min,
+      max,
     };
   }
 }

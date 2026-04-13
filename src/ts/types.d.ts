@@ -6,15 +6,15 @@ export type Device = "mobilePortrait" | "desktop";
 
 export interface State extends Accessor {
   displayLoading: boolean;
-  selectedTrailId: number;
-  setSelectedTrail: (id: number) => void;
+  selectedTrailId: number | null;
+  setSelectedTrail: (id: number | null) => void;
   filteredTrailIds: Array<number>;
   setFilteredTrailIds: (ids: Array<number>) => void;
-  selectedTrail: Trail;
+  selectedTrail: Trail | null;
   filters: any;
   setFilter: (property: string, value: string | number[]) => void;
-  currentBasemapId: string;
-  view: SceneView;
+  currentBasemapId: string | null;
+  view: SceneView | null;
   trails: Array<Trail>;
 }
 

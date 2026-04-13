@@ -15,7 +15,9 @@
  */
 import Basemap from "@arcgis/core/Basemap";
 import TileLayer from "@arcgis/core/layers/TileLayer";
+import BasemapGalleryItem from "@arcgis/core/widgets/BasemapGallery/support/BasemapGalleryItem";
 import LocalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource";
+import { ArcgisBasemapGallery } from "@arcgis/map-components/components/arcgis-basemap-gallery";
 
 // import "../../style/basemap-panel.scss";
 
@@ -25,25 +27,25 @@ export default class BasemapPanel {
   }
 
   private async setBasemaps() {
+    const basemapGallery = document.querySelector("arcgis-basemap-gallery") as ArcgisBasemapGallery;
 
-    const basemapGallery = document.querySelector("arcgis-basemap-gallery");
+    const basemaps = [
+      new Basemap({
+        id: "world-topo-base",
+        title: "World Topo Base",
+        baseLayers: [
+          new TileLayer({
+            url: "https://wtb.maptiles.arcgis.com/arcgis/rest/services/World_Topo_Base/MapServer",
+            title: "World Topo Base",
+          }),
+        ],
+      }),
+      Basemap.fromId("satellite")!,
+      Basemap.fromId("hybrid")!,
+      Basemap.fromId("topo")!,
+    ];
 
-    basemapGallery!.source = new LocalBasemapsSource({
-      basemaps: [
-        Basemap.fromId("satellite")!,
-        Basemap.fromId("hybrid")!,
-        Basemap.fromId("topo")!,
-        new Basemap({
-          id: "world-topo-base",
-          title: "World Topo Base",
-          baseLayers: [
-            new TileLayer({
-              url: "https://wtb.maptiles.arcgis.com/arcgis/rest/services/World_Topo_Base/MapServer",
-              title: "World Topo Base",
-            }),
-          ],
-        }),
-      ],
-    });
+    basemapGallery.source = new LocalBasemapsSource({ basemaps });
+    basemapGallery.activeBasemap = basemaps[0];
   }
 }

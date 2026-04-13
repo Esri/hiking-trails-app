@@ -28,16 +28,18 @@ export default class State extends Accessor {
   displayLoading: boolean = true;
 
   @property()
-  selectedTrailId: number = null;
+  selectedTrailId: number | null = null;
 
   @property()
-  selectedTrail: Trail = null;
+  selectedTrail: Trail | null = null;
 
-  setSelectedTrail(id: number) {
+  setSelectedTrail(id: number | null) {
     this.selectedTrailId = id;
-    this.selectedTrail = this.trails.filter((trail: Trail) => {
-      return trail.id === id;
-    })[0];
+    this.selectedTrail = id
+      ? this.trails.filter((trail: Trail) => {
+          return trail.id === id;
+        })[0]
+      : null;
 
     // if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
     //   this.visiblePanel = "detailPanel";
@@ -51,6 +53,7 @@ export default class State extends Accessor {
     // deselect trail if it is in the filtered out trails
     if (this.filteredTrailIds.indexOf(this.selectedTrailId) === -1) {
       this.selectedTrailId = null;
+      this.selectedTrail = null;
     }
   }
 
@@ -64,12 +67,12 @@ export default class State extends Accessor {
   }
 
   @property()
-  currentBasemapId: string = null;
+  currentBasemapId: string | null = null;
 
   @property()
-  view: SceneView = null;
+  view: SceneView | null = null;
 
   @property()
-  trails: Array<Trail> = null;
+  trails: Array<Trail> = [];
 
 }
