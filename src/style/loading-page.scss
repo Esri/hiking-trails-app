@@ -21,16 +21,16 @@
   }
 
   .center {
-    max-width: 600px;
-    margin: 10px auto;
+    max-width: 37.5rem;
+    margin: 0.625rem auto;
     text-align: center;
   }
 
   .inner {
-    max-width: 600px;
-    padding: 30px;
+    max-width: 37.5rem;
+    padding: 1.875rem;
     text-align: center;
-    margin-top: 200px;
+    margin-top: 12.5rem;
     margin-right: auto;
     margin-left: auto;
     color: white;
@@ -44,14 +44,14 @@
   }
 
   .heading-starter {
-    border-bottom: 1px solid white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    border-bottom: 0.0625rem solid white;
+    text-shadow: -0.0625rem 0 black, 0 0.0625rem black, 0.0625rem 0 black, 0 -0.0625rem black;
   }
 
   #showMap {
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
     background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid white;
+    border: 0.0625rem solid white;
     border-radius: 0.5em;
     font-size: var(--app-big-font);
     color: white;
@@ -70,13 +70,12 @@
 
   .foot {
     display: table-row;
-    bottom: 0;
     height: 5%;
     color: white;
   }
 
   .foot img {
-    height: 80px;
+    height: 5rem;
     vertical-align: middle;
   }
 

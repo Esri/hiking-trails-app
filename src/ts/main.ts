@@ -14,7 +14,6 @@
  *
  */
 
-import "../style/reset.scss";
 import "../style/style.scss";
 import "@arcgis/map-components/main.css";
 import "@esri/calcite-components/main.css";

@@ -40,45 +40,45 @@
 </head>
 
 <body>
- <div id="scene-wrapper">
-  <div class='menuPanel'>
-    <h1 class='section title'>Hiking trails Swiss National Park</h1>
+  <calcite-shell>
+    <calcite-shell-panel slot="panel-start" class="menuShellPanel">
+      <div class='menuPanel'>
+        <h1 class='section title'>Hiking trails Swiss National Park</h1>
 
-    <calcite-tabs layout="center" scale="l">
-      <calcite-tab-nav slot="title-group">
-        <calcite-tab-title selected>
-            Hikes
-        </calcite-tab-title>
-        <calcite-tab-title>Details</calcite-tab-title>
-        <calcite-tab-title>Basemap</calcite-tab-title>
-      </calcite-tab-nav>
-      <calcite-tab selected>
-          <div id='selectionPanel' class='panel'>
-          <div id='trailsPanel'></div>
-          <calcite-button appearance="outline" width="full" class='removeSelected' disabled>Remove selected trail</calcite-button>
-          <div id='filterPanel'></div>
-        </div>
-      </calcite-tab>
-      <calcite-tab>
-        <div id='detailPanel' class='panel'>
-          <h1 class='center' id='detailTitle'></h1>
-          <div id='detailInfograph'></div>
-          <div id='detailDescription'></div>
-          <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-start-button highlight-disabled
-   ></arcgis-elevation-profile>
-              <!-- <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" highlight-disabled hide-select-button
-    hide-start-button></arcgis-elevation-profile> -->
-        </div>
+        <calcite-tabs layout="center" scale="l">
+          <calcite-tab-nav slot="title-group">
+            <calcite-tab-title selected>
+                Hikes
+            </calcite-tab-title>
+            <calcite-tab-title>Details</calcite-tab-title>
+            <calcite-tab-title>Basemap</calcite-tab-title>
+          </calcite-tab-nav>
+          <calcite-tab selected>
+              <div id='selectionPanel' class='panel'>
+              <div id='trailsPanel'></div>
+              <calcite-button appearance="outline" width="full" class='removeSelected' disabled>Remove selected trail</calcite-button>
+              <div id='filterPanel'></div>
+            </div>
           </calcite-tab>
           <calcite-tab>
-                <div id='basemapPanel' class='panel'>
-          <h1 class='center' id='basemapTitle'></h1>
-            <arcgis-basemap-gallery reference-element="viewElement"></arcgis-basemap-gallery>      
-        </div>
-      </calcite-tab>
-    </calcite-tabs>
-  </div>
-  <arcgis-scene id='viewElement' item-id='0c79bf3169a846a3873dfe61fe46e93b'>
+            <div id='detailPanel' class='panel'>
+              <h1 class='center' id='detailTitle'></h1>
+              <div id='detailInfograph'></div>
+              <div id='detailDescription'></div>
+              <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-start-button hide-select-button highlight-disabled
+       ></arcgis-elevation-profile>
+            </div>
+              </calcite-tab>
+              <calcite-tab>
+                    <div id='basemapPanel' class='panel'>
+              <h1 class='center' id='basemapTitle'></h1>
+                <arcgis-basemap-gallery reference-element="viewElement"></arcgis-basemap-gallery>      
+            </div>
+          </calcite-tab>
+        </calcite-tabs>
+      </div>
+    </calcite-shell-panel>
+    <arcgis-scene id='viewElement' item-id='0c79bf3169a846a3873dfe61fe46e93b'>
     <arcgis-home slot="top-right"></arcgis-home>
     <arcgis-zoom slot='top-right'></arcgis-zoom>
     <arcgis-navigation-toggle slot='top-right' visual-scale="m"></arcgis-navigation-toggle>
@@ -87,18 +87,17 @@
     slot="bottom-right"
     expand-icon="information-f"
   >
-      <calcite-panel>
-    <h1>Disclaimer</h1>
+      <calcite-panel class="app-info-panel">
+    <h2>Disclaimer</h2>
     <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
       It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS Maps SDK for JavaScript version 5.x</a>.</p>
-    <h1> Credits </h1>
+    <h2> Credits </h2>
       <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
       <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
-    </ul>
   </calcite-panel>
   </arcgis-expand>
   </arcgis-scene>
-</div>
+  </calcite-shell>
   <div id='starterPage' class='starter'>
     <div class='inner'>
       <div class='cell'>

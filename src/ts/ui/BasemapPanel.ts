@@ -15,11 +15,8 @@
  */
 import Basemap from "@arcgis/core/Basemap";
 import TileLayer from "@arcgis/core/layers/TileLayer";
-import BasemapGalleryItem from "@arcgis/core/widgets/BasemapGallery/support/BasemapGalleryItem";
 import LocalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource";
 import { ArcgisBasemapGallery } from "@arcgis/map-components/components/arcgis-basemap-gallery";
-
-// import "../../style/basemap-panel.scss";
 
 export default class BasemapPanel {
   constructor() {
@@ -43,6 +40,11 @@ export default class BasemapPanel {
       Basemap.fromId("satellite")!,
       Basemap.fromId("hybrid")!,
       Basemap.fromId("topo")!,
+      new Basemap({
+        portalItem: {
+          id: "2e8a3ccdfd6d42a995b79812b3b0ebc6",
+        },
+      }),
     ];
 
     basemapGallery.source = new LocalBasemapsSource({ basemaps });

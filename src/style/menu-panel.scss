@@ -1,28 +1,20 @@
+.menuShellPanel {
+  --calcite-shell-panel-width: var(--side-panel-width);
+  --calcite-shell-panel-min-width: var(--side-panel-width);
+  --calcite-shell-panel-max-width: var(--side-panel-width);
+}
+
 .menuPanel {
-  position: relative;
-  flex: none;
   height: 100%;
-  width: var(--side-panel-width);
-  max-width: var(--side-panel-width);
-  min-width: var(--side-panel-width);
   background-color: var(--app-background-color);
-  box-shadow: 0px 0px 2px 1px var(--app-delimiter);
+  box-shadow: 0 0 0.125rem 0.0625rem var(--app-delimiter);
   z-index: 10;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  overflow-x: hidden;
   box-sizing: border-box;
   isolation: isolate;
   contain: layout paint;
-
-  // .panel {
-  //   display: none;
-  //   width: 100%;
-  //   padding: 20px;
-  //   box-sizing: border-box;
-  //   overflow-y: auto;
-  // }
 
   calcite-tabs {
     flex: 1;
@@ -63,28 +55,47 @@
 }
 
 .section{
-  border-bottom: 1px solid var(--app-delimiter);
+  border-bottom: 0.0625rem solid var(--app-delimiter);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
+  .menuShellPanel {
+    display: none;
+  }
+
   .menuPanel {
     display: none;
-    position: absolute;
-    bottom: 0;
-    top: auto;
-    width: 100%;
-    min-width: 0;
-    height: 200px;
-    calcite-tabs {
-      height: 100%;
+  }
+}
+
+#basemapPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.25rem 1.25rem;
+
+  #basemapTitle {
+    width: calc(100% + 2.5rem);
+    margin: 0 -1.25rem;
+  }
+
+  arcgis-basemap-gallery {
+    width: min(100%, 20rem);
+    margin: 0.75rem auto 0;
+  }
+}
+@media (max-width: 37.5rem) {
+  #basemapPanel {
+    padding: 0 0.75rem 0.75rem;
+
+    #basemapTitle {
+      width: calc(100% + 1.5rem);
+      margin: 0 -0.75rem;
     }
 
-    // .panel {
-    //   padding: 5px;
-    // }
-
-    >h1 {
-      display: none;
+    arcgis-basemap-gallery {
+      width: 100%;
+      margin-top: 0.5rem;
     }
   }
 }

@@ -7,7 +7,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: "Open Sans Condensed", sans-serif;
   color: var(--app-text);
   overflow: hidden;
@@ -19,7 +19,7 @@ body {
   --app-black: #000;
   --app-text: #323232;
   --app-delimiter: rgba(100, 100, 100, 0.75);
-  --app-background-color: rgba(255, 255, 255, 0.9);
+  --app-background-color: rgba(255, 255, 255, 1);
   --app-small-font: 0.9em;
   --app-normal-font: 1em;
   --app-medium-font: 1.2em;
@@ -40,19 +40,26 @@ body {
 h1 {
   font-size: var(--app-big-font);
   font-weight: bold;
-  padding: 20px;
+  padding: 1.25rem;
   text-align: center;
   margin: 0;
 }
+
+  h2 {
+    padding: 0 0 0.75rem;
+    font-size: var(--app-medium-font);
+    font-weight: bold;
+    text-align: center;
+  }
 
 .title {
   position: relative;
   z-index: 1;
   &:before {
-    border-top: 10px solid var(--app-brand-green);
+    border-top: 0.625rem solid var(--app-brand-green);
     content: "";
-    margin: 0 auto; /* this centers the line to the full width specified */
-    position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+    margin: 0 auto; 
+    position: absolute;
     top: 50%;
     left: 0;
     right: 0;
@@ -60,37 +67,43 @@ h1 {
     width: 80%;
     z-index: -1;
   }
-
-  span {
-    /* to hide the lines from behind the text, you have to set the background color the same as the container */
-    background: var(--app-surface);
-    padding: 0 30px;
-  }
 }
 
 *:focus {
   outline: none;
 }
 
-#scene-wrapper {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   :root {
     --side-panel-width: 100vw;
-  }
-
-  #scene-wrapper {
-    width: 100vw;
-    height: 100vh;
   }
 }
 
 b {
   font-weight: 700;
 }
+
+arcgis-expand .app-info-panel {
+  width: min(50vw, 45rem);
+  max-width: calc(100vw - 2.5rem);
+  padding: 1.125rem 1.25rem;
+
+  p {
+    margin: 0 0 0.75rem;
+    line-height: 1.45;
+  }
+
+  a {
+    color: var(--app-brand-green-press);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:focus-visible {
+    text-decoration: underline;
+  }
+
+}
+
+

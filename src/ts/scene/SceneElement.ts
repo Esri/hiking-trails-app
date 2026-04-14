@@ -19,7 +19,6 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import config from "../config";
 import { State } from "../types";
-import "../../style/scene-panel.scss";
 
 export default class SceneElement {
   state: State;
