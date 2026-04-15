@@ -1,102 +1,119 @@
-.menuShellPanel {
-  --calcite-shell-panel-width: var(--side-panel-width);
-  --calcite-shell-panel-min-width: var(--side-panel-width);
-  --calcite-shell-panel-max-width: var(--side-panel-width);
-}
-
-.menuPanel {
-  height: 100%;
-  background-color: var(--app-background-color);
-  box-shadow: 0 0 0.125rem 0.0625rem var(--app-delimiter);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-sizing: border-box;
-  isolation: isolate;
-  contain: layout paint;
-
-  calcite-tabs {
-    flex: 1;
-    min-height: 0;
-    min-width: 0;
-    width: 100%;
-    max-width: 100%;
-    display: block;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-
+.menuPanel  {
+  --calcite-shell-panel-width: 22rem;  
   calcite-tab {
-    height: 100%;
-    min-width: 0;
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-    box-sizing: border-box;
-  }
-
-  calcite-tab-nav,
-  calcite-tab-title {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  .panel {
-    min-height: 0;
-    min-width: 0;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow-y: visible;
   }
 }
 
-.section{
-  border-bottom: 0.0625rem solid var(--app-delimiter);
-}
+@media (max-width: 800px) {
+  .menuPanel  {
+    --calcite-shell-panel-width: 100vw;
+    --calcite-shell-panel-height: 33vh;
+  }
 
-@media (max-width: 37.5rem) {
-  .menuShellPanel {
+  .menuPanel > h1 {
     display: none;
   }
 
-  .menuPanel {
-    display: none;
+}
+
+#mobilePanelToggle {
+  min-inline-size: 2rem;
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  --calcite-button-background-color: #fff;
+  --calcite-button-background-color-hover: #f2f2f2;
+  --calcite-button-background-color-press: #ebebeb;
+  --calcite-button-border-color: #d4d4d4;
+  --calcite-button-text-color: #6b6b6b;
+}
+
+#selectionPanel {
+  padding: 1.25rem;
+
+  .removeSelected {
+    margin: 1.5rem 0;
+    --calcite-button-text-color: var(--app-text);
+  }
+
+  #trailsPanel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    --calcite-chip-text-color: var(--app-text);
+
+    .trail {
+      cursor: pointer;
+
+      &.disabled {
+        pointer-events: none;
+      }
+
+      &.selected {
+        --calcite-color-brand: var(--app-selected-orange);
+        --calcite-color-brand-hover: var(--app-selected-orange);
+        --calcite-color-brand-press: var(--app-selected-orange);
+      }
+    }
+  }
+
+  #filterPanel {
+
+    .filter-category {
+      font-size: var(--app-small-font);
+      font-weight: bold;
+      padding: 1rem 0 0.5rem 0;
+    }
+
+    .segmented-group {
+      width: 75%;
+      margin: 0 auto;
+      --calcite-segmented-control-border-color: var(--app-brand-green);
+      calcite-segmented-control-item[checked] {
+          --calcite-segmented-control-color: #000;
+      }
+    }
+
+    .range-slider {
+      width: 75%;
+      margin: 0.5rem auto;
+    }
+  }
+}
+
+
+#detailPanel {
+  #detailElevationProfile {
+    width: calc(100% - 2.5rem);
+    margin: 1.25rem auto;
+  }
+
+  #detailDescription {
+    margin: 1.25rem;
+  }
+
+  #detailInfograph {
+    padding: 1.5rem;
+    text-align: center;
+
+    .infograph {
+      padding: 0.5rem;
+    }
+
+    .fa-calendar-times-o {
+      color: #d98c8c;
+    }
+
+    .fa-calendar-check-o {
+      color: #7dad7c;
+    }
   }
 }
 
 #basemapPanel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 1.25rem 1.25rem;
-
-  #basemapTitle {
-    width: calc(100% + 2.5rem);
-    margin: 0 -1.25rem;
-  }
-
   arcgis-basemap-gallery {
-    width: min(100%, 20rem);
-    margin: 0.75rem auto 0;
-  }
-}
-@media (max-width: 37.5rem) {
-  #basemapPanel {
-    padding: 0 0.75rem 0.75rem;
-
-    #basemapTitle {
-      width: calc(100% + 1.5rem);
-      margin: 0 -0.75rem;
-    }
-
-    arcgis-basemap-gallery {
-      width: 100%;
-      margin-top: 0.5rem;
-    }
+    margin: 1.25rem auto;
   }
 }
 

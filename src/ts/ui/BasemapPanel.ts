@@ -29,22 +29,23 @@ export default class BasemapPanel {
     const basemaps = [
       new Basemap({
         id: "world-topo-base",
-        title: "World Topo Base",
+        title: "World Topo Base (OLD - just for testing > to be removed)",
         baseLayers: [
           new TileLayer({
             url: "https://wtb.maptiles.arcgis.com/arcgis/rest/services/World_Topo_Base/MapServer",
-            title: "World Topo Base",
+            title: "World Topo Base (OLD - just for testing > to be removed)",
           }),
         ],
       }),
-      Basemap.fromId("satellite")!,
-      Basemap.fromId("hybrid")!,
-      Basemap.fromId("topo")!,
-      new Basemap({
+            new Basemap({
         portalItem: {
           id: "2e8a3ccdfd6d42a995b79812b3b0ebc6",
         },
       }),
+      Basemap.fromId("topo-3d")!,
+      Basemap.fromId("topo")!,
+      Basemap.fromId("satellite")!,
+      Basemap.fromId("hybrid")!
     ];
 
     basemapGallery.source = new LocalBasemapsSource({ basemaps });

@@ -10,26 +10,11 @@
   <meta name='description' content='Hiking trails Swiss National Park'>
   <meta name='author' content='Raluca Nicola, ESRI'>
 
-  <link rel="apple-touch-icon" sizes="57x57" href="./src/img/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="./src/img/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="./src/img/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="./src/img/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="./src/img/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./src/img/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="./src/img/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./src/img/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./src/img/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="./src/img/android-icon-192x192.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./src/img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="./src/img/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./src/img/favicon-16x16.png">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
-
+  <link rel="apple-touch-icon" sizes="180x180" href="./src/img/apple-icon-180x180.png">
+  <link rel="manifest" href="./site.webmanifest">
   <meta name='apple-mobile-web-app-title' content='Hiking trails'>
-  <meta name='mobile-web-app-capable' content='yes'>
-  <meta name='apple-mobile-web-app-status-bar-style' content='#b5e2c1'>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
@@ -41,9 +26,8 @@
 
 <body>
   <calcite-shell>
-    <calcite-shell-panel slot="panel-start" class="menuShellPanel">
-      <div class='menuPanel'>
-        <h1 class='section title'>Hiking trails Swiss National Park</h1>
+    <calcite-shell-panel slot="panel-start" class="menuPanel ">
+        <h1 class='title'>Hiking trails Swiss National Park</h1>
 
         <calcite-tabs layout="center" scale="l">
           <calcite-tab-nav slot="title-group">
@@ -62,7 +46,7 @@
           </calcite-tab>
           <calcite-tab>
             <div id='detailPanel' class='panel'>
-              <h1 class='center' id='detailTitle'></h1>
+              <h2 class='center' id='detailTitle'></h2>
               <div id='detailInfograph'></div>
               <div id='detailDescription'></div>
               <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-start-button hide-select-button highlight-disabled
@@ -71,30 +55,35 @@
               </calcite-tab>
               <calcite-tab>
                     <div id='basemapPanel' class='panel'>
-              <h1 class='center' id='basemapTitle'></h1>
                 <arcgis-basemap-gallery reference-element="viewElement"></arcgis-basemap-gallery>      
             </div>
           </calcite-tab>
         </calcite-tabs>
-      </div>
     </calcite-shell-panel>
     <arcgis-scene id='viewElement' item-id='0c79bf3169a846a3873dfe61fe46e93b'>
     <arcgis-home slot="top-right"></arcgis-home>
     <arcgis-zoom slot='top-right'></arcgis-zoom>
-    <arcgis-navigation-toggle slot='top-right' visual-scale="m"></arcgis-navigation-toggle>
+    <arcgis-navigation-toggle slot='top-right'></arcgis-navigation-toggle>
     <arcgis-compass slot='top-right'></arcgis-compass>
-      <arcgis-expand visual-scale="m" scale="m"
+    <calcite-button
+      id="mobilePanelToggle"
+      slot="bottom-left"
+      icon-start="hamburger"
+      title="Toggle panel"
+      hidden
+    ></calcite-button>
+    <arcgis-expand
     slot="bottom-right"
     expand-icon="information-f"
-  >
-      <calcite-panel class="app-info-panel">
-    <h2>Disclaimer</h2>
-    <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
-      It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS Maps SDK for JavaScript version 5.x</a>.</p>
-    <h2> Credits </h2>
-      <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
-      <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
-  </calcite-panel>
+    >
+    <calcite-panel class="app-info-panel">
+      <h2>Disclaimer</h2>
+      <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
+        It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS Maps SDK for JavaScript version 5.0</a>.</p>
+      <h2> Credits </h2>
+        <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
+        <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
+    </calcite-panel>
   </arcgis-expand>
   </arcgis-scene>
   </calcite-shell>

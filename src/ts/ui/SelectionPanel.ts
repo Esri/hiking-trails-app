@@ -16,7 +16,6 @@
 
 import config from "../config";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-import "../../style/selection-panel.scss";
 import { State, Trail } from "../types";
 
 export default class SelectionPanel {
@@ -30,9 +29,7 @@ export default class SelectionPanel {
   constructor(trails, state: State) {
     this.state = state;
     this.trails = trails;
-
     this.container = document.getElementById("selectionPanel");
-
     this.trailsPanel = document.getElementById("trailsPanel")!;
     this.removeSelectedButton = document.querySelector(".removeSelected");
     this.generateTrailsPanel();
@@ -165,7 +162,6 @@ export default class SelectionPanel {
     this.generateRangeFilters();
   }
 
-  // create radio buttons for single choice filter criteria
   private generateSingleChoiceFilters(): void {
     const singleChoiceFilters: Array<string> =
       config.data.filterOptions.singleChoice;

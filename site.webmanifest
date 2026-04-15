@@ -1,0 +1,20 @@
+{
+  "name": "Hiking trails",
+  "short_name": "Hiking trails",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b5e2c1",
+  "icons": [
+    {
+      "src": "./src/img/android-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./src/img/android-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

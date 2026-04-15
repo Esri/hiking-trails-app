@@ -178,7 +178,7 @@ export default class SceneElement {
     }
 
     const target = selectedGeometry.extent
-      ? selectedGeometry.extent.expand(2)
+      ? selectedGeometry.extent.expand(1.5)
       : selectedGeometry;
 
     this.view.goTo(

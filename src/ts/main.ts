@@ -15,9 +15,6 @@
  */
 
 import "../style/style.scss";
-import "@arcgis/map-components/main.css";
-import "@esri/calcite-components/main.css";
-
 import { defineCustomElements as defineArcGISCustomElements } from "@arcgis/map-components/loader";
 import { defineCustomElements as defineCalciteCustomElements } from "@esri/calcite-components/loader";
 
@@ -30,11 +27,42 @@ import State from "./State";
 import LoadingPage from "./ui/LoadingPage";
 import MenuPanel from "./ui/MenuPanel";
 
-async function bootstrap() {
+function syncPanelSlotForViewport() {
+  const panel = document.querySelector("calcite-shell-panel.menuPanel") as HTMLElement | null;
+  const toggleButton = document.getElementById("mobilePanelToggle") as any;
+  if (!panel || !toggleButton) {
+    return;
+  }
+
+  const mediaQuery = window.matchMedia("(max-width: 800px)");
+
+  toggleButton.addEventListener("click", () => {
+    panel.toggleAttribute("collapsed");
+  });
+
+  const applySlot = () => {
+    panel.setAttribute("slot", mediaQuery.matches ? "panel-bottom" : "panel-start");
+
+    if (mediaQuery.matches) {
+      toggleButton.removeAttribute("hidden");
+      return;
+    }
+
+    panel.removeAttribute("collapsed");
+    toggleButton.setAttribute("hidden", "");
+  };
+
+  applySlot();
+  mediaQuery.addEventListener("change", applySlot);
+}
+
+async function initializeApp() {
   await Promise.all([
     defineCalciteCustomElements(window),
     defineArcGISCustomElements(window),
   ]);
+
+  syncPanelSlotForViewport();
 
   const state = new State();
   new LoadingPage(state);
@@ -45,4 +73,4 @@ async function bootstrap() {
   });
 }
 
-bootstrap();
+initializeApp();

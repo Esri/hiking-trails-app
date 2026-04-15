@@ -10,18 +10,11 @@ body {
   font-size: 1rem;
   font-family: "Open Sans Condensed", sans-serif;
   color: var(--app-text);
-  overflow: hidden;
 }
 
 :root {
-  --side-panel-width: 33.333vw;
-  --app-surface: #fff;
-  --app-black: #000;
   --app-text: #323232;
-  --app-delimiter: rgba(100, 100, 100, 0.75);
-  --app-background-color: rgba(255, 255, 255, 1);
   --app-small-font: 0.9em;
-  --app-normal-font: 1em;
   --app-medium-font: 1.2em;
   --app-big-font: 1.3em;
   --app-huge-font: 2em;
@@ -29,12 +22,11 @@ body {
   --app-brand-green-hover: #9fd4ae;
   --app-brand-green-press: #8ac79c;
   --app-selected-orange: #f9a352;
-  --app-trail-closed: #d98c8c;
-  --app-trail-open: #7dad7c;
 
   --calcite-color-brand: var(--app-brand-green);
   --calcite-color-brand-hover: var(--app-brand-green-hover);
   --calcite-color-brand-press: var(--app-brand-green-press);
+  --calcite-color-background: #fff;
 }
 
 h1 {
@@ -45,12 +37,26 @@ h1 {
   margin: 0;
 }
 
-  h2 {
-    padding: 0 0 0.75rem;
-    font-size: var(--app-medium-font);
-    font-weight: bold;
-    text-align: center;
-  }
+h2 {
+  font-size: var(--app-medium-font);
+  font-weight: bold;
+  text-align: center;
+}
+
+a {
+  color: var(--app-brand-green-press);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+b {
+  font-weight: 700;
+}
 
 .title {
   position: relative;
@@ -69,41 +75,14 @@ h1 {
   }
 }
 
-*:focus {
-  outline: none;
-}
-
-@media (max-width: 37.5rem) {
-  :root {
-    --side-panel-width: 100vw;
-  }
-}
-
-b {
-  font-weight: 700;
-}
-
 arcgis-expand .app-info-panel {
-  width: min(50vw, 45rem);
-  max-width: calc(100vw - 2.5rem);
-  padding: 1.125rem 1.25rem;
+  max-width: 33rem;
+  padding: 1rem;
+  margin: 0 auto;
 
   p {
-    margin: 0 0 0.75rem;
-    line-height: 1.45;
+    margin: 0 0 1rem;
   }
-
-  a {
-    color: var(--app-brand-green-press);
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  a:hover,
-  a:focus-visible {
-    text-decoration: underline;
-  }
-
 }
 
 

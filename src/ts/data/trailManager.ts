@@ -14,9 +14,7 @@
  *
  */
 
-import Query from "@arcgis/core/rest/support/Query";
 import config from "../config";
-
 import Trail from "./Trail";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 

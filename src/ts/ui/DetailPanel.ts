@@ -17,7 +17,7 @@
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { State, Trail } from "../types";
 
-import "../../style/detail-panel.scss";
+// import "../../style/detail-panel.scss";
 
 export default class SelectionPanel {
   trails: Array<Trail>;

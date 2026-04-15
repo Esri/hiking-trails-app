@@ -40,10 +40,6 @@ export default class State extends Accessor {
           return trail.id === id;
         })[0]
       : null;
-
-    // if (this.selectedTrailId && this.visiblePanel !== "detailPanel") {
-    //   this.visiblePanel = "detailPanel";
-    // }
   }
 
   @property()
@@ -65,9 +61,6 @@ export default class State extends Accessor {
     };
     this.filters[property] = value;
   }
-
-  @property()
-  currentBasemapId: string | null = null;
 
   @property()
   view: SceneView | null = null;
