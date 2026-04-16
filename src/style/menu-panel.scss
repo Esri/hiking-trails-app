@@ -1,32 +1,44 @@
 .menuPanel  {
-  --calcite-shell-panel-width: 22rem;  
+  --calcite-shell-panel-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+
+  calcite-tabs {
+    flex: 1;
+    min-height: 0;
+  }
+
   calcite-tab {
-    overflow-y: visible;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 }
 
 @media (max-width: 800px) {
   .menuPanel  {
     --calcite-shell-panel-width: 100vw;
-    --calcite-shell-panel-height: 33vh;
+  }
+
+  .menuPanel[slot="panel-bottom"]:not([collapsed]) {
+    height: 33vh;
+  }
+
+  .menuPanel[slot="panel-bottom"][collapsed] {
+    height: 0;
+    overflow: hidden;
   }
 
   .menuPanel > h1 {
     display: none;
   }
-
 }
 
 #mobilePanelToggle {
-  min-inline-size: 2rem;
-  inline-size: 2rem;
-  block-size: 2rem;
-  padding: 0;
   --calcite-button-background-color: #fff;
-  --calcite-button-background-color-hover: #f2f2f2;
-  --calcite-button-background-color-press: #ebebeb;
-  --calcite-button-border-color: #d4d4d4;
-  --calcite-button-text-color: #6b6b6b;
+  --calcite-button-text-color: var(--app-text);
 }
 
 #selectionPanel {
