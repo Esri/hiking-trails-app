@@ -26,8 +26,8 @@
 
 <body>
   <calcite-shell>
-    <calcite-shell-panel slot="panel-start" class="menuPanel ">
-        <h1 class='title'>Hiking trails Swiss National Park</h1>
+    <calcite-shell-panel slot="panel-start" class="menu-panel">
+        <h1 class="title">Hiking trails Swiss National Park</h1>
 
         <calcite-tabs layout="center" scale="l">
           <calcite-tab-nav slot="title-group">
@@ -38,29 +38,29 @@
             <calcite-tab-title>Basemap</calcite-tab-title>
           </calcite-tab-nav>
           <calcite-tab selected>
-              <div id='selectionPanel' class='panel'>
-              <div id='trailsPanel'></div>
-              <calcite-button appearance="outline" width="full" class='removeSelected' disabled>Remove selected trail</calcite-button>
-              <div id='filterPanel'></div>
+              <div id="selectionPanel" class="panel">
+              <div id="trailsPanel"></div>
+              <calcite-button appearance="outline" width="full" class="remove-selected" disabled>Remove selected trail</calcite-button>
+              <div id="filterPanel"></div>
             </div>
           </calcite-tab>
           <calcite-tab>
-            <div id='detailPanel' class='panel'>
-              <h2 class='center' id='detailTitle'></h2>
-              <div id='detailInfograph'></div>
-              <div id='detailDescription'></div>
-              <arcgis-elevation-profile id='detailElevationProfile' reference-element="viewElement" hide-start-button hide-select-button highlight-disabled
+            <div id="detailPanel" class="panel">
+              <h2 class="center" id="detailTitle"></h2>
+              <div id="detailInfograph"></div>
+              <div id="detailDescription"></div>
+              <arcgis-elevation-profile id="detailElevationProfile" reference-element="viewElement" hide-start-button hide-select-button highlight-disabled
        ></arcgis-elevation-profile>
             </div>
               </calcite-tab>
               <calcite-tab>
-                    <div id='basemapPanel' class='panel'>
+                    <div id="basemapPanel" class="panel">
                 <arcgis-basemap-gallery reference-element="viewElement"></arcgis-basemap-gallery>      
             </div>
           </calcite-tab>
         </calcite-tabs>
     </calcite-shell-panel>
-    <arcgis-scene id='viewElement' item-id='0c79bf3169a846a3873dfe61fe46e93b'>
+    <arcgis-scene id="viewElement" item-id="134539520cec466b967b12c3bd82b39e">
     <arcgis-home slot="top-right"></arcgis-home>
     <arcgis-zoom slot='top-right'></arcgis-zoom>
     <arcgis-navigation-toggle slot='top-right'></arcgis-navigation-toggle>
@@ -87,19 +87,19 @@
   </arcgis-expand>
   </arcgis-scene>
   </calcite-shell>
-  <div id='starterPage' class='starter'>
-    <div class='inner'>
-      <div class='cell'>
-        <h1 class='heading-starter center'>Swiss National Park</h1>
-        <p class='description lead center'>This app shows the hiking trails for the Swiss National Park, the largest and most highly protected area in Switzerland.
+  <div id="starterPage" class="starter">
+    <div class="inner">
+      <div class="cell">
+        <h1 class="heading-starter center">Swiss National Park</h1>
+        <p class="description lead center">This app shows the hiking trails for the Swiss National Park, the largest and most highly protected area in Switzerland.
         </p>
-        <p id='startApp' class='lead center'>
-          <button id='showMap'>Go to map</button>
+        <p id="startApp" class="lead center">
+          <button id="showMap">Go to map</button>
         </p>
       </div>
     </div>
-    <div class='foot'>
-      <div class='center'>
+    <div class="foot">
+      <div class="center">
         <p>
           <a href='http://developers.arcgis.com/javascript'>
             <img src='./src/img/esri-10GlobeLogo_1C.png' alt='esri logo'>

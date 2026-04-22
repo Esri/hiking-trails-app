@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import {
   subclass,
 } from "@arcgis/core/core/accessorSupport/decorators";
 import SceneView from "@arcgis/core/views/SceneView";
-import { Trail } from "./types";
+import { FilterValue, Trail, TrailFilters } from "./types";
 
 @subclass()
 export default class State extends Accessor {
@@ -33,7 +33,7 @@ export default class State extends Accessor {
   @property()
   selectedTrail: Trail | null = null;
 
-  setSelectedTrail(id: number | null) {
+  setSelectedTrail(id: number | null): void {
     this.selectedTrailId = id;
     this.selectedTrail = id
       ? this.trails.filter((trail: Trail) => {
@@ -44,18 +44,18 @@ export default class State extends Accessor {
 
   @property()
   filteredTrailIds: Array<number> = [];
-  setFilteredTrailIds(ids: Array<number>) {
+  setFilteredTrailIds(ids: Array<number>): void {
     this.filteredTrailIds = ids;
     // deselect trail if it is in the filtered out trails
-    if (this.filteredTrailIds.indexOf(this.selectedTrailId) === -1) {
+    if (this.selectedTrailId == null || this.filteredTrailIds.indexOf(this.selectedTrailId) === -1) {
       this.selectedTrailId = null;
       this.selectedTrail = null;
     }
   }
 
   @property()
-  filters = {};
-  setFilter(property: string, value: string | Array<number>): void {
+  filters: TrailFilters = {};
+  setFilter(property: string, value: FilterValue): void {
     this.filters = {
       ...this.filters,
     };

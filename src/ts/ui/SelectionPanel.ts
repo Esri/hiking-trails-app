@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 
 import config from "../config";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-import { State, Trail } from "../types";
+import { State, Trail, TrailFilters } from "../types";
 
 export default class SelectionPanel {
   trailsPanel: HTMLElement;
   filterPanel: HTMLElement;
   trails: Array<Trail>;
   state: State;
-  container: any;
-  removeSelectedButton: any;
+  container: HTMLElement;
+  removeSelectedButton: HTMLCalciteButtonElement;
 
-  constructor(trails, state: State) {
+  constructor(trails: Trail[], state: State) {
     this.state = state;
     this.trails = trails;
-    this.container = document.getElementById("selectionPanel");
+    this.container = document.getElementById("selectionPanel")!;
     this.trailsPanel = document.getElementById("trailsPanel")!;
-    this.removeSelectedButton = document.querySelector(".removeSelected");
+    this.removeSelectedButton = document.querySelector(".remove-selected") as HTMLCalciteButtonElement;
     this.generateTrailsPanel();
 
     this.removeSelectedButton.addEventListener("click", () => {
@@ -45,7 +45,7 @@ export default class SelectionPanel {
     reactiveUtils.watch(() => state.selectedTrailId, (id) => {
       const previousSelectedTrail = this.trailsPanel.querySelector(
         ".selected"
-      ) as any;
+      ) as HTMLCalciteChipElement | null;
 
       if (previousSelectedTrail) {
         previousSelectedTrail.selected = false;
@@ -55,16 +55,18 @@ export default class SelectionPanel {
       if (id) {
         const selectedTrail = this.trailsPanel.querySelector(
           `[data-id="${id}"]`
-        ) as any;
+        ) as HTMLCalciteChipElement | null;
         selectedTrail?.classList.add("selected");
-        selectedTrail.selected = true;
+        if (selectedTrail) {
+          selectedTrail.selected = true;
+        }
         this.removeSelectedButton.disabled = false;
       } else {
         this.removeSelectedButton.disabled = true;
       }
     });
 
-    reactiveUtils.watch(() => state.filters, (filters: any) => {
+    reactiveUtils.watch(() => state.filters, (filters: TrailFilters) => {
       const filteredTrailIds = this.getFilteredTrails(filters).map(
         (trail) => trail.id
       );
@@ -76,7 +78,7 @@ export default class SelectionPanel {
     });
   }
 
-  private getFilteredTrails(filters: any): Array<Trail> {
+  private getFilteredTrails(filters: TrailFilters): Array<Trail> {
     const filteredTrails = this.trails.filter((trail) => {
       // we assume the trail will not be filtered out
       let keepTrail = true;
@@ -84,7 +86,7 @@ export default class SelectionPanel {
       // go through each filter criteria and verify if the trail should be filtered out
       for (const filter in filters) {
         const filterValue = filters[filter];
-        const trailValue = (trail as any)[filter];
+        const trailValue = trail[filter as keyof Trail];
 
         if (Array.isArray(filterValue)) {
           const numericTrailValue = Number(trailValue);
@@ -112,10 +114,11 @@ export default class SelectionPanel {
     return filteredTrails;
   }
 
-  private updateVisibleTrails(ids) {
-    const trailElements = document.querySelectorAll(".trail") as NodeListOf<any>;
+  private updateVisibleTrails(ids: number[]): void {
+    const trailElements = document.querySelectorAll(".trail") as NodeListOf<HTMLCalciteChipElement>;
     trailElements.forEach(function (elem) {
-      if (ids.indexOf(parseInt(elem.dataset.id, 10)) === -1) {
+      const trailId = Number(elem.dataset.id);
+      if (!Number.isFinite(trailId) || ids.indexOf(trailId) === -1) {
         elem.classList.add("disabled");
         elem.disabled = true;
       } else {
@@ -134,13 +137,13 @@ export default class SelectionPanel {
     const uniqueFilterAttributes = Array.from(new Set(filterAttributes));
 
     this.trails.forEach((trail) => {
-      const trailElement = document.createElement("calcite-chip") as any;
+      const trailElement = document.createElement("calcite-chip") as HTMLCalciteChipElement;
       trailElement.className = "trail";
       trailElement.innerText = trail.name;
       trailElement.dataset.id = String(trail.id);
 
       uniqueFilterAttributes.forEach((attribute) => {
-        const value = (trail as any)[attribute];
+        const value = trail[attribute as keyof Trail];
         if (value !== null && value !== undefined) {
           trailElement.dataset[attribute] = String(value);
         }
@@ -180,7 +183,7 @@ export default class SelectionPanel {
 
       const segmentedControl = document.createElement(
         "calcite-segmented-control"
-      ) as any;
+      ) as HTMLCalciteSegmentedControlElement;
       segmentedControl.className = "segmented-group";
       segmentedControl.width = "full";
 
@@ -189,7 +192,7 @@ export default class SelectionPanel {
       for (let i = 0; i < uniqueValues.length; i++) {
         const option = document.createElement(
           "calcite-segmented-control-item"
-        ) as any;
+        ) as HTMLCalciteSegmentedControlItemElement;
         option.innerText = uniqueValues[i];
         option.value = uniqueValues[i];
         if (i === 0) {
@@ -208,11 +211,11 @@ export default class SelectionPanel {
   }
 
   // function that gets unique values for a trail attribute (filter)
-  private getUniqueValues(filter): Array<string> {
+  private getUniqueValues(filter: string): Array<string> {
     const uniqueValues = ["All"];
 
     this.trails.forEach((elem) => {
-      const value = (elem as any)[filter];
+      const value = elem[filter as keyof Trail];
       if (value === null || value === undefined) {
         return;
       }
@@ -241,11 +244,11 @@ export default class SelectionPanel {
 
       // get minimum and maximum for the filter criteria
       const extremes: Extremes = this.getExtremes(filter);
-      const rangeOptions = (config as any).data?.filterOptions?.rangeOptions?.[filter] || {};
-      const unit = typeof rangeOptions.unit === "string" ? rangeOptions.unit : "";
-      const step = Number(rangeOptions.step) > 0 ? Number(rangeOptions.step) : 1;
+      const configuredRangeOptions = config.data.filterOptions.rangeOptions?.[filter];
+      const unit = typeof configuredRangeOptions?.unit === "string" ? configuredRangeOptions.unit : "";
+      const step = Number(configuredRangeOptions?.step) > 0 ? Number(configuredRangeOptions?.step) : 1;
 
-      const rangeSliderContainer = document.createElement("calcite-slider") as any;
+      const rangeSliderContainer = document.createElement("calcite-slider") as HTMLCalciteSliderElement;
       rangeSliderContainer.className = "range-slider";
       rangeSliderContainer.dataset.group = filter;
       rangeSliderContainer.min = extremes.min;
@@ -273,12 +276,12 @@ export default class SelectionPanel {
     }
   }
 
-  private getExtremes(prop): Extremes {
+  private getExtremes(prop: string): Extremes {
     let min = Number.POSITIVE_INFINITY,
       max = Number.NEGATIVE_INFINITY;
 
     this.trails.forEach(function (elem) {
-      const value = Number((elem as any)[prop]);
+      const value = Number(elem[prop as keyof Trail]);
 
       if (Number.isFinite(value)) {
         if (value < min) {

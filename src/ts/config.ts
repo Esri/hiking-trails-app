@@ -16,12 +16,12 @@ Data:
 
 Colors:
  - change the colors for visualizing the trails
- - for CSS colors update also the --app-selected-orange variable in style.scss file
+ - for CSS colors update also the --app-selected-orange variable in style.css file
 */
 
 export default {
   data: {
-    trailsServiceUrl: "https://services2.arcgis.com/cFEFS0EWrhfDeVw9/arcgis/rest/services/SwissNationalParkHikingTrails/FeatureServer/0",
+    trailsServiceUrl: "https://services2.arcgis.com/cFEFS0EWrhfDeVw9/arcgis/rest/services/showcases_hiking-trails-app_trails/FeatureServer/0",
     trailAttributes: {
       name: "Name",
       id: "RouteId",

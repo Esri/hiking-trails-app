@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  *
  */
 
-import "../style/style.scss";
+import "../style/style.css";
 import { defineCustomElements as defineArcGISCustomElements } from "@arcgis/map-components/loader";
 import { defineCustomElements as defineCalciteCustomElements } from "@esri/calcite-components/loader";
 
@@ -27,12 +27,9 @@ import State from "./State";
 import LoadingPage from "./ui/LoadingPage";
 import MenuPanel from "./ui/MenuPanel";
 
-function syncPanelSlotForViewport() {
-  const panel = document.querySelector("calcite-shell-panel.menuPanel") as HTMLElement | null;
-  const toggleButton = document.getElementById("mobilePanelToggle") as any;
-  if (!panel || !toggleButton) {
-    return;
-  }
+function syncPanelSlotForViewport(): void {
+  const panel = document.querySelector("calcite-shell-panel.menu-panel")! as HTMLCalciteShellPanelElement;
+  const toggleButton = document.getElementById("mobilePanelToggle")! as HTMLCalciteButtonElement;
 
   const mediaQuery = window.matchMedia("(max-width: 800px)");
 
@@ -40,7 +37,7 @@ function syncPanelSlotForViewport() {
     panel.toggleAttribute("collapsed");
   });
 
-  const applySlot = () => {
+  const applySlot = (): void => {
     panel.setAttribute("slot", mediaQuery.matches ? "panel-bottom" : "panel-start");
 
     if (mediaQuery.matches) {
@@ -56,7 +53,7 @@ function syncPanelSlotForViewport() {
   mediaQuery.addEventListener("change", applySlot);
 }
 
-async function initializeApp() {
+async function initializeApp(): Promise<void> {
   await Promise.all([
     defineCalciteCustomElements(window),
     defineArcGISCustomElements(window),
@@ -68,9 +65,8 @@ async function initializeApp() {
   new LoadingPage(state);
   const sceneElement = new SceneElement(state);
 
-  Promise.all([sceneElement.ready, trailManager.initTrails(state)]).then(() => {
-    new MenuPanel(state);
-  });
+  await Promise.all([sceneElement.ready, trailManager.initTrails(state)]);
+  new MenuPanel(state);
 }
 
 initializeApp();

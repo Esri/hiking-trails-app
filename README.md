@@ -4,11 +4,11 @@ This application displays the hiking trails in the [Swiss National Park](http://
 
 [View it live](https://esri.github.io/hiking-trails-app)
 
-![hiking-trails-app](screenshots/screenshot1.PNG)
+![hiking-trails-app](screenshots/screenshot.png)
 
 ## Features
 
-* Displaying hikes on a 3D map along with the altitude profile, descriptions and images. The altitude profile is automatically generated from the elevation service used in the map. The images are a selection of images marked under creative-commons license from Flickr.
+* Displaying hikes on a 3D map along with the altitude profile and descriptions. The altitude profile is automatically generated from the elevation service used in the map. 
 
 * The hikes can be filtered by Difficulty, Category, Walktime and Ascent. These categories are used to describe the degree of difficulty of the trails, according to the [Swiss National Park description](http://www.nationalpark.ch/en/visit/trails-routes).
 
@@ -20,19 +20,13 @@ This application displays the hiking trails in the [Swiss National Park](http://
 4. Start the development app with `npm run start`.
 5. The production app can be created with `npm run build`.
 
-## Requirements
-
-* Notepad or your favorite HTML editor
-* Web browser with access to the Internet
-
 ## Resources
 
 The following libraries, APIs and datasets  were used to make this application:</p>
 
 * Hiking trails geometry and attributes data from the [Swiss National Park](http://www.nationalpark.ch/en/visit/trails-routes).
-* [ArcGIS API for JavaScript](https://developers.arcgis.com/javascript/) for the map.
-* This application uses the <a href="https://www.flickr.com/services/api/" target="_blank">Flickr API</a> but is not endorsed or certified by <a href="https://www.flickr.com/" target="_blank">Flickr</a>. Flickr API is used to retrieve building images under <a href="https://creativecommons.org/licenses/" target="_blank">Creative Commons licenses</a>. See <a href="https://www.flickr.com/services/api/tos/" target="_blank">Flickr Terms of Use</a> for licensing information.
-* [amcharts](https://github.com/amcharts) for the altitude profile.
+* [ArcGIS SDK for JavaScript](https://developers.arcgis.com/javascript/) for the map.
+* [Font Awesome](https://fontawesome.com/) for icons in the details panel.
 
 ## Disclaimer
 
@@ -43,7 +37,7 @@ This demo application is for illustrative purposes only and it is not maintained
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
 
 ## Licensing
-Copyright 2019 Esri
+Copyright 2026 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

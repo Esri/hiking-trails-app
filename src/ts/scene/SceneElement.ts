@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,20 @@
 import SceneView from "@arcgis/core/views/SceneView";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import type WebScene from "@arcgis/core/WebScene";
+import type { UniqueValueRendererProperties } from "@arcgis/core/renderers/UniqueValueRenderer";
+import type { UniqueValueInfoProperties } from "@arcgis/core/renderers/support/UniqueValueInfo";
+import type { LabelClassProperties } from "@arcgis/core/layers/support/LabelClass";
+import type { LineSymbol3DProperties } from "@arcgis/core/symbols/LineSymbol3D";
+import type { ClickEvent } from "@arcgis/core/views/input/types";
 import config from "../config";
 import { State } from "../types";
 
 export default class SceneElement {
   state: State;
-  view: SceneView;
-  trailsLayer: any;
-  trails: Array<any>;
-  sceneElement: any;
+  view!: SceneView;
+  trailsLayer!: FeatureLayer;
+  sceneElement!: HTMLArcgisSceneElement;
   ready: Promise<SceneView>;
   private initialized = false;
 
@@ -50,11 +55,12 @@ export default class SceneElement {
         return;
       }
 
-      const map = this.view.map as any;
+      const map = this.view.map as WebScene;
+      const initialViewpoint = map.initialViewProperties?.viewpoint;
       // before filtering go to the initial extent
       // to see which layers are filtered
-      if (map?.initialViewProperties?.viewpoint) {
-        this.view.goTo(map.initialViewProperties.viewpoint);
+      if (initialViewpoint) {
+        this.view.goTo(initialViewpoint);
       }
 
       const hasConfiguredFilters = Object.keys(this.state.filters).length > 0;
@@ -77,7 +83,7 @@ export default class SceneElement {
   }
 
   private initScene(): Promise<SceneView> {
-    this.sceneElement = document.querySelector("arcgis-scene#viewElement") as any;
+    this.sceneElement = document.querySelector("arcgis-scene#viewElement") as HTMLArcgisSceneElement;
     if (!this.sceneElement) {
       return Promise.reject(new Error("Scene element #viewElement not found"));
     }
@@ -98,8 +104,9 @@ export default class SceneElement {
           this.trailsLayer = await this.createTrailsLayer();
         }
 
-        if (!this.view.map.layers.includes(this.trailsLayer)) {
-          this.view.map.add(this.trailsLayer);
+        const map = this.view.map;
+        if (map && !map.layers.includes(this.trailsLayer)) {
+          map.add(this.trailsLayer);
         }
 
         this.view.on("click", (event) => {
@@ -107,7 +114,7 @@ export default class SceneElement {
         });
 
         // adding view to the window only for debugging reasons
-        (<any>window).view = this.view;
+        (window as Window & { view?: SceneView }).view = this.view;
         resolve(this.view);
       };
 
@@ -121,12 +128,12 @@ export default class SceneElement {
     });
   }
 
-  private async createTrailsLayer() {
+  private async createTrailsLayer(): Promise<FeatureLayer> {
     return new FeatureLayer({
       url: config.data.trailsServiceUrl,
       title: "Hiking trails",
       outFields: ["*"],
-      renderer: this.getTrailRenderer() as any,
+      renderer: this.getTrailRenderer(),
       elevationInfo: {
         mode: "on-the-ground",
       },
@@ -136,29 +143,31 @@ export default class SceneElement {
     });
   }
 
-  private onViewClick(event) {
+  private async onViewClick(event: ClickEvent): Promise<void> {
     // check if the user is online
-    this.view
-      .hitTest(event, { include: this.trailsLayer })
-      .then((response) => {
-        const result = response.results[0];
-        // if a graphic was picked from the view
-        if (result?.type === "graphic" && result.graphic) {
-          this.state.setSelectedTrail(
-            result.graphic.attributes[config.data.trailAttributes.id]
-          );
-        } else {
-          this.state.setSelectedTrail(null);
-        }
-      });
+    const response = await this.view.hitTest(event, { include: this.trailsLayer });
+    const result = response.results[0];
+    // if a graphic was picked from the view
+    if (result?.type === "graphic" && result.graphic) {
+      this.state.setSelectedTrail(
+        result.graphic.attributes[config.data.trailAttributes.id]
+      );
+    } else {
+      this.state.setSelectedTrail(null);
+    }
   }
 
-  private async selectFeature(featureId): Promise<void> {
+  private async selectFeature(featureId: number): Promise<void> {
     if (!this.view || !this.trailsLayer) {
       return;
     }
 
-    const renderer = this.trailsLayer.renderer.clone();
+    const existingRenderer = this.trailsLayer.renderer;
+    if (!existingRenderer || existingRenderer.type !== "unique-value") {
+      return;
+    }
+
+    const renderer = existingRenderer.clone();
     renderer.uniqueValueInfos = this.getUniqueValueInfos(featureId);
     this.trailsLayer.renderer = renderer;
 
@@ -192,14 +201,19 @@ export default class SceneElement {
       return;
     }
 
-    const renderer = this.trailsLayer.renderer.clone();
+    const existingRenderer = this.trailsLayer.renderer;
+    if (!existingRenderer || existingRenderer.type !== "unique-value") {
+      return;
+    }
+
+    const renderer = existingRenderer.clone();
     renderer.uniqueValueInfos = [];
     this.trailsLayer.renderer = renderer;
 
     this.trailsLayer.labelingInfo = this.getLabelingInfo(null);
   }
 
-  private getTrailRenderer() {
+  private getTrailRenderer(): UniqueValueRendererProperties & { type: "unique-value" } {
     return {
       type: "unique-value",
       field: config.data.trailAttributes.id,
@@ -208,7 +222,7 @@ export default class SceneElement {
     };
   }
 
-  private createTrailSymbol(selection: number | null) {
+  private createTrailSymbol(selection: number | null): LineSymbol3DProperties & { type: "line-3d" } {
     const color = selection
       ? config.colors.selectedTrail
       : config.colors.defaultTrail;
@@ -227,7 +241,7 @@ export default class SceneElement {
     };
   }
 
-  private getUniqueValueInfos(selection: number) {
+  private getUniqueValueInfos(selection: number | null): UniqueValueInfoProperties[] {
     if (!selection) {
       return [];
     }
@@ -240,7 +254,7 @@ export default class SceneElement {
     ];
   }
 
-  private getLabelingInfo(selection: number | null) {
+  private getLabelingInfo(selection: number | null): LabelClassProperties[] {
     if (selection) {
       return [this.createLabelClass(selection), this.createLabelClass(null)];
     }
@@ -248,12 +262,12 @@ export default class SceneElement {
     return [this.createLabelClass(null)];
   }
 
-  private createLabelClass(selection: number | null) {
+  private createLabelClass(selection: number | null): LabelClassProperties {
     const color = selection
       ? config.colors.selectedTrail
       : config.colors.defaultTrail;
 
-    const labelClass: any = {
+    const labelClass: LabelClassProperties = {
       labelPlacement: "above-center",
       labelExpressionInfo: {
         expression: `$feature.${config.data.trailAttributes.name}`,

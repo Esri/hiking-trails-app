@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { State, Trail } from "../types";
-
-// import "../../style/detail-panel.scss";
+import Graphic from "@arcgis/core/Graphic";
 
 export default class SelectionPanel {
   trails: Array<Trail>;
@@ -25,17 +24,17 @@ export default class SelectionPanel {
   container: HTMLElement;
   detailTitle: HTMLElement;
   detailInfograph: HTMLElement;
-  detailElevationProfile: any;
+  detailElevationProfile: HTMLArcgisElevationProfileElement;
   detailDescription: HTMLElement;
 
-  constructor(trails, state: State) {
+  constructor(trails: Trail[], state: State) {
     this.state = state;
     this.trails = trails;
     this.container = document.getElementById("detailPanel")!;
     this.detailTitle = document.getElementById("detailTitle")!;
     this.detailInfograph = document.getElementById("detailInfograph")!;
     this.detailDescription = document.getElementById("detailDescription")!;
-    this.detailElevationProfile = document.getElementById("detailElevationProfile") as any;
+    this.detailElevationProfile = document.getElementById("detailElevationProfile") as HTMLArcgisElevationProfileElement;
 
     this.emptyDetails();
 
@@ -44,28 +43,29 @@ export default class SelectionPanel {
       const trail = this.state.selectedTrail;
 
       if (!id || !trail) {
+        void this.detailElevationProfile.clear();
         this.detailElevationProfile.style.display = "none";
-        this.detailElevationProfile.feature = null;
-        this.detailElevationProfile.profiles = [];
         return;
       }
 
       this.detailElevationProfile.style.display = "block";
-      (document.querySelectorAll("calcite-tab-title")[1] as any).selected = true;
+      const detailTabTitle = document.querySelectorAll("calcite-tab-title")[1] as HTMLCalciteTabTitleElement;
+      if (detailTabTitle) {
+        detailTabTitle.selected = true;
+      }
       this.displayInfo(trail);
-      this.detailElevationProfile.profiles = [
-        {
-          type: "ground",
-          title: "Trail Statistics",
+      this.detailElevationProfile.feature = new Graphic({
+        geometry: trail.geometry,
+        attributes: {
+          name: trail.name,
+          id: trail.id,
         },
-      ];
-
-      this.detailElevationProfile.feature = trail;
+      });
     });
 
   }
 
-  emptyDetails() {
+  emptyDetails(): void {
     this.detailTitle.innerHTML = "";
     this.detailDescription.innerHTML = "";
     this.detailInfograph.innerHTML = "Select a hike in the map or in the Hikes panel to see more details about it.";
@@ -78,8 +78,8 @@ export default class SelectionPanel {
     this.detailDescription.innerHTML = `<b>Particularities: </b> ${trail.description}`;
   }
 
-  createInfograph(trail) {
-    const status = {
+  createInfograph(trail: Trail): void {
+    const status: Record<string, { icon: string; text: string }> = {
       Closed: {
         icon: "fa fa-calendar-times-o",
         text: "Closed",

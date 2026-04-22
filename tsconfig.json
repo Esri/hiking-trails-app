@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
+        "rootDir": "./src/ts/",
         "outDir": "./dist/",
         "sourceMap": true,
         "noImplicitAny": false,
         "module": "ESNext",
         "target": "ESNext",
         "moduleResolution": "Bundler",
+        "allowArbitraryExtensions": true,
         "types": [],
         "typeRoots": ["./node_modules/@types"],
         "experimentalDecorators": true,
@@ -13,7 +15,8 @@
         "useDefineForClassFields": false,
         "jsx": "react",
         "reactNamespace": "jsxFactory",
-        "lib": ["ESNext", "dom",  "scripthost"]
+        "lib": ["ESNext", "dom",  "scripthost"],
+        "strict": true,
     },
     "include": [
         "./src/**/*",

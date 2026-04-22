@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,23 +27,13 @@ export default class BasemapPanel {
     const basemapGallery = document.querySelector("arcgis-basemap-gallery") as ArcgisBasemapGallery;
 
     const basemaps = [
+      Basemap.fromId("topo")!,
+      Basemap.fromId("topo-3d")!,
       new Basemap({
-        id: "world-topo-base",
-        title: "World Topo Base (OLD - just for testing > to be removed)",
-        baseLayers: [
-          new TileLayer({
-            url: "https://wtb.maptiles.arcgis.com/arcgis/rest/services/World_Topo_Base/MapServer",
-            title: "World Topo Base (OLD - just for testing > to be removed)",
-          }),
-        ],
-      }),
-            new Basemap({
         portalItem: {
           id: "2e8a3ccdfd6d42a995b79812b3b0ebc6",
         },
       }),
-      Basemap.fromId("topo-3d")!,
-      Basemap.fromId("topo")!,
       Basemap.fromId("satellite")!,
       Basemap.fromId("hybrid")!
     ];

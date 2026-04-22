@@ -1,6 +1,6 @@
 @import "../../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
 
-@import "menu-panel";
+@import "./menu-panel.css";
 
 html,
 body {
@@ -61,28 +61,27 @@ b {
 .title {
   position: relative;
   z-index: 1;
-  &:before {
-    border-top: 0.625rem solid var(--app-brand-green);
-    content: "";
-    margin: 0 auto; 
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 80%;
-    z-index: -1;
-  }
+}
+
+.title:before {
+  border-top: 0.625rem solid var(--app-brand-green);
+  content: "";
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+  z-index: -1;
 }
 
 arcgis-expand .app-info-panel {
   max-width: 33rem;
   padding: 1rem;
   margin: 0 auto;
-
-  p {
-    margin: 0 0 1rem;
-  }
 }
 
-
+arcgis-expand .app-info-panel p {
+  margin: 0 0 1rem;
+}

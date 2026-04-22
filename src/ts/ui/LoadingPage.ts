@@ -1,4 +1,4 @@
-/* Copyright 2019 Esri
+/* Copyright 2026 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,21 @@
  *
  */
 
-import "../../style/loading-page.scss";
+import "../../style/loading-page.css";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { State } from "../types";
 
 export default class LoadingPage {
-  container;
+  container: HTMLElement;
   state: State;
+  showMapButton: HTMLButtonElement;
 
-  constructor(state) {
-    this.container = document.getElementById("starterPage");
+  constructor(state: State) {
+    const container = document.getElementById("starterPage")!;
+    const showMapButton = document.getElementById("showMap")! as HTMLButtonElement;
+
+    this.container = container;
+    this.showMapButton = showMapButton;
     this.state = state;
 
     reactiveUtils.watch(() => state.displayLoading, (value) => {
@@ -34,7 +39,7 @@ export default class LoadingPage {
       }
     });
 
-    document.getElementById("showMap").addEventListener("click", () => {
+    this.showMapButton.addEventListener("click", () => {
       state.displayLoading = false;
     });
   }
