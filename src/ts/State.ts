@@ -20,7 +20,7 @@ import {
   subclass,
 } from "@arcgis/core/core/accessorSupport/decorators";
 import SceneView from "@arcgis/core/views/SceneView";
-import { FilterValue, Trail, TrailFilters } from "./types";
+import type { FilterValue, Trail, TrailFilters } from "./types";
 
 @subclass()
 export default class State extends Accessor {
@@ -35,7 +35,7 @@ export default class State extends Accessor {
 
   setSelectedTrail(id: number | null): void {
     this.selectedTrailId = id;
-    this.selectedTrail = id
+    this.selectedTrail = id !== null
       ? this.trails.filter((trail: Trail) => {
           return trail.id === id;
         })[0]

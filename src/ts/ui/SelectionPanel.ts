@@ -31,7 +31,7 @@ export default class SelectionPanel {
     this.trails = trails;
     this.container = document.getElementById("selectionPanel")!;
     this.trailsPanel = document.getElementById("trailsPanel")!;
-    this.removeSelectedButton = document.querySelector(".remove-selected") as HTMLCalciteButtonElement;
+    this.removeSelectedButton = document.querySelector<HTMLCalciteButtonElement>(".remove-selected")!;
     this.generateTrailsPanel();
 
     this.removeSelectedButton.addEventListener("click", () => {
@@ -43,19 +43,19 @@ export default class SelectionPanel {
     this.state.setFilteredTrailIds(this.trails.map((trail) => trail.id));
 
     reactiveUtils.watch(() => state.selectedTrailId, (id) => {
-      const previousSelectedTrail = this.trailsPanel.querySelector(
+      const previousSelectedTrail = this.trailsPanel.querySelector<HTMLCalciteChipElement>(
         ".selected"
-      ) as HTMLCalciteChipElement | null;
+      );
 
       if (previousSelectedTrail) {
         previousSelectedTrail.selected = false;
         previousSelectedTrail.classList.remove("selected");
       }
 
-      if (id) {
-        const selectedTrail = this.trailsPanel.querySelector(
+      if (id !== null) {
+        const selectedTrail = this.trailsPanel.querySelector<HTMLCalciteChipElement>(
           `[data-id="${id}"]`
-        ) as HTMLCalciteChipElement | null;
+        );
         selectedTrail?.classList.add("selected");
         if (selectedTrail) {
           selectedTrail.selected = true;
@@ -115,7 +115,7 @@ export default class SelectionPanel {
   }
 
   private updateVisibleTrails(ids: number[]): void {
-    const trailElements = document.querySelectorAll(".trail") as NodeListOf<HTMLCalciteChipElement>;
+    const trailElements = document.querySelectorAll<HTMLCalciteChipElement>(".trail");
     trailElements.forEach(function (elem) {
       const trailId = Number(elem.dataset.id);
       if (!Number.isFinite(trailId) || ids.indexOf(trailId) === -1) {

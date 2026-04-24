@@ -42,10 +42,10 @@ export default class SceneElement {
       if (!this.view) {
         return;
       }
-      if (oldValue) {
+      if (oldValue !== null) {
         this.unselectFeature();
       }
-      if (value) {
+      if (value !== null) {
         this.selectFeature(value);
       }
     });
@@ -83,10 +83,13 @@ export default class SceneElement {
   }
 
   private initScene(): Promise<SceneView> {
-    this.sceneElement = document.querySelector("arcgis-scene#viewElement") as HTMLArcgisSceneElement;
-    if (!this.sceneElement) {
+    const sceneElement = document.querySelector<HTMLArcgisSceneElement>("arcgis-scene#viewElement");
+
+    if (!sceneElement) {
       return Promise.reject(new Error("Scene element #viewElement not found"));
     }
+
+    this.sceneElement = sceneElement;
 
     return new Promise((resolve) => {
       const onViewReady = async () => {
@@ -223,7 +226,7 @@ export default class SceneElement {
   }
 
   private createTrailSymbol(selection: number | null): LineSymbol3DProperties & { type: "line-3d" } {
-    const color = selection
+    const color = selection !== null
       ? config.colors.selectedTrail
       : config.colors.defaultTrail;
 
@@ -242,7 +245,7 @@ export default class SceneElement {
   }
 
   private getUniqueValueInfos(selection: number | null): UniqueValueInfoProperties[] {
-    if (!selection) {
+    if (selection === null) {
       return [];
     }
 
@@ -255,7 +258,7 @@ export default class SceneElement {
   }
 
   private getLabelingInfo(selection: number | null): LabelClassProperties[] {
-    if (selection) {
+    if (selection !== null) {
       return [this.createLabelClass(selection), this.createLabelClass(null)];
     }
 
@@ -263,7 +266,7 @@ export default class SceneElement {
   }
 
   private createLabelClass(selection: number | null): LabelClassProperties {
-    const color = selection
+    const color = selection !== null
       ? config.colors.selectedTrail
       : config.colors.defaultTrail;
 
@@ -307,7 +310,7 @@ export default class SceneElement {
       },
     };
 
-    if (selection) {
+    if (selection !== null) {
       labelClass.where = `${config.data.trailAttributes.id} = ${selection}`;
     }
 

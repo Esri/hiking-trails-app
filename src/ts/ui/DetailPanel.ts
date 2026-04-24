@@ -42,14 +42,14 @@ export default class SelectionPanel {
       this.emptyDetails();
       const trail = this.state.selectedTrail;
 
-      if (!id || !trail) {
+      if (id === null || !trail) {
         void this.detailElevationProfile.clear();
         this.detailElevationProfile.style.display = "none";
         return;
       }
 
       this.detailElevationProfile.style.display = "block";
-      const detailTabTitle = document.querySelectorAll("calcite-tab-title")[1] as HTMLCalciteTabTitleElement;
+      const detailTabTitle = document.querySelectorAll<HTMLCalciteTabTitleElement>("calcite-tab-title")[1];
       if (detailTabTitle) {
         detailTabTitle.selected = true;
       }

@@ -23,8 +23,8 @@ export default class BasemapPanel {
     this.setBasemaps();
   }
 
-  private async setBasemaps() {
-    const basemapGallery = document.querySelector("arcgis-basemap-gallery") as ArcgisBasemapGallery;
+  private setBasemaps() {
+    const basemapGallery = document.querySelector<ArcgisBasemapGallery>("arcgis-basemap-gallery")!;
 
     const basemaps = [
       Basemap.fromId("topo")!,
