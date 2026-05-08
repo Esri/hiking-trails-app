@@ -28,8 +28,8 @@ import LoadingPage from "./ui/LoadingPage";
 import MenuPanel from "./ui/MenuPanel";
 
 function syncPanelSlotForViewport(): void {
-  const panel = document.querySelector<HTMLCalciteShellPanelElement>("calcite-shell-panel.menu-panel")!;  
-  const toggleButton = document.getElementById("mobilePanelToggle")! as HTMLCalciteButtonElement;
+  const panel = document.querySelector<HTMLCalciteShellPanelElement>("calcite-shell-panel.menu-panel")!
+  const toggleButton = document.getElementById("mobilePanelToggle")!;
 
   const mediaQuery = window.matchMedia("(max-width: 800px)");
 

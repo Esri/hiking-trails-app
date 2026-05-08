@@ -183,7 +183,7 @@ export default class SelectionPanel {
 
       const segmentedControl = document.createElement(
         "calcite-segmented-control"
-      ) as HTMLCalciteSegmentedControlElement;
+      );
       segmentedControl.className = "segmented-group";
       segmentedControl.width = "full";
 
@@ -192,7 +192,7 @@ export default class SelectionPanel {
       for (let i = 0; i < uniqueValues.length; i++) {
         const option = document.createElement(
           "calcite-segmented-control-item"
-        ) as HTMLCalciteSegmentedControlItemElement;
+        );
         option.innerText = uniqueValues[i];
         option.value = uniqueValues[i];
         if (i === 0) {
@@ -248,7 +248,7 @@ export default class SelectionPanel {
       const unit = typeof configuredRangeOptions?.unit === "string" ? configuredRangeOptions.unit : "";
       const step = Number(configuredRangeOptions?.step) > 0 ? Number(configuredRangeOptions?.step) : 1;
 
-      const rangeSliderContainer = document.createElement("calcite-slider") as HTMLCalciteSliderElement;
+      const rangeSliderContainer = document.createElement("calcite-slider");
       rangeSliderContainer.className = "range-slider";
       rangeSliderContainer.dataset.group = filter;
       rangeSliderContainer.min = extremes.min;

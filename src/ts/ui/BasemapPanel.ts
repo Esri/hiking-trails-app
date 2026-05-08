@@ -14,7 +14,6 @@
  *
  */
 import Basemap from "@arcgis/core/Basemap";
-import TileLayer from "@arcgis/core/layers/TileLayer";
 import LocalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/LocalBasemapsSource";
 import { ArcgisBasemapGallery } from "@arcgis/map-components/components/arcgis-basemap-gallery";
 
