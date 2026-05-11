@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src/ts/",
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "Bundler",
+        "allowArbitraryExtensions": true,
+        "types": [],
+        "typeRoots": ["./node_modules/@types"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "useDefineForClassFields": false,
+        "jsx": "react",
+        "reactNamespace": "jsxFactory",
+        "lib": ["ESNext", "dom",  "scripthost"],
+        "strict": true,
+    },
+    "include": [
+        "./src/**/*",
+        "node_modules/@arcgis/core/**/*"
+    ]
+}

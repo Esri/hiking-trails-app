@@ -1,0 +1,28 @@
+{
+  "name": "trail-guide",
+  "version": "1.1.0",
+  "description": "A 3D trail guide app for the Swiss National Park.",
+  "repository": "https://github.com/Esri/hiking-trail-app",
+  "scripts": {
+    "build": "vite build",
+    "start": "vite",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "3D",
+    "hike",
+    "trail"
+  ],
+  "author": "Raluca Nicola",
+  "license": "Apache 2.0",
+  "typings": "src/ts/types.d.ts",
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^8.0.9"
+  },
+  "dependencies": {
+    "@arcgis/core": "^5.0.0",
+    "@arcgis/map-components": "^5.0.16",
+    "@esri/calcite-components": "^5.0.2"
+  }
+}

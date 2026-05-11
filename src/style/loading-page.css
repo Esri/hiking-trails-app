@@ -1,0 +1,81 @@
+/* styles for the loading page */
+
+.starter {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: table;
+  font-size: var(--app-medium-font);
+  background-image: url(../img/background.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.starter h1 {
+  font-size: var(--app-huge-font);
+}
+
+.starter .center {
+  max-width: 37.5rem;
+  margin: 0.625rem auto;
+  text-align: center;
+}
+
+.starter .inner {
+  max-width: 37.5rem;
+  padding: 1.875rem;
+  text-align: center;
+  margin-top: 12.5rem;
+  margin-right: auto;
+  margin-left: auto;
+  color: white;
+  display: table-row;
+  height: 95%;
+}
+
+.starter .description {
+  font-size: var(--app-big-font);
+  line-height: var(--app-big-font);
+}
+
+.starter .heading-starter {
+  border-bottom: 0.0625rem solid white;
+  text-shadow: -0.0625rem 0 black, 0 0.0625rem black, 0.0625rem 0 black, 0 -0.0625rem black;
+}
+
+.starter #showMap {
+  padding: 0.625rem 1.25rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0.0625rem solid white;
+  border-radius: 0.5em;
+  font-size: var(--app-big-font);
+  color: white;
+  cursor: pointer;
+}
+
+.starter #showMap:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.starter .cell {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.starter .foot {
+  display: table-row;
+  height: 5%;
+  color: white;
+}
+
+.starter .foot img {
+  height: 5rem;
+  vertical-align: middle;
+}

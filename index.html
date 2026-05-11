@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <meta name='theme-color' content='#b5e2c1'>
+  <meta name='description' content='Hiking trails Swiss National Park'>
+  <meta name='author' content='Raluca Nicola, ESRI'>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./src/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./src/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./src/img/apple-icon-180x180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name='apple-mobile-web-app-title' content='Hiking trails'>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+  <title>Hiking trails</title>
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
+  <script type='module' src='./src/ts/main.ts'></script>
+</head>
+
+<body>
+  <calcite-shell>
+    <calcite-shell-panel slot="panel-start" class="menu-panel">
+        <h1 class="title">Hiking trails Swiss National Park</h1>
+
+        <calcite-tabs layout="center" scale="l">
+          <calcite-tab-nav slot="title-group">
+            <calcite-tab-title selected>
+                Hikes
+            </calcite-tab-title>
+            <calcite-tab-title>Details</calcite-tab-title>
+            <calcite-tab-title>Basemap</calcite-tab-title>
+          </calcite-tab-nav>
+          <calcite-tab selected>
+              <div id="selectionPanel" class="panel">
+              <div id="trailsPanel"></div>
+              <calcite-button appearance="outline" width="full" class="remove-selected" disabled>Remove selected trail</calcite-button>
+              <div id="filterPanel"></div>
+            </div>
+          </calcite-tab>
+          <calcite-tab>
+            <div id="detailPanel" class="panel">
+              <h2 class="center" id="detailTitle"></h2>
+              <div id="detailInfograph"></div>
+              <div id="detailDescription"></div>
+              <arcgis-elevation-profile id="detailElevationProfile" reference-element="viewElement" hide-start-button hide-select-button highlight-disabled
+       ></arcgis-elevation-profile>
+            </div>
+              </calcite-tab>
+              <calcite-tab>
+                    <div id="basemapPanel" class="panel">
+                <arcgis-basemap-gallery reference-element="viewElement"></arcgis-basemap-gallery>      
+            </div>
+          </calcite-tab>
+        </calcite-tabs>
+    </calcite-shell-panel>
+    <arcgis-scene id="viewElement" item-id="134539520cec466b967b12c3bd82b39e">
+    <arcgis-home slot="top-right"></arcgis-home>
+    <arcgis-zoom slot='top-right'></arcgis-zoom>
+    <arcgis-navigation-toggle slot='top-right'></arcgis-navigation-toggle>
+    <arcgis-compass slot='top-right'></arcgis-compass>
+    <calcite-button
+      id="mobilePanelToggle"
+      slot="bottom-left"
+      icon-start="hamburger"
+      title="Toggle panel"
+      hidden
+    ></calcite-button>
+    <arcgis-expand
+    slot="bottom-right"
+    expand-icon="information-f"
+    >
+    <calcite-panel class="app-info-panel">
+      <h2>Disclaimer</h2>
+      <p>This is a non-commercial, demo application made at the Esri R&D Center Zurich for visualizing hiking trails in the Swiss National Park.
+        It is built on top of <a href="https://developers.arcgis.com/javascript/" target="_blank">ArcGIS Maps SDK for JavaScript version 5.0</a>.</p>
+      <h2> Credits </h2>
+        <p>Data for the hiking trails was kindly provided by the <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
+        <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
+    </calcite-panel>
+  </arcgis-expand>
+  </arcgis-scene>
+  </calcite-shell>
+  <div id="starterPage" class="starter">
+    <div class="inner">
+      <div class="cell">
+        <h1 class="heading-starter center">Swiss National Park</h1>
+        <p class="description lead center">This app shows the hiking trails for the Swiss National Park, the largest and most highly protected area in Switzerland.
+        </p>
+        <p id="startApp" class="lead center">
+          <button id="showMap">Go to map</button>
+        </p>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="center">
+        <p>
+          <a href='http://developers.arcgis.com/javascript'>
+            <img src='./src/img/esri-10GlobeLogo_1C.png' alt='esri logo'>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
+
+</html>
